@@ -6,92 +6,117 @@
 <title>ポーカー管理 - KEYpro poker</title>
 <style>
   body, button, h1, p, div { font-family: 'KEYpro', sans-serif; }
-  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; padding: 30px 20px; margin: 0; min-height: 100vh; position: relative; }
-  .container { max-width: 600px; margin: 0 auto; background-color: rgba(0, 0, 0, 0.5); padding: 40px 30px; border-radius: 12px; border: 2px solid #d4af37; box-shadow: 0 8px 32px rgba(0,0,0,0.6); position: relative; }
+  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
   
-  .suits { font-size: 24px; letter-spacing: 10px; margin-bottom: 5px; }
+  /* 16:9のPCモニターを意識した大枠レイアウト */
+  .dashboard-container { display: flex; flex-direction: row; width: 100%; max-width: 1200px; min-height: 70vh; background-color: rgba(0, 0, 0, 0.6); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 10px 40px rgba(0,0,0,0.8); overflow: hidden; }
+  
+  /* 左カラム（情報＆タイマー） */
+  .left-col { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px dashed #7f8c8d; background: rgba(0,0,0,0.2); }
+  
+  /* 右カラム（Liveランキング） */
+  .right-col { flex: 1.5; padding: 40px; display: flex; flex-direction: column; }
+
+  /* 左側のデザイン要素 */
+  .suits { font-size: 28px; letter-spacing: 12px; margin-bottom: 10px; }
   .suit-red { color: #e74c3c; }
   .suit-black { color: #ffffff; }
   
-  h1 { color: #d4af37; font-size: 34px; margin: 0 0 5px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); letter-spacing: 2px; }
-  p { font-size: 15px; margin-bottom: 30px; color: #ecf0f1; letter-spacing: 1px; }
+  h1 { color: #d4af37; font-size: 42px; margin: 0 0 10px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.8); letter-spacing: 3px; }
+  p.subtitle { font-size: 16px; margin-bottom: 40px; color: #ecf0f1; letter-spacing: 2px; }
   
-  .live-dashboard { background: rgba(0, 0, 0, 0.6); border: 1px solid #d4af37; border-radius: 8px; padding: 20px 15px; margin-bottom: 30px; }
-  .date-header { font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 15px; border-bottom: 1px dashed #7f8c8d; padding-bottom: 10px; }
+  .date-header { font-size: 20px; font-weight: bold; color: #fff; margin-bottom: 20px; background: rgba(255,255,255,0.1); padding: 10px 30px; border-radius: 50px; border: 1px solid #7f8c8d; }
   
-  .timer-label { font-size: 14px; color: #bdc3c7; margin-bottom: 5px; letter-spacing: 1px; }
-  .timer-display { background: #000; color: #2ecc71; font-family: 'Courier New', monospace; font-size: 48px; font-weight: bold; padding: 10px 20px; border-radius: 8px; border: 2px solid #333; margin-bottom: 20px; text-shadow: 0 0 10px rgba(46,204,113,0.5); display: inline-block; }
+  .timer-label { font-size: 18px; color: #bdc3c7; margin-bottom: 10px; letter-spacing: 2px; }
+  /* PC用の巨大タイマー */
+  .timer-display { background: #000; color: #2ecc71; font-family: 'Courier New', monospace; font-size: 72px; font-weight: bold; padding: 15px 30px; border-radius: 12px; border: 3px solid #333; margin-bottom: 40px; text-shadow: 0 0 20px rgba(46,204,113,0.6); box-shadow: inset 0 0 20px rgba(0,0,0,1); }
   
-  .board-title { color: #f1c40f; font-size: 14px; margin-bottom: 15px; letter-spacing: 1px; }
+  .menu-btn.ranking { display: block; width: 90%; max-width: 350px; padding: 20px; background: linear-gradient(145deg, #2c3e50, #1a252f); color: #ffffff; font-size: 20px; font-weight: bold; text-decoration: none; border: 1px solid #7f8c8d; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+  .menu-btn.ranking:hover { background: linear-gradient(145deg, #34495e, #2c3e50); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.7); }
   
-  /* リアルタイムランキングのデザイン */
-  .live-ranking-list { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-  .live-rank-card { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(145deg, #1a252f, #2c3e50); border: 1px solid #7f8c8d; padding: 12px 15px; border-radius: 8px; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  /* 右側のデザイン要素（Liveランキング） */
+  .board-title { color: #f1c40f; font-size: 22px; margin-bottom: 25px; letter-spacing: 2px; font-weight: bold; text-align: left; border-bottom: 2px solid #7f8c8d; padding-bottom: 10px; }
   
-  /* 順位ごとの装飾 */
-  .live-rank-card.rank-1 { border-color: #f1c40f; box-shadow: 0 0 10px rgba(241, 196, 15, 0.4); }
+  .live-ranking-list { display: flex; flex-direction: column; gap: 12px; width: 100%; height: 100%; overflow-y: auto; padding-right: 10px; }
+  /* スクロールバーのデザイン（Webkit用） */
+  .live-ranking-list::-webkit-scrollbar { width: 8px; }
+  .live-ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+  .live-ranking-list::-webkit-scrollbar-thumb { background: #7f8c8d; border-radius: 4px; }
+
+  .live-rank-card { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(145deg, #1a252f, #2c3e50); border: 1px solid #7f8c8d; padding: 18px 25px; border-radius: 10px; font-size: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
+  
+  .live-rank-card.rank-1 { border-color: #f1c40f; box-shadow: 0 0 15px rgba(241, 196, 15, 0.4); background: linear-gradient(145deg, #2c2810, #1a180a); }
   .live-rank-card.rank-2 { border-color: #bdc3c7; }
   .live-rank-card.rank-3 { border-color: #cd7f32; }
 
-  .rank-col { font-weight: bold; width: 60px; text-align: left; }
+  .rank-col { font-weight: bold; width: 80px; text-align: left; font-size: 22px; }
   .rank-1 .rank-col { color: #f1c40f; }
   .rank-2 .rank-col { color: #bdc3c7; }
   .rank-3 .rank-col { color: #cd7f32; }
 
-  /* 複数人をまとめて表示できるよう折り返しを許可 */
-  .name-col { flex-grow: 1; text-align: left; font-weight: bold; color: #fff; padding-left: 10px; line-height: 1.5; font-size: 15px; }
-  .entry-sub { font-size: 12px; color: #bdc3c7; font-weight: normal; margin-left: 5px; white-space: nowrap; }
+  .name-col { flex-grow: 1; text-align: left; font-weight: bold; color: #fff; padding-left: 15px; line-height: 1.4; font-size: 20px; }
+  .entry-sub { font-size: 14px; color: #bdc3c7; font-weight: normal; margin-left: 8px; white-space: nowrap; }
 
-  .pay-col { font-weight: bold; font-size: 18px; width: 70px; text-align: right; }
+  .pay-col { font-weight: bold; font-size: 26px; width: 100px; text-align: right; }
   .pay-col.plus { color: #2ecc71; text-shadow: 1px 1px 2px #000; }
   .pay-col.minus { color: #e74c3c; text-shadow: 1px 1px 2px #000; }
   .pay-col.zero { color: #ecf0f1; }
 
-  .empty-text { color: #95a5a6; font-size: 14px; width: 100%; text-align: center; }
-
-  .menu-btn.ranking { display: block; width: 80%; margin: 0 auto; padding: 20px; background: linear-gradient(145deg, #2c3e50, #1a252f); color: #ffffff; font-size: 22px; font-weight: bold; text-decoration: none; border: 1px solid #7f8c8d; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.5); }
-  .menu-btn.ranking:hover { background: linear-gradient(145deg, #34495e, #2c3e50); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.6); }
+  .empty-text { color: #95a5a6; font-size: 18px; width: 100%; text-align: center; margin-top: 50px; }
   
-  .footer-text { margin-top: 40px; font-size: 12px; color: #7f8c8d; }
+  .footer-text { position: absolute; bottom: 15px; right: 20px; font-size: 12px; color: #7f8c8d; }
 
   .secret-btn { position: fixed; bottom: 15px; left: 15px; background: transparent; color: #7f8c8d; border: none; font-size: 14px; cursor: pointer; padding: 10px; transition: color 0.3s; text-align: left; outline: none; z-index: 100; }
   .secret-btn:hover { color: #d4af37; }
 
-  @media screen and (max-width: 600px) {
-    body { padding: 15px 10px; }
-    .container { padding: 30px 10px; }
-    h1 { font-size: 28px; }
-    .timer-display { font-size: 36px; }
-    .live-rank-card { padding: 10px; font-size: 14px; }
-    .pay-col { font-size: 16px; width: 60px; }
-    .menu-btn.ranking { width: 95%; font-size: 18px; padding: 18px; }
-    .secret-btn { bottom: 10px; left: 10px; font-size: 12px; padding: 5px; }
+  /* 📱 スマホ用（縦長画面）のレイアウト */
+  @media screen and (max-width: 900px) {
+    body { padding: 10px; display: block; }
+    .dashboard-container { flex-direction: column; min-height: auto; border-radius: 12px; border-width: 1px; }
+    .left-col { border-right: none; border-bottom: 1px dashed #7f8c8d; padding: 30px 15px; }
+    .right-col { padding: 30px 15px; }
+    
+    h1 { font-size: 32px; }
+    .timer-display { font-size: 48px; padding: 10px 20px; margin-bottom: 30px; }
+    .menu-btn.ranking { width: 100%; font-size: 18px; padding: 15px; }
+    
+    .board-title { font-size: 18px; text-align: center; }
+    .live-rank-card { padding: 12px 15px; font-size: 16px; }
+    .rank-col { width: 60px; font-size: 16px; }
+    .name-col { font-size: 16px; }
+    .pay-col { font-size: 18px; width: 70px; }
+    
+    .footer-text { position: static; text-align: center; margin-top: 20px; padding-bottom: 20px; }
   }
 </style>
 </head>
 <body>
-  <div class="container">
-    <div class="suits">
-      <span class="suit-black">♠</span><span class="suit-red">♥</span><span class="suit-black">♣</span><span class="suit-red">♦</span>
-    </div>
-    <h1>KEYpro poker</h1>
-    <p>公式ダッシュボード</p>
-    
-    <div class="live-dashboard">
+  
+  <div class="dashboard-container">
+    <div class="left-col">
+      <div class="suits">
+        <span class="suit-black">♠</span><span class="suit-red">♥</span><span class="suit-black">♣</span><span class="suit-red">♦</span>
+      </div>
+      <h1>KEYpro poker</h1>
+      <p class="subtitle">公式ダッシュボード</p>
+      
       <div class="date-header" id="todayDate">----年--月--日</div>
       
       <div class="timer-label">⏳ 本日のプレイ時間</div>
       <div class="timer-display" id="mainTimer">00:00</div>
       
+      <button class="menu-btn ranking" onclick="location.href='ranking.html'">👑 総合ランキングを見る</button>
+    </div>
+
+    <div class="right-col">
       <div class="board-title">♠️ 現在のLiveランキング ♥️</div>
-      <div id="topLiveBoard">
+      <div id="topLiveBoard" style="height: 100%;">
         <div class="empty-text">現在プレイ中のゲームはありません</div>
       </div>
     </div>
-
-    <button class="menu-btn ranking" onclick="location.href='ranking.html'">👑 総合ランキングを見る</button>
-    <div class="footer-text">© 2026 KEYpro poker Server</div>
   </div>
+
+  <div class="footer-text">© 2026 KEYpro poker Server</div>
 
   <button class="secret-btn" onclick="checkPassword()">⚙️ 精算</button>
 
@@ -142,7 +167,7 @@
       document.getElementById('mainTimer').innerText = formattedTime;
     }, 1000);
 
-    // 参加者情報の同期とランキングの「グループ化」
+    // 参加者情報の同期とランキング
     const STARTING_CHIPS = 20000;
     const RATE = 10;
 
@@ -165,21 +190,18 @@
         return;
       }
 
-      // ★ Payとエントリー数が同じ人をグループにまとめる
       let groups = {};
       activePlayers.forEach(p => {
-        let key = p.pay + "_" + p.entry; // 同じ点数・同じエントリー数の人をまとめる
+        let key = p.pay + "_" + p.entry; 
         if (!groups[key]) {
           groups[key] = { pay: p.pay, entry: p.entry, names: [] };
         }
         groups[key].names.push(p.name);
       });
 
-      // 配列に変換して、Payが多い順（降順）に並べ替え
       let groupArray = Object.values(groups);
       groupArray.sort((a, b) => b.pay - a.pay);
 
-      // HTMLを生成
       let html = '<div class="live-ranking-list">';
       groupArray.forEach((group, index) => {
         let rankStr = (index + 1) + "位";
@@ -191,8 +213,6 @@
 
         let payClass = group.pay > 0 ? "plus" : (group.pay < 0 ? "minus" : "zero");
         let payText = group.pay > 0 ? "+" + formatK(group.pay) : formatK(group.pay);
-
-        // 名前の配列を「、」でつなぐ（例：Aさん、Bさん、Cさん）
         let namesText = group.names.join('、');
 
         html += `
@@ -208,7 +228,6 @@
       board.innerHTML = html;
     });
 
-    // 日付設定
     const now = new Date();
     document.getElementById('todayDate').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
 
