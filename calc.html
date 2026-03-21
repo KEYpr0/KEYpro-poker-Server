@@ -158,4 +158,81 @@
     const draft = localStorage.getItem('pokerDraft');
     const tableBody = document.getElementById('tableBody');
     
-    if
+    if (draft) {
+      const draftData = JSON.parse(draft);
+      draftData.forEach(data => {
+        const tr = createRow();
+        tr.querySelector('.name-input').value = data.name;
+        tr.querySelector('.entry').value = data.entry;
+        tr.querySelector('.final-chips').value = data.finalChips;
+        tableBody.appendChild(tr);
+      });
+      calculate(); 
+    } else {
+      for (let i = 0; i < INITIAL_ROWS; i++) tableBody.appendChild(createRow());
+      calculate();
+    }
+  }
+
+  function saveData() {
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxijPOgmKGDL-UL5eAqOBKrxKVfPl4v6hsdLcWbiuwMrCWSPI5fqxu3qOmXIFTrMYCi5A/exec";
+
+    const rows = document.querySelectorAll('#tableBody tr');
+    let playerData = [];
+    let hasName = false;
+
+    rows.forEach(row => {
+      const name = row.querySelector('.name-input').value.trim();
+      if (name !== "") {
+        hasName = true;
+        playerData.push({
+          name: name,
+          entry: parseFloat(row.querySelector('.entry').value) || 0,
+          finalChips: parseFloat(row.querySelector('.final-chips').value) || 0,
+          result: parseFloat(row.querySelector('.result').value) || 0,
+          pay: parseFloat(row.querySelector('.pay').value) || 0
+        });
+      }
+    });
+
+    if (!hasName) {
+      alert("プレイヤー名を入力してください！");
+      return;
+    }
+
+    const totalPay = parseFloat(document.getElementById('totalPay').innerText);
+    if (totalPay !== 0) {
+      if (!confirm("合計Payが0円ではありません！\n本当にこのまま保存してもよろしいですか？")) return;
+    }
+
+    const btn = document.getElementById('saveBtn');
+    btn.innerText = "⏳ 通信中...";
+    btn.disabled = true;
+
+    fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(playerData)
+    })
+    .then(() => {
+      alert("✨ スプレッドシートに成績を記録しました！");
+      btn.innerText = "💾 最終結果をスプレッドシートに記録";
+      btn.disabled = false;
+      
+      if(confirm("画面をリセットして次のゲームの準備をしますか？")) {
+        localStorage.removeItem('pokerDraft');
+        location.reload();
+      }
+    })
+    .catch(error => {
+      alert("通信エラーが発生しました。");
+      btn.innerText = "💾 最終結果をスプレッドシートに記録";
+      btn.disabled = false;
+    });
+  }
+
+  window.onload = loadDraft;
+</script>
+</body>
+</html>
