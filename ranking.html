@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ランキング - POKER ROOM</title>
+<title>ランキング - KEYpro poker</title>
 <style>
   body, button, table, th, td, h2, div, p { font-family: 'KEYpro', sans-serif; }
   body { background-color: #1e3d2f; color: #ffffff; padding: 20px; text-align: center; margin: 0; }
@@ -11,9 +11,12 @@
   h2 { color: #f1c40f; margin-bottom: 5px; }
   p { color: #ecf0f1; margin-bottom: 20px; font-size: 14px; }
   
-  table { margin: 0 auto; border-collapse: collapse; width: 100%; background-color: #ffffff; color: #000; border-radius: 5px; overflow: hidden; margin-top: 20px; }
+  /* スマホ用の横スクロール枠の設定 */
+  .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+  
+  table { margin: 0 auto; border-collapse: collapse; width: 100%; min-width: 500px; background-color: #ffffff; color: #000; border-radius: 5px; overflow: hidden; }
   th, td { border: 1px solid #ccc; padding: 12px; text-align: center; }
-  th { background-color: #3498db; color: #ffffff; }
+  th { background-color: #3498db; color: #ffffff; white-space: nowrap; }
   
   /* 順位ごとの特別カラー */
   .rank-1 { background-color: #f1c40f; font-weight: bold; } /* ゴールド */
@@ -27,6 +30,14 @@
   .btn { background-color: #7f8c8d; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; margin-top: 30px; }
   .btn:hover { background-color: #95a5a6; }
   #loading { font-size: 18px; color: #f39c12; margin: 20px 0; }
+
+  /* スマホ画面（幅600px以下）の時の微調整 */
+  @media screen and (max-width: 600px) {
+    body { padding: 10px; }
+    .container { padding: 15px 10px; }
+    th, td { padding: 8px 4px; font-size: 14px; }
+    .btn { width: 100%; font-size: 16px; padding: 12px 10px; }
+  }
 </style>
 </head>
 <body>
@@ -37,18 +48,20 @@
 
     <div id="loading">⏳ データを読み込み中...</div>
 
-    <table id="rankingTable" style="display: none;">
-      <thead>
-        <tr>
-          <th>順位</th>
-          <th>プレイヤー名</th>
-          <th>参加回数</th>
-          <th>トータルPay (円)</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table id="rankingTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>順位</th>
+            <th>プレイヤー名</th>
+            <th>参加回数</th>
+            <th>トータルPay (円)</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
 
     <button class="btn" onclick="location.href='index.html'">◀ トップページに戻る</button>
   </div>
