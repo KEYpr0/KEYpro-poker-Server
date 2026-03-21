@@ -11,16 +11,11 @@
   body, button, h1, p, div { font-family: 'KEYpro', sans-serif; }
   body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-x: hidden; }
   
-  /* 16:9のPCモニターを意識した大枠レイアウト */
   .dashboard-container { display: flex; flex-direction: row; width: 100%; max-width: 1200px; height: 80vh; min-height: 600px; background-color: rgba(0, 0, 0, 0.6); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 10px 40px rgba(0,0,0,0.8); overflow: hidden; }
   
-  /* 左カラム（情報＆タイマー） */
   .left-col { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px dashed #7f8c8d; background: rgba(0,0,0,0.2); }
-  
-  /* 右カラム（Liveランキング） */
   .right-col { flex: 1.5; padding: 40px; display: flex; flex-direction: column; overflow: hidden; }
 
-  /* 左側のデザイン要素 */
   .suits { font-size: 28px; letter-spacing: 12px; margin-bottom: 10px; }
   .suit-red { color: #e74c3c; }
   .suit-black { color: #ffffff; }
@@ -37,27 +32,30 @@
   .menu-btn.ranking:hover { background: linear-gradient(145deg, #34495e, #2c3e50); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.7); }
   
   /* 右側のデザイン要素（Liveランキング） */
-  .board-title { color: #f1c40f; font-size: 22px; margin-bottom: 25px; letter-spacing: 2px; font-weight: bold; text-align: left; border-bottom: 2px solid #7f8c8d; padding-bottom: 10px; }
+  .board-title { color: #e74c3c; font-size: 22px; margin-bottom: 25px; letter-spacing: 2px; font-weight: bold; text-align: left; border-bottom: 2px solid #7f8c8d; padding-bottom: 10px; }
   
   .live-ranking-list { display: flex; flex-direction: column; gap: 12px; width: 100%; height: 100%; overflow-y: auto; padding-right: 10px; }
   .live-ranking-list::-webkit-scrollbar { width: 8px; }
   .live-ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
   .live-ranking-list::-webkit-scrollbar-thumb { background: #7f8c8d; border-radius: 4px; }
 
-  .live-rank-card { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(145deg, #1a252f, #2c3e50); border: 1px solid #7f8c8d; padding: 18px 25px; border-radius: 10px; font-size: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); flex-shrink: 0; }
+  .live-rank-card { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(145deg, #1a252f, #2c3e50); border: 1px solid #7f8c8d; padding: 18px 25px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); flex-shrink: 0; }
   
-  .live-rank-card.rank-1 { border-color: #f1c40f; box-shadow: 0 0 15px rgba(241, 196, 15, 0.4); background: linear-gradient(145deg, #2c2810, #1a180a); }
-  .live-rank-card.rank-2 { border-color: #bdc3c7; }
-  .live-rank-card.rank-3 { border-color: #cd7f32; }
+  /* ワーストランキング用の危険なカラー設定 */
+  .live-rank-card.worst-1 { border-color: #e74c3c; box-shadow: 0 0 15px rgba(231, 76, 60, 0.4); background: linear-gradient(145deg, #2c1010, #1a0a0a); }
+  .live-rank-card.worst-2 { border-color: #e67e22; box-shadow: 0 0 10px rgba(230, 126, 34, 0.3); background: linear-gradient(145deg, #2c1a10, #1a0f0a); }
+  .live-rank-card.worst-3 { border-color: #9b59b6; box-shadow: 0 0 10px rgba(155, 89, 182, 0.3); background: linear-gradient(145deg, #20102c, #130a1a); }
+  .live-rank-card.worst-other { opacity: 0.8; }
 
-  .rank-col { font-weight: bold; width: 80px; text-align: left; font-size: 22px; }
-  .rank-1 .rank-col { color: #f1c40f; }
-  .rank-2 .rank-col { color: #bdc3c7; }
-  .rank-3 .rank-col { color: #cd7f32; }
+  /* 順位文字をワースト用に幅広に調整 */
+  .rank-col { font-weight: bold; width: 140px; text-align: left; font-size: 18px; color: #bdc3c7; }
+  .worst-1 .rank-col { color: #e74c3c; font-size: 20px; }
+  .worst-2 .rank-col { color: #e67e22; font-size: 18px; }
+  .worst-3 .rank-col { color: #9b59b6; font-size: 18px; }
 
-  /* エントリー表示用のデザイン */
-  .name-col { flex-grow: 1; text-align: left; font-weight: bold; color: #fff; padding-left: 15px; line-height: 1.4; font-size: 20px; }
-  .entry-col { font-weight: bold; font-size: 26px; width: 130px; text-align: right; color: #e74c3c; text-shadow: 1px 1px 2px #000; }
+  /* 名前とリエントリー表示 */
+  .name-col { flex-grow: 1; text-align: left; font-weight: bold; color: #fff; padding-left: 10px; line-height: 1.4; font-size: 20px; }
+  .entry-col { font-weight: bold; font-size: 26px; width: 140px; text-align: right; color: #e74c3c; text-shadow: 1px 1px 2px #000; }
 
   .empty-text { color: #95a5a6; font-size: 18px; width: 100%; text-align: center; margin-top: 50px; }
   
@@ -66,7 +64,7 @@
   .secret-btn { position: fixed; bottom: 15px; left: 15px; background: transparent; color: #7f8c8d; border: none; font-size: 14px; cursor: pointer; padding: 10px; transition: color 0.3s; text-align: left; outline: none; z-index: 100; }
   .secret-btn:hover { color: #d4af37; }
 
-  /* パスワード入力用モーダルのデザイン */
+  /* パスワード入力用モーダル */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: none; justify-content: center; align-items: center; }
   .modal-content { background: linear-gradient(145deg, #1a252f, #2c3e50); padding: 30px; border-radius: 12px; border: 2px solid #d4af37; text-align: center; width: 90%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
   .modal-content h3 { color: #d4af37; margin-top: 0; font-size: 20px; margin-bottom: 10px; }
@@ -95,10 +93,11 @@
     .board-title { font-size: 18px; text-align: center; }
     .live-ranking-list { height: auto; overflow-y: visible; padding-right: 0; }
     
-    .live-rank-card { padding: 12px 15px; font-size: 16px; }
-    .rank-col { width: 60px; font-size: 16px; }
+    .live-rank-card { padding: 12px 15px; }
+    .rank-col { width: 90px; font-size: 13px; }
+    .worst-1 .rank-col { font-size: 15px; }
     .name-col { font-size: 16px; }
-    .entry-col { font-size: 18px; width: 90px; }
+    .entry-col { font-size: 18px; width: 100px; }
     
     .footer-text { position: static; text-align: center; margin-top: 20px; padding-bottom: 20px; }
   }
@@ -123,9 +122,9 @@
     </div>
 
     <div class="right-col">
-      <div class="board-title">♠️ 現在のエントリーランキング ♥️</div>
+      <div class="board-title">💀 現在のリエントリー状況 💀</div>
       <div id="topLiveBoard" style="height: 100%;">
-        <div class="empty-text">現在プレイ中のゲームはありません</div>
+        <div class="empty-text">現在リエントリーしているプレイヤーはいません</div>
       </div>
     </div>
   </div>
@@ -181,49 +180,51 @@
         (h > 0 ? String(h).padStart(2, '0') + ':' : '') + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
     }, 1000);
 
-    // ★ エントリーランキングの描画処理
+    // ★ リエントリー（ワースト）ランキングの描画処理
     onValue(ref(db, 'pokerSession/players'), (snapshot) => {
       const draftData = snapshot.val() || [];
       const board = document.getElementById('topLiveBoard');
       let activePlayers = [];
       
-      // Payの計算を省き、名前とエントリー数だけを取得
+      // エントリー数から1を引いて「リエントリー回数」を計算
       draftData.forEach(player => {
-        if (player.name && player.name.trim() !== "" && player.entry > 0) {
-          activePlayers.push({ name: player.name, entry: player.entry });
+        if (player.name && player.name.trim() !== "" && player.entry > 1) { // 1回だけの人（0）は除外
+          activePlayers.push({ name: player.name, reEntry: player.entry - 1 });
         }
       });
 
+      // 誰もリエントリーしていない（全員が1回のみ）場合
       if (activePlayers.length === 0) {
-        board.innerHTML = '<div class="empty-text">現在プレイ中のゲームはありません</div>';
+        board.innerHTML = '<div class="empty-text">現在リエントリーしているプレイヤーはいません<br><span style="font-size:12px; display:block; margin-top:10px;">（平和なゲームが進行中です）</span></div>';
         return;
       }
 
-      // エントリー数でグループ化
+      // リエントリー数でグループ化
       let groups = {};
       activePlayers.forEach(p => {
-        let key = p.entry; 
+        let key = p.reEntry; 
         if (!groups[key]) {
-          groups[key] = { entry: p.entry, names: [] };
+          groups[key] = { reEntry: p.reEntry, names: [] };
         }
         groups[key].names.push(p.name);
       });
 
-      // エントリー数が多い順（降順）に並べ替え
+      // リエントリー数が多い順（降順＝ワースト順）に並べ替え
       let groupArray = Object.values(groups);
-      groupArray.sort((a, b) => b.entry - a.entry);
+      groupArray.sort((a, b) => b.reEntry - a.reEntry);
 
       let html = '<div class="live-ranking-list">';
       groupArray.forEach((group, index) => {
-        let rankStr = (index + 1) + "位";
-        let rankClass = "rank-other";
+        let rankStr = "ワースト" + (index + 1) + "位";
+        let rankClass = "worst-other";
         
-        if (index === 0) { rankStr = "🥇 1位"; rankClass = "rank-1"; }
-        else if (index === 1) { rankStr = "🥈 2位"; rankClass = "rank-2"; }
-        else if (index === 2) { rankStr = "🥉 3位"; rankClass = "rank-3"; }
+        // ワースト感のある演出
+        if (index === 0) { rankStr = "💀 ワースト1位"; rankClass = "worst-1"; }
+        else if (index === 1) { rankStr = "🔥 ワースト2位"; rankClass = "worst-2"; }
+        else if (index === 2) { rankStr = "💸 ワースト3位"; rankClass = "worst-3"; }
 
         let namesText = group.names.join('、');
-        let entryText = group.entry + " Entry";
+        let entryText = group.reEntry + " Re-Entry";
 
         html += `
           <div class="live-rank-card ${rankClass}">
