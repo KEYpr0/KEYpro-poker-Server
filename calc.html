@@ -3,79 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>チップ精算 - KEYpro poker</title>
+<title>チップ精算管理 - KEYpro poker Server</title>
 <style>
+  /* 管理者向けシンプル＆フラットデザイン */
   body, input, button, table, th, td, h2, div { font-family: 'KEYpro', sans-serif; }
-  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; padding: 20px; text-align: center; margin: 0; min-height: 100vh; }
-  .container { max-width: 800px; margin: 0 auto; background-color: rgba(0, 0, 0, 0.5); padding: 30px 20px; border-radius: 12px; border: 2px solid #d4af37; box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
-  h2 { color: #d4af37; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); letter-spacing: 2px; }
-
-  .timer-control { background: rgba(0, 0, 0, 0.4); border: 1px solid #7f8c8d; border-radius: 8px; padding: 15px; margin-bottom: 25px; }
-  .timer-control-title { color: #ecf0f1; font-size: 14px; margin-bottom: 10px; font-weight: bold; }
-  .timer-display-small { font-family: 'Courier New', monospace; font-size: 28px; font-weight: bold; color: #2ecc71; margin-bottom: 10px; }
-  .timer-btns { display: flex; justify-content: center; gap: 10px; }
-  .t-btn { padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; color: #fff; font-size: 14px; }
-  .btn-start { background-color: #27ae60; }
-  .btn-stop { background-color: #e67e22; }
-  .btn-reset { background-color: #7f8c8d; }
-
-  .table-wrapper { width: 100%; margin-bottom: 20px; }
-  table { margin: 0 auto; border-collapse: collapse; width: 100%; min-width: 600px; background-color: #ffffff; color: #000; border-radius: 8px; overflow: hidden; }
-  th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
-  th { background-color: #1a252f; color: #d4af37; white-space: nowrap; font-size: 14px; letter-spacing: 1px; }
+  body { background-color: #121212; color: #e0e0e0; padding: 15px; margin: 0; min-height: 100vh; }
+  .container { max-width: 900px; margin: 0 auto; background-color: #1e1e1e; padding: 25px 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
   
-  input { width: 100%; padding: 8px; box-sizing: border-box; text-align: right; font-size: 16px; border: 1px solid #bdc3c7; border-radius: 4px; background-color: #f8f9fa; }
-  input:focus { border-color: #d4af37; outline: none; background-color: #fff; }
+  h2 { color: #ffffff; margin-top: 0; margin-bottom: 20px; font-size: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; font-weight: normal; letter-spacing: 1px; }
+
+  /* タイマーコントロールパネル */
+  .timer-control { background-color: #252525; border: 1px solid #333; border-radius: 6px; padding: 15px; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; }
+  .timer-control-title { color: #aaa; font-size: 12px; margin-bottom: 10px; }
+  .timer-display-small { font-family: 'Courier New', monospace; font-size: 32px; font-weight: bold; color: #4cd137; margin-bottom: 15px; }
+  .timer-btns { display: flex; gap: 10px; width: 100%; justify-content: center; }
+  .t-btn { padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; color: #fff; font-size: 14px; flex: 1; max-width: 120px; }
+  .btn-start { background-color: #0097e6; }
+  .btn-stop { background-color: #e1b12c; }
+  .btn-reset { background-color: #718093; }
+
+  /* テーブルスタイル（PC向け） */
+  .table-wrapper { width: 100%; margin-bottom: 20px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background-color: #1e1e1e; }
+  th, td { border-bottom: 1px solid #333; padding: 12px 8px; text-align: center; }
+  th { color: #aaa; font-size: 12px; font-weight: normal; white-space: nowrap; }
+  
+  /* 入力欄（プロ仕様） */
+  input { width: 100%; padding: 10px; box-sizing: border-box; text-align: right; font-size: 16px; border: 1px solid #444; border-radius: 4px; background-color: #2f3640; color: #fff; transition: border 0.2s; }
+  input:focus { border-color: #0097e6; outline: none; background-color: #353b48; }
   input[type="text"].name-input { text-align: left; }
-  .readonly { background-color: #e9ecef; border: none; font-weight: bold; outline: none; color: #2c3e50; }
+  .readonly { background-color: transparent; border: none; font-weight: bold; color: #dcdde1; text-align: right; padding-right: 0; }
   
-  .del-btn { background-color: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; transition: background 0.3s; white-space: nowrap; }
-  .del-btn:hover { background-color: #c0392b; }
+  /* 操作ボタン */
+  .del-btn { background-color: #c23616; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; white-space: nowrap; }
+  .del-btn:hover { background-color: #e84118; }
+  
+  .btn { background-color: #2f3640; color: white; border: 1px solid #444; padding: 12px 20px; font-size: 14px; cursor: pointer; border-radius: 4px; margin-top: 10px; display: block; width: 100%; }
+  .btn:hover { background-color: #353b48; }
+  
+  /* サマリー（合計確認エリア） */
+  .summary { margin-top: 25px; font-size: 18px; font-weight: bold; color: #fff; background-color: #252525; padding: 15px; border-radius: 6px; border: 1px solid #333; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+  .match { color: #4cd137; font-size: 14px; font-weight: normal; }
+  .error { color: #e84118; font-size: 14px; font-weight: normal; }
+  
+  /* 保存ボタンなど */
+  .save-btn { background-color: #44bd32; color: #fff; border: none; font-size: 16px; padding: 15px; margin-top: 20px; font-weight: bold; }
+  .save-btn:hover { background-color: #4cd137; }
+  .save-btn:disabled { background-color: #718093; cursor: not-allowed; }
+  .back-btn { background-color: transparent; border: 1px solid #555; margin-top: 15px; color: #aaa; }
+  .draft-notice { font-size: 12px; color: #7f8fa6; margin-top: 10px; text-align: center; }
 
-  .summary { margin-top: 20px; font-size: 22px; font-weight: bold; color: #d4af37; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid #d4af37; }
-  .match { color: #2ecc71; text-shadow: 1px 1px 2px #000; }
-  .error { color: #e74c3c; text-shadow: 1px 1px 2px #000; }
-  
-  .btn { background: linear-gradient(145deg, #2c3e50, #1a252f); color: white; border: 1px solid #7f8c8d; padding: 12px 24px; font-size: 16px; cursor: pointer; border-radius: 50px; margin-top: 10px; font-weight: bold; transition: all 0.3s; }
-  .btn:hover { background: linear-gradient(145deg, #34495e, #2c3e50); transform: translateY(-2px); }
-  
-  .save-btn { background: linear-gradient(145deg, #b8860b, #8b6508); color: #fff; border: 1px solid #ffd700; font-size: 18px; padding: 15px 30px; margin-top: 30px; width: 80%; display: block; margin-left: auto; margin-right: auto; }
-  .save-btn:hover { background: linear-gradient(145deg, #d4af37, #b8860b); }
-  .save-btn:disabled { background: #95a5a6; border-color: #7f8c8d; cursor: not-allowed; transform: none; }
-  
-  .back-btn { background: transparent; border: 1px solid #ecf0f1; margin-top: 30px; }
-  .back-btn:hover { background: rgba(255,255,255,0.1); }
-  .draft-notice { font-size: 12px; color: #bdc3c7; margin-top: 10px; }
-
+  /* 📱 スマホ向け（高密度・入力特化のリストビュー） */
   @media screen and (max-width: 600px) {
-    body { padding: 10px; }
-    .container { padding: 20px 10px; border-width: 1px; }
-    table { display: block; min-width: 100%; border: none; background-color: transparent; }
+    body { padding: 5px; }
+    .container { padding: 15px 10px; }
+    
+    table, thead, tbody, tr, td { display: block; width: 100%; }
     thead { display: none; }
-    tbody { display: block; width: 100%; }
-    tr { display: block; background-color: #ffffff; margin-bottom: 25px; border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.8); border: 1px solid #ccc; position: relative; }
-    td { display: flex; justify-content: space-between; align-items: center; border: none; padding: 10px 0; border-bottom: 1px solid #eee; }
-    td:nth-child(5) { border-bottom: none; background-color: #f8f9fa; margin: -15px; margin-top: 10px; padding: 15px; border-radius: 0 0 12px 12px; }
-    td:last-child { position: absolute; top: -10px; right: -5px; border: none; padding: 0; background: transparent; display: block; z-index: 10; }
+    
+    /* 1人分のブロック */
+    tr { background-color: #252525; margin-bottom: 12px; border-radius: 6px; border: 1px solid #333; padding: 12px 12px 40px 12px; position: relative; }
+    
+    /* セルを横並びのグリッドのように配置 */
+    td { padding: 4px 0; border: none; display: flex; align-items: center; justify-content: space-between; }
+    td::before { content: attr(data-label); color: #888; font-size: 12px; width: 35%; }
+    
+    input { width: 65%; padding: 10px; font-size: 16px; /* iOSのズーム防止 */ }
+    input[type="text"].name-input { text-align: left; }
+    
+    /* PayとResultの表示エリア */
+    td:nth-child(4), td:nth-child(5) { padding: 2px 0; }
+    .readonly { text-align: right; font-size: 15px; padding-right: 5px; }
+
+    /* 削除ボタンを右下に小さく配置 */
+    td:last-child { position: absolute; bottom: 10px; right: 12px; padding: 0; display: block; }
     td:last-child::before { display: none; }
-    .del-btn { padding: 6px 10px; font-size: 12px; border-radius: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-    td::before { content: attr(data-label); font-weight: bold; color: #34495e; font-size: 13px; }
-    input { width: 55%; font-size: 16px; padding: 10px; border-radius: 6px; }
-    input[type="text"].name-input { text-align: right; }
-    .save-btn { width: 100%; font-size: 16px; padding: 15px 10px; }
+    .del-btn { padding: 5px 10px; font-size: 12px; background-color: transparent; color: #c23616; border: 1px solid #c23616; }
+    
+    .timer-btns .t-btn { padding: 12px 5px; }
+    .summary { flex-direction: column; align-items: flex-start; gap: 5px; }
   }
 </style>
 </head>
 <body>
+
   <div class="container">
-    <h2>💰 チップ精算</h2>
+    <h2>チップ精算ダッシュボード</h2>
+
     <div class="timer-control">
-      <div class="timer-control-title">⏱️ プレイ時間タイマー (全画面連動)</div>
+      <div class="timer-control-title">プレイ時間タイマー (全画面連動)</div>
       <div id="controlTimer" class="timer-display-small">00:00</div>
       <div class="timer-btns">
-        <button class="t-btn btn-start" onclick="window.timerAction('start')">▶ START</button>
-        <button class="t-btn btn-stop" onclick="window.timerAction('stop')">⏸ STOP</button>
-        <button class="t-btn btn-reset" onclick="window.timerAction('reset')">🔄 リセット</button>
+        <button class="t-btn btn-start" onclick="window.timerAction('start')">START</button>
+        <button class="t-btn btn-stop" onclick="window.timerAction('stop')">STOP</button>
+        <button class="t-btn btn-reset" onclick="window.timerAction('reset')">RESET</button>
       </div>
     </div>
 
@@ -88,24 +109,25 @@
             <th>最終持ち点</th>
             <th>精算後 (点)</th>
             <th>Pay (円)</th>
-            <th>操作</th>
+            <th></th>
           </tr>
         </thead>
-        <tbody id="tableBody"></tbody>
+        <tbody id="tableBody">
+        </tbody>
       </table>
     </div>
 
-    <button class="btn" onclick="window.addRow()">+ プレイヤーを追加</button>
+    <button class="btn" onclick="window.addRow()">+ プレイヤー行を追加</button>
 
     <div class="summary" id="checkResult">
-      合計Pay: <span id="totalPay">0</span> <br>
-      <span id="statusMessage" class="match">OK</span>
+      <div>合計 Pay: <span id="totalPay">0</span></div>
+      <div id="statusMessage" class="match">確認済 (誤差なし)</div>
     </div>
     
-    <div class="draft-notice">※入力内容はクラウドでリアルタイム共有されています</div>
+    <div class="draft-notice">入力内容はクラウドへ自動同期されています</div>
 
-    <button class="btn save-btn" id="saveBtn" onclick="window.saveData()">💾 成績を記録する</button>
-    <button class="btn back-btn" onclick="location.href='index.html'">◀ トップに戻る</button>
+    <button class="btn save-btn" id="saveBtn" onclick="window.saveData()">成績を確定・記録する</button>
+    <button class="btn back-btn" onclick="location.href='index.html'">トップページへ戻る</button>
   </div>
 
   <script type="module">
@@ -126,7 +148,7 @@
     const db = getDatabase(app);
 
     // -------------------------
-    // タイマー処理（Firebase連動）
+    // タイマー処理
     // -------------------------
     let currentTimerState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
 
@@ -162,16 +184,16 @@
         const elapsed = Math.floor((Date.now() - newState.lastUpdate) / 1000);
         newState.elapsedSeconds += elapsed;
       } else if (action === 'reset') {
+        if(!confirm("タイマーを0にリセットしますか？")) return;
         newState.running = false;
         newState.elapsedSeconds = 0;
         newState.lastUpdate = Date.now();
       }
-      // Firebaseへ更新を送信
       update(ref(db, 'pokerSession/timer'), newState);
     };
 
     // -------------------------
-    // 精算処理（Firebase連動）
+    // 精算処理
     // -------------------------
     const STARTING_CHIPS = 20000;
     const RATE = 10;
@@ -206,27 +228,27 @@
       document.getElementById('totalPay').innerText = formatK(totalPaySum);
       const msg = document.getElementById('statusMessage');
       if (totalPaySum === 0) {
-        msg.innerText = "✨ ピッタリ合っています！ ✨";
+        msg.innerText = "確認済 (誤差なし)";
         msg.className = "match";
       } else {
-        msg.innerText = `⚠️ エラー: ${totalPaySum > 0 ? '+' : ''}${formatK(totalPaySum)} ズレています`;
+        msg.innerText = `エラー: ${totalPaySum > 0 ? '+' : ''}${formatK(totalPaySum)} のズレ`;
         msg.className = "error";
       }
 
-      // 編集した内容をローカルストレージとFirebaseの両方に保存
       localStorage.setItem('pokerDraft', JSON.stringify(draftData));
       set(ref(db, 'pokerSession/players'), draftData);
     };
 
+    // HTMLの生成（絵文字除去、シンプル化）
     window.createRow = function(name = "", entry = 1, finalChips = 0) {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td data-label="👤 名前"><input type="text" class="name-input" placeholder="名前" value="${name}" oninput="window.calculate()"></td>
-        <td data-label="🎟️ エントリー"><input type="number" class="entry" value="${entry}" min="0" oninput="window.calculate()"></td>
-        <td data-label="🪙 最終持ち点"><input type="number" class="final-chips" value="${finalChips}" step="100" oninput="window.calculate()"></td>
-        <td data-label="📊 精算後 (点)"><input type="text" class="result readonly" value="-20K" readonly tabindex="-1"></td>
-        <td data-label="💴 Pay (円)"><input type="text" class="pay readonly" value="-2K" readonly tabindex="-1"></td>
-        <td data-label="🗑️ 操作"><button class="del-btn" onclick="window.removeRow(this)">✖ 削除</button></td>
+        <td data-label="名前"><input type="text" class="name-input" placeholder="名前" value="${name}" oninput="window.calculate()"></td>
+        <td data-label="エントリー"><input type="number" class="entry" value="${entry}" min="0" oninput="window.calculate()"></td>
+        <td data-label="最終持ち点"><input type="number" class="final-chips" value="${finalChips}" step="100" oninput="window.calculate()"></td>
+        <td data-label="精算後 (点)"><input type="text" class="result readonly" value="-20K" readonly tabindex="-1"></td>
+        <td data-label="Pay (円)"><input type="text" class="pay readonly" value="-2K" readonly tabindex="-1"></td>
+        <td data-label=""><button class="del-btn" onclick="window.removeRow(this)">削除</button></td>
       `;
       return tr;
     };
@@ -244,7 +266,7 @@
     window.loadDraft = function() {
       const draft = localStorage.getItem('pokerDraft');
       const tableBody = document.getElementById('tableBody');
-      tableBody.innerHTML = ''; // 一旦クリア
+      tableBody.innerHTML = ''; 
       
       if (draft) {
         const draftData = JSON.parse(draft);
@@ -278,16 +300,16 @@
         }
       });
 
-      if (!hasName) { alert("プレイヤー名を入力してください！"); return; }
+      if (!hasName) { alert("プレイヤー名が入力されていません。"); return; }
 
       let checkTotal = 0;
       playerData.forEach(p => checkTotal += p.pay);
       if (checkTotal !== 0) {
-        if (!confirm("合計Payが0ではありません！\n本当にこのまま保存してもよろしいですか？")) return;
+        if (!confirm("合計Payにズレがあります。このまま記録しますか？")) return;
       }
 
       const btn = document.getElementById('saveBtn');
-      btn.innerText = "⏳ 通信中...";
+      btn.innerText = "通信中...";
       btn.disabled = true;
 
       fetch(GAS_URL, {
@@ -295,24 +317,24 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(playerData)
       }).then(() => {
-        alert("✨ 成績を記録しました！\n（プレイ時間: " + currentPlayTime + "）");
-        btn.innerText = "💾 成績を記録する";
+        alert("記録が完了しました。\nプレイ時間: " + currentPlayTime);
+        btn.innerText = "成績を確定・記録する";
         btn.disabled = false;
-        if(confirm("画面とタイマーをリセットして次のゲームの準備をしますか？")) {
+        if(confirm("画面とタイマーをリセットして次のゲームを開始しますか？")) {
           localStorage.removeItem('pokerDraft');
-          set(ref(db, 'pokerSession/players'), []); // Firebase上の参加者もクリア
-          window.timerAction('reset'); 
+          set(ref(db, 'pokerSession/players'), []); 
+          let newState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
+          update(ref(db, 'pokerSession/timer'), newState);
           location.reload();
         }
       }).catch(error => {
         alert("通信エラーが発生しました。");
-        btn.innerText = "💾 成績を記録する";
+        btn.innerText = "成績を確定・記録する";
         btn.disabled = false;
       });
     };
 
-    // 初期起動
-    window.loadDraft();
+    window.onload = window.loadDraft;
   </script>
 </body>
 </html>
