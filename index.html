@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ポーカー管理システム</title>
+<title>ポーカー管理システム - KEYpro poker</title>
 <style>
   body, button, h1, p { font-family: 'KEYpro', sans-serif; }
   body { background-color: #1e3d2f; color: #ffffff; text-align: center; padding: 40px 20px; margin: 0; }
@@ -15,15 +15,23 @@
   .menu-btn.ranking { background-color: #3498db; }
   .menu-btn.ranking:hover { background-color: #2980b9; }
   .footer-text { margin-top: 30px; font-size: 12px; color: #7f8c8d; }
+
+  /* スマホ画面（幅600px以下）の時の微調整 */
+  @media screen and (max-width: 600px) {
+    body { padding: 20px 10px; }
+    .container { padding: 20px 10px; }
+    h1 { font-size: 28px; }
+    .menu-btn { width: 90%; font-size: 18px; padding: 12px; }
+  }
 </style>
 </head>
 <body>
   <div class="container">
-    <h1>POKER ROOM</h1>
+    <h1>KEYpro poker</h1>
     <p>チップ精算・ランキング管理システム</p>
     <button class="menu-btn" onclick="location.href='calc.html'">💰 チップ精算をする</button>
     <button class="menu-btn ranking" onclick="location.href='ranking.html'">👑 ランキングを見る</button>
-    <div class="footer-text">© 2026 Poker Room System</div>
+    <div class="footer-text">© 2026 KEYpro poker System</div>
   </div>
 </body>
 </html>
