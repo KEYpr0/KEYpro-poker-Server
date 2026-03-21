@@ -426,4 +426,128 @@
         if (name !== "") {
           hasName = true;
           const entry = parseFloat(row.querySelector('.entry').value) || 0;
-          const finalChips = parseFloat(row.querySelector('.final-chips').value) ||
+          const finalChips = parseFloat(row.querySelector('.final-chips').value) || 0;
+          const result = finalChips - (entry * STARTING_CHIPS);
+          const pay = result / RATE;
+          playerData.push({ name, entry, finalChips, result, pay, playTime: currentPlayTime });
+        }
+      });
+
+      if (!hasName) { alert("プレイヤー名が入力されていません。"); return; }
+
+      let checkTotal = 0;
+      playerData.forEach(p => checkTotal += p.pay);
+      if (checkTotal !== 0) {
+        if (!confirm("合計Payにズレがあります。このまま記録しますか？")) return;
+      } else {
+        if (!confirm("本日の成績を確定し、画像を生成して記録しますか？")) return;
+      }
+
+      // ボタンを無効化
+      const btn = document.getElementById('saveBtn');
+      btn.innerText = "⏳ 処理中...";
+      btn.disabled = true;
+
+      // 1. 画像生成用のデータを準備して描画
+      prepareReportArea(playerData, currentPlayTime);
+
+      // 2. html2canvasで画像（JPEG）を生成してダウンロード
+      const reportArea = document.getElementById('reportArea');
+      
+      // 画像生成に少し時間がかかるので、描画完了を待つためにわずかに遅延させる
+      setTimeout(() => {
+        html2canvas(reportArea, {
+          scale: 2, // 高解像度にする
+          useCORS: true, // 外部リソースがある場合
+          backgroundColor: null // 背景を透過させない
+        }).then(canvas => {
+          // CanvasをJPEGのDataURLに変換
+          const jpegUrl = canvas.toDataURL('image/jpeg', 0.9); // 品質0.9
+
+          // ダウンロード用のリンクを作成してクリック
+          const now = new Date();
+          const dateStr = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
+          const fileName = `poker_result_${dateStr}.jpg`;
+
+          const link = document.createElement('a');
+          link.href = jpegUrl;
+          link.download = fileName;
+          link.click();
+
+          // 画像生成完了後に、GASへ送信
+          sendToGAS(playerData, btn);
+        });
+      }, 500);
+    };
+
+    // 画像生成エリアにデータを書き込む関数
+    function prepareReportArea(data, playTime) {
+      // 日付
+      const now = new Date();
+      document.getElementById('reportDate').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
+      // タイム
+      document.getElementById('reportTime').innerText = playTime;
+
+      // ランキング順（Payが多い順）に並べ替え
+      const sortedData = [...data].sort((a, b) => b.pay - a.pay);
+
+      // テーブルボディ生成
+      const tbody = document.getElementById('reportTableBody');
+      tbody.innerHTML = '';
+      let totalPay = 0;
+
+      sortedData.forEach((player, index) => {
+        totalPay += player.pay;
+        const tr = document.createElement('tr');
+        
+        const payClass = player.pay > 0 ? 'report-plus' : (player.pay < 0 ? 'report-minus' : '');
+        const paySign = player.pay > 0 ? '+' : '';
+
+        tr.innerHTML = `
+          <td style="font-weight:bold; font-size:20px;">${index + 1}</td>
+          <td class="name-cell">${player.name}</td>
+          <td>${player.entry}</td>
+          <td>${formatNumber(player.finalChips)}</td>
+          <td class="${payClass}">${paySign}${formatNumber(player.result)}</td>
+          <td class="pay-cell ${payClass}">${paySign}${formatNumber(player.pay)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // 合計Pay
+      document.getElementById('reportTotalPay').innerText = formatNumber(totalPay);
+    }
+
+    // GASへデータを送信する関数
+    function sendToGAS(playerData, btn) {
+      const GAS_URL = "https://script.google.com/macros/s/AKfycbxijPOgmKGDL-UL5eAqOBKrxKVfPl4v6hsdLcWbiuwMrCWSPI5fqxu3qOmXIFTrMYCi5A/exec";
+
+      fetch(GAS_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(playerData)
+      }).then(() => {
+        // GAS送信完了後の処理
+        alert("✨ 成績をスプレッドシートに記録しました。\n本日もお疲れ様でした！");
+        btn.innerText = "💾 成績を確定・記録する";
+        btn.disabled = false;
+        
+        if(confirm("画面とタイマーをリセットして次のゲーム（または次回）の準備をしますか？")) {
+          // リセット処理
+          localStorage.removeItem('pokerDraft');
+          set(ref(db, 'pokerSession/players'), []); 
+          let newState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
+          update(ref(db, 'pokerSession/timer'), newState);
+          location.reload();
+        }
+      }).catch(error => {
+        alert("通信エラーが発生しました。スプレッドシートへの記録に失敗した可能性があります。");
+        btn.innerText = "💾 成績を記録する";
+        btn.disabled = false;
+      });
+    }
+
+    window.onload = window.loadDraft;
+  </script>
+</body>
+</html>
