@@ -11,11 +11,16 @@
   body, button, h1, p, div { font-family: 'KEYpro', sans-serif; }
   body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-x: hidden; }
   
+  /* 16:9のPCモニターを意識した大枠レイアウト */
   .dashboard-container { display: flex; flex-direction: row; width: 100%; max-width: 1200px; height: 80vh; min-height: 600px; background-color: rgba(0, 0, 0, 0.6); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 10px 40px rgba(0,0,0,0.8); overflow: hidden; }
   
+  /* 左カラム（情報＆タイマー） */
   .left-col { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px dashed #7f8c8d; background: rgba(0,0,0,0.2); }
+  
+  /* 右カラム（Liveランキング） */
   .right-col { flex: 1.5; padding: 40px; display: flex; flex-direction: column; overflow: hidden; }
 
+  /* 左側のデザイン要素 */
   .suits { font-size: 28px; letter-spacing: 12px; margin-bottom: 10px; }
   .suit-red { color: #e74c3c; }
   .suit-black { color: #ffffff; }
@@ -31,6 +36,7 @@
   .menu-btn.ranking { display: block; width: 90%; max-width: 350px; padding: 20px; background: linear-gradient(145deg, #2c3e50, #1a252f); color: #ffffff; font-size: 20px; font-weight: bold; text-decoration: none; border: 1px solid #7f8c8d; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
   .menu-btn.ranking:hover { background: linear-gradient(145deg, #34495e, #2c3e50); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.7); }
   
+  /* 右側のデザイン要素（Liveランキング） */
   .board-title { color: #f1c40f; font-size: 22px; margin-bottom: 25px; letter-spacing: 2px; font-weight: bold; text-align: left; border-bottom: 2px solid #7f8c8d; padding-bottom: 10px; }
   
   .live-ranking-list { display: flex; flex-direction: column; gap: 12px; width: 100%; height: 100%; overflow-y: auto; padding-right: 10px; }
@@ -49,13 +55,9 @@
   .rank-2 .rank-col { color: #bdc3c7; }
   .rank-3 .rank-col { color: #cd7f32; }
 
+  /* エントリー表示用のデザイン */
   .name-col { flex-grow: 1; text-align: left; font-weight: bold; color: #fff; padding-left: 15px; line-height: 1.4; font-size: 20px; }
-  .entry-sub { font-size: 14px; color: #bdc3c7; font-weight: normal; margin-left: 8px; white-space: nowrap; }
-
-  .pay-col { font-weight: bold; font-size: 26px; width: 100px; text-align: right; }
-  .pay-col.plus { color: #2ecc71; text-shadow: 1px 1px 2px #000; }
-  .pay-col.minus { color: #e74c3c; text-shadow: 1px 1px 2px #000; }
-  .pay-col.zero { color: #ecf0f1; }
+  .entry-col { font-weight: bold; font-size: 26px; width: 130px; text-align: right; color: #e74c3c; text-shadow: 1px 1px 2px #000; }
 
   .empty-text { color: #95a5a6; font-size: 18px; width: 100%; text-align: center; margin-top: 50px; }
   
@@ -70,14 +72,13 @@
   .modal-content h3 { color: #d4af37; margin-top: 0; font-size: 20px; margin-bottom: 10px; }
   .modal-content p { font-size: 14px; color: #bdc3c7; margin-bottom: 20px; }
   
-  /* 数字キーボードを呼び出す入力欄 */
   #adminPass { width: 120px; padding: 10px; font-size: 32px; text-align: center; letter-spacing: 8px; border-radius: 8px; border: 2px solid #7f8c8d; background: #000; color: #fff; margin-bottom: 25px; outline: none; transition: border 0.3s; }
   #adminPass:focus { border-color: #d4af37; box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
   
   .modal-close-btn { background: transparent; color: #bdc3c7; border: 1px solid #7f8c8d; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
   .modal-close-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-  /* 📱 スマホ用の調整 */
+  /* 📱 スマホ用の滑らかスクロール＆センター調整設定 */
   @media screen and (max-width: 900px) {
     body { padding: 10px; display: block; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
     .dashboard-container { flex-direction: column; height: auto; min-height: auto; border-radius: 12px; border-width: 1px; }
@@ -97,7 +98,7 @@
     .live-rank-card { padding: 12px 15px; font-size: 16px; }
     .rank-col { width: 60px; font-size: 16px; }
     .name-col { font-size: 16px; }
-    .pay-col { font-size: 18px; width: 70px; }
+    .entry-col { font-size: 18px; width: 90px; }
     
     .footer-text { position: static; text-align: center; margin-top: 20px; padding-bottom: 20px; }
   }
@@ -122,7 +123,7 @@
     </div>
 
     <div class="right-col">
-      <div class="board-title">♠️ 現在のLiveランキング ♥️</div>
+      <div class="board-title">♠️ 現在のエントリーランキング ♥️</div>
       <div id="topLiveBoard" style="height: 100%;">
         <div class="empty-text">現在プレイ中のゲームはありません</div>
       </div>
@@ -160,12 +161,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    function formatK(num) {
-      if (num === 0) return "0";
-      if (Math.abs(num) >= 1000) return (num / 1000).toString() + "K";
-      return num.toString();
-    }
-
     let currentTimerState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
 
     onValue(ref(db, 'pokerSession/timer'), (snapshot) => {
@@ -186,20 +181,16 @@
         (h > 0 ? String(h).padStart(2, '0') + ':' : '') + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
     }, 1000);
 
-    const STARTING_CHIPS = 20000;
-    const RATE = 10;
-
+    // ★ エントリーランキングの描画処理
     onValue(ref(db, 'pokerSession/players'), (snapshot) => {
       const draftData = snapshot.val() || [];
       const board = document.getElementById('topLiveBoard');
       let activePlayers = [];
       
+      // Payの計算を省き、名前とエントリー数だけを取得
       draftData.forEach(player => {
         if (player.name && player.name.trim() !== "" && player.entry > 0) {
-          const finalChips = player.finalChips || 0;
-          const result = finalChips - (player.entry * STARTING_CHIPS);
-          const pay = result / RATE;
-          activePlayers.push({ name: player.name, entry: player.entry, pay: pay });
+          activePlayers.push({ name: player.name, entry: player.entry });
         }
       });
 
@@ -208,17 +199,19 @@
         return;
       }
 
+      // エントリー数でグループ化
       let groups = {};
       activePlayers.forEach(p => {
-        let key = p.pay + "_" + p.entry; 
+        let key = p.entry; 
         if (!groups[key]) {
-          groups[key] = { pay: p.pay, entry: p.entry, names: [] };
+          groups[key] = { entry: p.entry, names: [] };
         }
         groups[key].names.push(p.name);
       });
 
+      // エントリー数が多い順（降順）に並べ替え
       let groupArray = Object.values(groups);
-      groupArray.sort((a, b) => b.pay - a.pay);
+      groupArray.sort((a, b) => b.entry - a.entry);
 
       let html = '<div class="live-ranking-list">';
       groupArray.forEach((group, index) => {
@@ -229,15 +222,14 @@
         else if (index === 1) { rankStr = "🥈 2位"; rankClass = "rank-2"; }
         else if (index === 2) { rankStr = "🥉 3位"; rankClass = "rank-3"; }
 
-        let payClass = group.pay > 0 ? "plus" : (group.pay < 0 ? "minus" : "zero");
-        let payText = group.pay > 0 ? "+" + formatK(group.pay) : formatK(group.pay);
         let namesText = group.names.join('、');
+        let entryText = group.entry + " Entry";
 
         html += `
           <div class="live-rank-card ${rankClass}">
             <div class="rank-col">${rankStr}</div>
-            <div class="name-col">${namesText} <span class="entry-sub">(${group.entry}E)</span></div>
-            <div class="pay-col ${payClass}">${payText}</div>
+            <div class="name-col">${namesText}</div>
+            <div class="entry-col">${entryText}</div>
           </div>
         `;
       });
@@ -248,7 +240,6 @@
     const now = new Date();
     document.getElementById('todayDate').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
 
-    // ★ パスワードモーダルの制御
     window.showPasswordModal = function() {
       const modal = document.getElementById('passModal');
       const input = document.getElementById('adminPass');
@@ -261,7 +252,6 @@
       document.getElementById('passModal').style.display = 'none';
     };
 
-    // 4桁入力された瞬間に自動で判定する
     document.getElementById('adminPass').addEventListener('input', function(e) {
       if (this.value.length === 4) {
         if (this.value === "5424") {
