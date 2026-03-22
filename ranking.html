@@ -3,301 +3,649 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>HALL OF FAME - KEYpro poker</title>
+<title>ポーカー管理 - KEYpro poker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nosifer&family=Work+Sans:wght@900&display=swap" rel="stylesheet">
 <style>
   /* 全体の設定 */
   *, *::before, *::after { box-sizing: border-box; }
-  html, body { max-width: 100vw; overflow-x: hidden; }
 
-  body, button, h1, p, div { font-family: 'KEYpro', sans-serif; }
-  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  /* なめらかなスクロール */
+  html, body { 
+    max-width: 100vw; 
+    overflow-x: hidden; 
+    scroll-behavior: smooth; 
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body, button, p, div { font-family: 'KEYpro', sans-serif; }
+  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px; }
   
-  .container { display: flex; flex-direction: column; width: 100%; max-width: 900px; height: 85vh; min-height: 650px; background-color: rgba(0, 0, 0, 0.8); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; padding: 40px; position: relative; }
+  /* 地獄感を強めるために背景を少し地獄っぽく */
+  .dashboard-container { display: flex; flex-direction: column; width: 100%; max-width: 1200px; height: 85vh; min-height: 650px; background-color: rgba(10, 0, 0, 0.85); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; position: relative; }
+  
+  .dashboard-main { display: flex; flex-direction: row; flex: 1; overflow: hidden; }
 
-  /* ロゴフォント */
-  h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: 50px; margin: 0 0 5px 0; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); letter-spacing: -3px; font-weight: 900; }
+  .left-col { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid rgba(127, 140, 141, 0.3); background: rgba(0,0,0,0.4); position: relative; }
+  /* 右カラム（ランキングボード）の背景を地獄っぽく */
+  .right-col { flex: 1.5; padding: 40px; display: flex; flex-direction: column; overflow: hidden; background: rgba(15, 0, 0, 0.6); gap: 30px; }
+
+  .suits { font-size: 28px; letter-spacing: 12px; margin-bottom: 10px; opacity: 0.9; margin-right: -12px; }
+  .suit-red { color: #ff4757; }
+  .suit-black { color: #ffffff; }
+  
+  h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: 50px; margin: 0 -4px 10px 0; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); letter-spacing: -3px; font-weight: 900; }
   h1 span { font-family: 'KEYpro', sans-serif; color: #d4af37; font-size: 14px; margin-left: 10px; font-weight: normal; text-transform: uppercase; letter-spacing: 4px; vertical-align: middle; }
 
-  p.subtitle { font-size: 14px; margin-bottom: 30px; color: #7f8fa6; letter-spacing: 3px; text-transform: uppercase; }
+  p.subtitle { font-size: 14px; margin-bottom: 40px; margin-right: -3px; color: #7f8fa6; letter-spacing: 3px; text-transform: uppercase; }
+  
+  .date-header { font-size: 18px; font-weight: bold; color: #dcdde1; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 10px 30px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); letter-spacing: 2px; margin-right: -2px; }
+  
+  .timer-label { font-size: 16px; color: #7f8fa6; margin-bottom: 10px; letter-spacing: 3px; text-transform: uppercase; margin-right: -3px; }
+  .timer-display { background: #000; color: #2ed573; font-family: 'Courier New', monospace; font-size: 76px; font-weight: bold; padding: 15px 30px; border-radius: 8px; border: 1px solid #2f3542; margin-bottom: 20px; text-shadow: 0 0 25px rgba(46, 213, 115, 0.5); box-shadow: inset 0 0 30px rgba(0,0,0,1); letter-spacing: 2px; margin-right: -2px; }
+  
+  .dashboard-bottom { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 15px; padding: 15px 40px; background: rgba(0, 0, 0, 0.5); border-top: 1px solid rgba(255, 255, 255, 0.05); flex-shrink: 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); }
+  
+  .bottom-btn { display: block; width: 100%; max-width: 240px; padding: 12px 20px; font-weight: bold; text-decoration: none; border-radius: 4px; cursor: pointer; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; text-align: center; }
+  
+  .bottom-btn.ranking { background: rgba(255,255,255,0.03); color: #d4af37; font-size: 14px; border: 1px solid rgba(212, 175, 55, 0.6); }
+  .bottom-btn.ranking:hover { background: #d4af37; color: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
 
-  /* 共通タイトルデザイン */
-  .board-title { color: #d4af37; font-size: 20px; letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-bottom: 20px; flex-shrink: 0; }
+  .bottom-btn.rules { background: transparent; color: #7f8fa6; font-size: 12px; border: 1px solid rgba(127, 140, 141, 0.5); }
+  .bottom-btn.rules:hover { background: rgba(255,255,255,0.1); color: #ffffff; border-color: #ffffff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+  
+  .board-title { color: #d4af37; font-size: 20px; letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-bottom: 10px; flex-shrink: 0; }
   .board-title::before { content: ''; display: inline-block; width: 6px; height: 20px; background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
-
-  /* 🏆 ランキングリスト */
-  .ranking-list { display: flex; flex-direction: column; gap: 15px; width: 100%; flex-grow: 1; overflow-y: auto; padding-right: 15px; margin-bottom: 20px; }
-  .ranking-list::-webkit-scrollbar { width: 4px; }
-  .ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-  .ranking-list::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
-
-  /* カードデザイン（VIPゴールド仕様） */
-  .rank-card { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.7); border: 1px solid #333; padding: 15px 25px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.6); flex-shrink: 0; transition: all 0.3s; border-left: 5px solid #7f8fa6; position: relative; overflow: hidden; }
-  .rank-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%); opacity: 0.7; pointer-events: none; }
   
-  /* 順位表示（円なし、光る数字のみ） */
-  .rank-col { display: flex; align-items: center; justify-content: center; width: 40px; margin-right: 15px; z-index: 1; }
-  .rank-badge-text { font-family: 'Courier New', monospace; font-size: 42px; font-weight: bold; color: #7f8fa6; letter-spacing: 2px; }
+  /* 🔴 リエントリーランキング（地獄のワーストランキング） */
+  .live-ranking-list { display: flex; flex-direction: column; gap: 8px; width: 100%; flex-grow: 1; overflow-y: auto; padding-right: 15px; margin-bottom: 10px; position: relative; }
+  .live-ranking-list::-webkit-scrollbar { width: 4px; }
+  .live-ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+  /* スクロールバーも地獄っぽく、暗い赤に */
+  .live-ranking-list::-webkit-scrollbar-thumb { background: #800000; }
 
-  /* 名前・参加回数表示 */
-  .name-col { flex-grow: 1; text-align: left; padding-left: 10px; display: flex; flex-direction: column; gap: 2px; justify-content: center; z-index: 1; }
-  .player-name { font-size: 22px; font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; text-shadow: 1px 1px 2px #000; }
+  /* 地獄のワーストランキングタイトル：血の色と炎の光彩、アニメーション */
+  .title-re-entry { font-family: 'Nosifer', sans-serif; color: #800000; /* Blood Red */ text-shadow: 0 0 20px rgba(179, 0, 0, 0.8); letter-spacing: 2px; border-bottom-color: rgba(179, 0, 0, 0.5); animation: flameTitle 2s ease-in-out infinite alternate; }
+  .title-re-entry::before { background-color: #800000; box-shadow: 0 0 10px #800000; }
+  /* ドクロアイコンも炎の光彩を持たせる */
+  .title-re-entry .title-skull { width: 22px; height: 22px; fill: #800000; margin-left: 10px; filter: drop-shadow(0 0 5px #ff4500); /* Orange Red for fire */ }
+
+  .live-rank-card { display: flex; justify-content: space-between; align-items: center; /* 地獄の暗黒 */ background: rgba(0, 0, 0, 0.9); border-left: 4px solid transparent; padding: 12px 20px; border-radius: 0 8px 8px 0; box-shadow: inset 0 -1px 0 rgba(255,255,255,0.05); flex-shrink: 0; transition: all 0.3s; position: relative; overflow: hidden; border: 1px solid #1a1a1a; animation: crackFlicker 1.5s ease-in-out infinite; }
+  .live-rank-card .card-skull-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; fill: rgba(255, 255, 255, 0.04); z-index: 0; pointer-events: none; }
+
+  /* ワースト1位：煮えたぎる溶岩ボーダー、炎・血グラデーション背景、炎の揺らぎ */
+  .live-rank-card.worst-1 { border-left-color: transparent; /* ボーダーはグラデーションで表現 */ border-left-image: linear-gradient(180deg, #ff4500, #ff0000, #ff4500); border-left-image-slice: 1; /* 地獄の炎・血グラデーション */ background: linear-gradient(90deg, rgba(128, 0, 0, 0.3) 0%, rgba(0,0,0,0.9) 100%); border-color: rgba(179, 0, 0, 0.3); /* 炎の揺らぎ影 */ box-shadow: 0 0 30px rgba(179, 0, 0, 0.6); animation: flameCard 3s ease-in-out infinite alternate; }
+  /* ワースト1位ドクロ：地獄の炎で赤熱 */
+  .worst-1 .card-skull-bg { fill: rgba(179, 0, 0, 0.08); filter: drop-shadow(0 0 10px #ff4500); }
   
-  /* GASから取得した「参加回数（games）」の表示スタイル */
-  .games-played { font-size: 12px; color: #7f8fa6; letter-spacing: 1px; font-family: 'Courier New', monospace; font-weight: bold; }
-  .rank-1 .games-played { color: rgba(241, 196, 15, 0.8); }
+  .live-rank-card.worst-2 { border-left-color: #bf9b30; background: linear-gradient(90deg, rgba(191, 155, 48, 0.08) 0%, rgba(0,0,0,0.7) 100%); border-color: rgba(191, 155, 48, 0.2); }
+  .live-rank-card.worst-3 { border-left-color: #a67c00; background: linear-gradient(90deg, rgba(166, 124, 0, 0.05) 0%, rgba(0,0,0,0.7) 100%); border-color: rgba(166, 124, 0, 0.1); }
 
-  /* スコア（Pay）表示 - 単位なし */
-  .score-col { font-weight: bold; font-size: 38px; text-align: right; font-family: 'Courier New', monospace; letter-spacing: 1px; line-height: 1; z-index: 1; }
+  /* 修正ポイント: flex-shrink: 0; を追加して文字が潰れるのを防ぐ！幅も余裕を持たせる */
+  .rank-col { width: 75px; display: flex; align-items: center; justify-content: flex-start; z-index: 1; flex-shrink: 0; }
+  
+  /* フォントサイズと文字間を均等に美しく揃える。血の色と炎の光彩、揺らぎ */
+  .rank-badge-text { font-family: 'Nosifer', sans-serif; font-size: 34px; font-weight: normal; color: transparent; /* Blood Red Outline */ -webkit-text-stroke: 1.5px #800000; letter-spacing: 2px; line-height: 1; /* 炎の光彩、揺らぎ */ filter: drop-shadow(0 0 15px rgba(179, 0, 0, 0.8)); animation: flameRank 2s ease-in-out infinite alternate; }
+  
+  .worst-1 .rank-badge-text { font-size: 36px; -webkit-text-stroke-color: #800000; filter: drop-shadow(0 0 10px #ff4500); }
+  .worst-1 .card-skull-bg { fill: rgba(179, 0, 0, 0.06); }
+  .worst-2 .rank-badge-text { -webkit-text-stroke-color: #bf9b30; filter: drop-shadow(0 0 8px rgba(191, 155, 48, 0.5)); }
+  .worst-3 .rank-badge-text { -webkit-text-stroke-color: #a67c00; filter: drop-shadow(0 0 6px rgba(166, 124, 0, 0.4)); }
 
-  .score-plus { color: #2ed573; text-shadow: 0 0 15px rgba(46, 213, 115, 0.4); }
-  .score-minus { color: #ff4757; text-shadow: 0 0 15px rgba(255, 71, 87, 0.4); }
+  .name-col { flex-grow: 1; text-align: left; padding-left: 10px; display: flex; flex-direction: column; gap: 4px; justify-content: center; z-index: 1; }
+  .player-name-item { font-size: 18px; font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; }
+  /* ワースト1位：炎の色、揺らぎ */
+  .worst-1 .player-name-item { font-size: 20px; color: #ff4757; text-shadow: 0 0 10px #ff4500, 0 0 5px #fff; animation: flameName 1s ease-in-out infinite alternate; }
 
-  .empty-text { color: #d4af37; font-size: 18px; width: 100%; text-align: center; margin-top: 40px; letter-spacing: 2px; line-height: 2; font-weight: bold; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+  .entry-col { display: flex; align-items: center; justify-content: flex-end; width: 120px; z-index: 1; flex-shrink: 0; }
+  .entry-badge { display: flex; align-items: baseline; gap: 4px; }
+  .entry-badge .num { font-family: 'Nosifer', sans-serif; font-size: 32px; font-weight: normal; line-height: 1; color: #7f8fa6; }
+  .entry-badge .unit { font-size: 14px; color: #7f8fa6; font-weight: normal; letter-spacing: 1px; }
 
-  /* 戻るボタン */
-  .btn-back { display: block; width: 100%; max-width: 300px; margin: 0 auto; padding: 18px; background: transparent; color: #d4af37; font-size: 16px; font-weight: bold; text-align: center; text-decoration: none; border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 50px; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; flex-shrink: 0; }
-  .btn-back:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+  /* リエントリー数：炎の色、揺らぎ */
+  .worst-1 .entry-badge .num { color: #ff4500; text-shadow: 0 0 20px rgba(255, 69, 0, 0.7); animation: flameEntry 1.5s ease-in-out infinite alternate; }
+  .worst-2 .entry-badge .num { color: #bf9b30; text-shadow: 0 0 12px rgba(191, 155, 48, 0.5); }
+  .worst-3 .entry-badge .num { color: #a67c00; text-shadow: 0 0 10px rgba(166, 124, 0, 0.4); }
 
-  /* 📱 スマホ用 */
-  @media screen and (max-width: 600px) {
-    body { padding: 10px; display: block; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
-    .container { padding: 25px 15px; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; }
-    
-    h1 { font-size: 36px; letter-spacing: -2px; }
-    h1 span { font-size: 12px; }
-    
-    .board-title { font-size: 18px; margin-right: -4px; }
-    
-    .ranking-list { padding-right: 0; gap: 12px; }
-    .rank-card { padding: 12px 15px; border-left-width: 4px; border-radius: 6px; }
-    
-    .rank-col { width: 30px; margin-right: 10px; }
-    .rank-badge-text { font-size: 28px; }
-    
-    .name-col { padding-left: 5px; }
-    .player-name { font-size: 16px; }
-    .games-played { font-size: 10px; }
-    
-    .score-col { font-size: 24px; }
-    
-    .btn-back { padding: 15px; font-size: 14px; margin-top: 15px; }
+  /* アニメーション：炎の揺らぎ、亀裂 */
+  @keyframes flameTitle { 0% { text-shadow: 0 0 10px #ff4500, 0 0 20px rgba(179, 0, 0, 0.8), 0 0 30px #ff4500; } 100% { text-shadow: 0 0 15px #ff4500, 0 0 30px rgba(179, 0, 0, 0.8), 0 0 45px #ff4500; } }
+  @keyframes flameCard { 0% { box-shadow: 0 0 20px rgba(179, 0, 0, 0.6), inset 0 0 10px rgba(179, 0, 0, 0.3); } 100% { box-shadow: 0 0 35px rgba(179, 0, 0, 0.6), inset 0 0 15px rgba(179, 0, 0, 0.3); } }
+  @keyframes flameRank { 0% { filter: drop-shadow(0 0 10px #ff4500), drop-shadow(0 0 15px rgba(179, 0, 0, 0.8)); } 100% { filter: drop-shadow(0 0 15px #ff4500), drop-shadow(0 0 20px rgba(179, 0, 0, 0.8)); } }
+  @keyframes flameEntry { 0% { text-shadow: 0 0 15px #ff4500, 0 0 20px rgba(255, 69, 0, 0.7); } 100% { text-shadow: 0 0 20px #ff4500, 0 0 25px rgba(255, 69, 0, 0.7); } }
+  @keyframes flameName { 0% { text-shadow: 0 0 10px #ff4500, 0 0 5px #fff; } 100% { text-shadow: 0 0 15px #ff4500, 0 0 8px #fff; } }
+  @keyframes crackFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } }
+
+  /* 🟢 参加者リスト */
+  .title-active { color: #d4af37; border-bottom-color: rgba(212, 175, 55, 0.4); text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-top: auto; }
+  .title-active::before { background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
+
+  .active-players-grid { display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; max-height: 140px; overflow-y: auto; padding-right: 10px; flex-shrink: 0; }
+  .active-players-grid::-webkit-scrollbar { width: 4px; }
+  .active-players-grid::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+  .active-players-grid::-webkit-scrollbar-thumb { background: #57606f; }
+
+  .player-tag { background: rgba(0, 0, 0, 0.6); border: 1px solid #2f3542; padding: 8px 18px; border-radius: 50px; font-size: 16px; color: #f1f2f6; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); font-weight: bold; letter-spacing: 1px; }
+  .player-tag .status-dot { width: 8px; height: 8px; background: #d4af37; border-radius: 50%; box-shadow: 0 0 8px #d4af37; animation: blink 2s infinite; }
+  @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+  .empty-text { color: #57606f; font-size: 14px; width: 100%; text-align: center; margin-top: 20px; letter-spacing: 2px; line-height: 1.8; font-weight: bold; }
+  .empty-text span { color: #d4af37; font-weight: bold; font-size: 13px; }
+  
+  .footer-text { position: absolute; bottom: 15px; right: 20px; font-size: 11px; color: #57606f; letter-spacing: 1px; text-transform: uppercase; }
+  
+  /* ダイヤルボタン */
+  .secret-btn { position: fixed; bottom: 15px; left: 15px; background: transparent; color: #57606f; border: none; font-size: 24px; cursor: pointer; padding: 10px; transition: color 0.3s; outline: none; z-index: 100; }
+  .secret-btn:hover { color: #ffffff; }
+
+  /* パスワード入力用モーダル */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+  .modal-content { background: #121212; padding: 40px; border-radius: 8px; border: 1px solid #333; text-align: center; width: 90%; max-width: 350px; box-shadow: 0 0 30px rgba(0,0,0,1); }
+  .modal-content h3 { color: #ffffff; margin-top: 0; font-size: 18px; margin-bottom: 10px; letter-spacing: 3px; text-transform: uppercase; margin-right: -3px; }
+  .modal-content p { font-size: 12px; color: #7f8fa6; margin-bottom: 25px; letter-spacing: 1px; margin-right: -1px; }
+  #adminPass { width: 140px; padding: 12px; font-size: 36px; text-align: center; letter-spacing: 12px; border-radius: 4px; border: 1px solid #555; background: #000; color: #d4af37; margin-bottom: 30px; outline: none; transition: all 0.3s; font-family: 'Courier New', monospace; padding-left: 24px; }
+  #adminPass:focus { border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+  .modal-close-btn { background: transparent; color: #7f8fa6; border: 1px solid #555; padding: 10px 30px; border-radius: 50px; cursor: pointer; font-size: 12px; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; margin-right: -2px; }
+  .modal-close-btn:hover { background: #ffffff; color: #000; border-color: #ffffff; }
+
+  /* ==========================================================================
+     ★★★ 新装！ ド派手な格ゲー風 NEW CHALLENGER 演出 ★★★
+     ========================================================================= */
+  .new-challenger-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.9); 
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: flashBg 0.5s ease-out;
+    overflow: hidden;
   }
-
-  /* ★★★ ここから下にキラキラとさりげない効果を追加 ★★★ */
-
-  /* アニメーションの定義 */
-  /* 1. Shimmer（光の通り抜け） */
-  @keyframes shimmer {
-    0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; }
-    30% { opacity: 0.6; } /* 光が当たる瞬間 */
-    50% { opacity: 0; } /* 通り抜けた後 */
-    100% { transform: translateX(150%) skewX(-20deg); opacity: 0; }
+  @keyframes flashBg {
+    0% { background: rgba(255, 255, 255, 0.8); }
+    100% { background: rgba(0, 0, 0, 0.9); }
   }
-
-  /* 2. Pulsing Glow（光彩のパルス） - 1位 ゴールド */
-  @keyframes pulsing-glow-1 {
-    0% { box-shadow: 0 0 15px rgba(241, 196, 15, 0.15), inset 0 0 5px rgba(241, 196, 15, 0.05); }
-    50% { box-shadow: 0 0 30px rgba(241, 196, 15, 0.5), inset 0 0 10px rgba(241, 196, 15, 0.2); }
-    100% { box-shadow: 0 0 15px rgba(241, 196, 15, 0.15), inset 0 0 5px rgba(241, 196, 15, 0.05); }
+  
+  .new-challenger-title {
+    color: #ff4757;
+    font-family: 'Bangers', cursive;
+    font-size: 100px;
+    text-shadow: 4px 4px 0 #000, -2px -2px 0 #fff, 0 0 30px #ff4757; 
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    z-index: 10001;
   }
-
-  /* 2. Pulsing Glow（光彩のパルス） - 2位 シルバー */
-  @keyframes pulsing-glow-2 {
-    0% { box-shadow: 0 0 10px rgba(189, 195, 199, 0.1); }
-    50% { box-shadow: 0 0 20px rgba(189, 195, 199, 0.4); }
-    100% { box-shadow: 0 0 10px rgba(189, 195, 199, 0.1); }
-  }
-
-  /* 2. Pulsing Glow（光彩のパルス） - 3位 ブロンズ */
-  @keyframes pulsing-glow-3 {
-    0% { box-shadow: 0 0 8px rgba(205, 127, 50, 0.08); }
-    50% { box-shadow: 0 0 18px rgba(205, 127, 50, 0.3); }
-    100% { box-shadow: 0 0 8px rgba(205, 127, 50, 0.08); }
-  }
-
-  /* ★共通のキラキラ Shimmer スタイル★ */
-  .rank-card.rank-1::before,
-  .rank-card.rank-2::before,
-  .rank-card.rank-3::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.05) 20%,
-      rgba(255, 255, 255, 0.3) 50%,
-      rgba(255, 255, 255, 0.05) 80%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    z-index: 2;
-    pointer-events: none;
+  
+  .new-challenger-name {
+    color: #ffffff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-style: italic;
+    font-size: 90px;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    -webkit-text-stroke: 4px #000; 
+    text-shadow: 6px 6px 0 #d4af37, 12px 12px 0 #000, 0 0 50px rgba(212,175,55,0.8); 
+    animation: smashIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
     opacity: 0;
+    transform: translateY(100px) skewX(-10deg) scale(0.8);
+    z-index: 10001;
+    text-align: center;
+    padding: 0 20px;
+    line-height: 1.1;
   }
 
-  /* ★1位 ゴールドカードへの効果★ */
-  .rank-card.rank-1 {
-    border-left-color: #f1c40f;
-    background: linear-gradient(90deg, rgba(241, 196, 15, 0.15) 0%, rgba(0,0,0,0.7) 50%);
-    border-color: rgba(241, 196, 15, 0.4);
-    animation: pulsing-glow-1 4s ease-in-out infinite;
-  }
-
-  .rank-card.rank-1::before {
-    animation: shimmer 5s linear infinite;
-    animation-delay: 1s;
-  }
-
-  .rank-1 .rank-badge-text {
-    color: #f1c40f;
-    text-shadow: 0 0 15px rgba(241, 196, 15, 0.7);
+  @keyframes scaleIn {
+    0% { transform: scale(3); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
   }
   
-  .rank-1 .player-name {
-    font-size: 26px;
-    color: #f1c40f;
-    text-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
-  }
-
-  @media screen and (max-width: 600px) {
-    .rank-1 .player-name { font-size: 18px; }
-  }
-
-  /* ★2位 シルバーカードへの効果★ */
-  .rank-card.rank-2 {
-    border-left-color: #bdc3c7;
-    background: linear-gradient(90deg, rgba(189, 195, 199, 0.1) 0%, rgba(0,0,0,0.7) 50%);
-    border-color: rgba(189, 195, 199, 0.3);
-    animation: pulsing-glow-2 4s ease-in-out infinite;
+  @keyframes smashIn {
+    0% { transform: translateY(100px) skewX(-15deg) scale(0.5); opacity: 0; filter: brightness(2); }
+    70% { transform: translateY(-10px) skewX(-15deg) scale(1.1); opacity: 1; filter: brightness(1.5); }
+    100% { transform: translateY(0) skewX(-15deg) scale(1); opacity: 1; filter: brightness(1); }
   }
   
-  .rank-card.rank-2::before {
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.02) 20%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.02) 80%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    animation: shimmer 6s linear infinite;
-    animation-delay: 2s;
+  .particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
   }
 
-  .rank-2 .rank-badge-text {
-    color: #bdc3c7;
-    text-shadow: 0 0 10px rgba(189, 195, 199, 0.6);
+  @keyframes fall {
+    0% { top: -10vh; transform: rotate(0deg) scale(1); opacity: 1; }
+    100% { top: 110vh; transform: rotate(720deg) scale(1.2); opacity: 0; }
+  }
+  @keyframes explode {
+    0% { left: 50vw; top: 50vh; transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    100% { left: var(--tx); top: var(--ty); transform: translate(-50%, -50%) scale(var(--s)); opacity: 0; }
+  }
+  @keyframes rise {
+    0% { top: 110vh; transform: translateX(0) scale(1); opacity: 1; }
+    100% { top: -10vh; transform: translateX(var(--tx)) scale(0.5); opacity: 0; }
+  }
+  @keyframes zoom {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; left: 50vw; top: 50vh; }
+    20% { opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(var(--s)); opacity: 0; left: var(--tx); top: var(--ty); }
   }
 
-  /* ★3位 ブロンズカードへの効果★ */
-  .rank-card.rank-3 {
-    border-left-color: #cd7f32;
-    background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0.7) 50%);
-    border-color: rgba(205, 127, 50, 0.2);
-    animation: pulsing-glow-3 4s ease-in-out infinite;
-  }
-  
-  .rank-card.rank-3::before {
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.01) 20%,
-      rgba(255, 255, 255, 0.15) 50%,
-      rgba(255, 255, 255, 0.01) 80%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    animation: shimmer 7s linear infinite;
-    animation-delay: 3s;
-  }
+  /* 📱 スマホ用の設定 */
+  @media screen and (max-width: 900px) {
+    body { padding: 10px; display: block; overflow-x: hidden; }
+    .dashboard-container { flex-direction: column; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; }
+    .dashboard-main { flex-direction: column; }
+    .left-col { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 15px; }
+    .right-col { padding: 25px 15px; gap: 20px; }
+    .dashboard-bottom { flex-direction: row; gap: 10px; padding: 15px 10px; }
+    .bottom-btn { padding: 10px 15px; max-width: 180px; letter-spacing: 1px; }
+    .bottom-btn.ranking { font-size: 13px; }
+    .bottom-btn.rules { font-size: 11px; }
+    
+    .suits { font-size: 32px; }
+    h1 { font-size: 36px; } 
+    .timer-display { font-size: 56px; padding: 10px 20px; margin-bottom: 10px; }
+    
+    .board-title { font-size: 18px; text-align: center; justify-content: center; margin-right: -4px; }
+    .board-title::before { display: none; }
+    
+    .title-re-entry { letter-spacing: 1px; font-size: 16px; }
+    .title-re-entry .title-skull { display: none; }
 
-  .rank-3 .rank-badge-text {
-    color: #cd7f32;
-    text-shadow: 0 0 10px rgba(205, 127, 50, 0.5);
+    .live-ranking-list { height: auto; padding-right: 0; }
+    .live-rank-card { padding: 10px 15px; border-radius: 0 4px 4px 0; border-left-width: 3px; }
+    .live-rank-card .card-skull-bg { width: 90px; height: 90px; }
+    
+    /* スマホ版でも潰れないように幅を確保 */
+    .rank-col { width: 55px; flex-shrink: 0; }
+    .rank-badge-text { font-size: 26px; }
+    .worst-1 .rank-badge-text { font-size: 30px; letter-spacing: 2px; }
+    
+    .name-col { padding-left: 10px; gap: 2px; }
+    .player-name-item { font-size: 15px; }
+    .worst-1 .player-name-item { font-size: 16px; }
+    
+    .entry-col { width: 80px; flex-shrink: 0; }
+    .entry-badge .num { font-size: 24px; }
+    .entry-badge .unit { font-size: 10px; }
+    
+    .title-active { margin-top: 10px; }
+    .active-players-grid { justify-content: center; max-height: none; }
+    
+    .footer-text { position: static; text-align: center; margin-top: 20px; padding-bottom: 20px; }
+    
+    /* スマホ版の演出サイズ調整 */
+    .new-challenger-title { font-size: 40px; text-shadow: 2px 2px 0 #000, -1px -1px 0 #fff, 0 0 10px #ff4757; }
+    .new-challenger-name { font-size: 50px; -webkit-text-stroke: 2px #000; text-shadow: 3px 3px 0 #d4af37, 6px 6px 0 #000, 0 0 20px rgba(212,175,55,0.8); letter-spacing: 4px; }
   }
 </style>
 </head>
 <body>
+  
+  <div class="dashboard-container">
+    <div class="dashboard-main">
+      <div class="left-col">
+        <div class="suits">
+          <span class="suit-black">♠</span><span class="suit-red">♥</span><span class="suit-black">♣</span><span class="suit-red">♦</span>
+        </div>
+        <h1>KEYpro<span>poker</span></h1>
+        <p class="subtitle">Official Dashboard</p>
+        
+        <div class="date-header" id="todayDate">----/--/--</div>
+        
+        <div class="timer-label">SESSION TIME</div>
+        <div class="timer-display" id="mainTimer">00:00</div>
+      </div>
 
-  <div class="container">
-    <h1>KEYpro<span>poker</span></h1>
-    <p class="subtitle">HALL OF FAME</p>
+      <div class="right-col">
+        <div class="board-title title-re-entry">
+          RE-ENTRY RANKING
+          <svg class="title-skull" viewBox="0 0 448 512"><path d="M439.2 236.1l-20.1-11.9c-6.4-3.8-14.6-1.6-18.4 5.1-18.9 34.6-56.3 58.7-99.1 58.7-42.8 0-80.1-24.1-99.1-58.7-3.8-6.7-12-8.9-18.4-5.1l-20.1 11.9c-6.7 4-8.9 12.6-5 19.3C181.8 290.4 200.7 320 224 320s42.2-29.6 66.8-64.7c3.9-6.7 1.7-15.3-5-19.3zm-111.2-120c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zm64 0c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zM224 0C100.3 0 0 100.3 0 224v192c0 53 43 96 96 96h256c53 0 96-43 96-96V224C448 100.3 347.7 0 224 0zm96 416c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm-128 0c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm160-224C352 110.3 294.5 48 224 48s-128 62.3-128 144v14.1c0 23.6 15.1 44.8 36.9 52.8l10.8 4c16.3 6 30.1 16.6 39.4 30.2 11.2-16.1 27.6-29 46.9-36l10.8-4c21.8-8 36.9-29.2 36.9-52.8V192zm-32 96c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"/></svg>
+        </div>
+        <div id="topLiveBoard" class="live-ranking-list">
+          <div class="empty-text">現在リエントリー中のプレイヤーはいません<br><span>🕊 ALL PLAYERS SURVIVING</span></div>
+        </div>
 
-    <div class="board-title">ALL TIME RANKING</div>
-    
-    <div id="rankingBoard" class="ranking-list">
-      <div class="empty-text">👑 過去の全データを集計中...</div>
+        <div class="board-title title-active">ACTIVE PLAYERS</div>
+        <div id="activePlayersBoard" class="active-players-grid">
+          <div class="empty-text">現在プレイ中の参加者はいません</div>
+        </div>
+      </div>
     </div>
 
-    <a href="index.html" class="btn-back">◀ ダッシュボードに戻る</a>
+    <div class="dashboard-bottom">
+      <button class="bottom-btn ranking" onclick="location.href='ranking.html'">HALL OF FAME</button>
+      <button class="bottom-btn rules" onclick="location.href='rules.html'">HOW TO PLAY</button>
+    </div>
   </div>
 
-  <script>
-    // ★ 指定いただいたご自身のGASの「ウェブアプリのURL」
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxijPOgmKGDL-UL5eAqOBKrxKVfPl4v6hsdLcWbiuwMrCWSPI5fqxu3qOmXIFTrMYCi5A/exec";
+  <div class="footer-text">© 2026 KEYpro poker Server</div>
 
-    function formatNumber(num) {
-      return num.toLocaleString();
-    }
+  <button class="secret-btn" onclick="showPasswordModal()">⚙</button>
 
-    function loadRanking() {
-      const board = document.getElementById('rankingBoard');
+  <div id="passModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3>HOST AUTHENTICATION</h3>
+      <p>ENTER 4-DIGIT PIN</p>
+      <input type="password" id="adminPass" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+      <br>
+      <button class="modal-close-btn" onclick="closeModal()">CANCEL</button>
+        </div>
+  </div>
 
-      // 通信をより強固にする設定
-      fetch(GAS_URL, { redirect: 'follow' })
-        .then(response => {
-          if (!response.ok) { throw new Error('ネットワークエラー'); }
-          return response.json();
-        })
-        .then(players => {
-          if (!players || players.length === 0) {
-            board.innerHTML = '<div class="empty-text">まだ記録されたデータがありません</div>';
-            return;
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWO4bFy5lAHALlnKr32b9TTTXNcNQuIqU",
+      authDomain: "keypro-poker-server.firebaseapp.com",
+      projectId: "keypro-poker-server",
+      storageBucket: "keypro-poker-server.firebasestorage.app",
+      messagingSenderId: "953048452758",
+      appId: "1:953048452758:web:16aa168ae600cc97e67cb7",
+      measurementId: "G-3HVG0EP54D"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let displayedNames = [];
+    let pendingNames = [];
+    let isFirstLoad = true;
+    let latestData = []; 
+
+    // ==========================================================================
+    // ★★★ 10種類のランダムジャックポット演出 ★★★
+    // ==========================================================================
+    function triggerNewChallenger(playerName) {
+      const container = document.createElement('div');
+      container.className = 'new-challenger-overlay';
+      
+      const title = document.createElement('div');
+      title.className = 'new-challenger-title';
+      title.innerText = 'NEW CHALLENGER!';
+      
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'new-challenger-name';
+      nameDiv.innerText = playerName + '\nJOINED!';
+      
+      container.appendChild(title);
+      container.appendChild(nameDiv);
+      document.body.appendChild(container);
+
+      // 演出パターンの定義（10種類）
+      const effectPatterns = [
+        { type: 'chip', anim: 'fall' },       // ① チップの雨
+        { type: 'card', anim: 'fall' },       // ② トランプ吹雪
+        { type: 'gold', anim: 'fall' },       // ③ ゴールドラッシュ（金貨と札束）
+        { type: 'laser', anim: 'fall' },      // ④ レーザービーム
+        { type: 'confetti', anim: 'fall' },   // ⑤ 紙吹雪
+        { type: 'firework', anim: 'rise' },   // ⑥ スパーク花火
+        { type: 'slot', anim: 'fall' },       // ⑦ スロットフィーバー
+        { type: 'hand', anim: 'zoom' },       // ⑧ ポーカーハンド
+        { type: 'ring', anim: 'explode' },    // ⑨ ネ Neon サークル
+        { type: 'star', anim: 'explode' }     // ⑩ スターバースト
+      ];
+      
+      const effect = effectPatterns[Math.floor(Math.random() * effectPatterns.length)];
+      
+      const count = window.innerWidth < 600 ? 30 : 70; 
+      const colors = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6', '#ffffff'];
+      const suits = ['♠', '♥', '♣', '♦'];
+      const slots = ['7', 'BAR', '🍒', '🔔', '💎'];
+      const ranks = ['A', 'K', 'Q', 'J', '10'];
+
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        
+        let dur = Math.random() * 2 + 1.5;
+        let delay = Math.random() * 0.5;
+        
+        p.style.left = (Math.random() * 100) + 'vw';
+        p.style.setProperty('--tx', (Math.random() * 100) + 'vw');
+        p.style.setProperty('--ty', (Math.random() * 100) + 'vh');
+        p.style.setProperty('--s', Math.random() * 2 + 1);
+
+        if (effect.type === 'chip') {
+          p.style.width = '50px'; p.style.height = '50px';
+          p.style.borderRadius = '50%';
+          p.style.border = '4px dashed rgba(255,255,255,0.7)';
+          p.style.background = colors[Math.floor(Math.random() * colors.length)];
+          p.innerText = suits[Math.floor(Math.random() * suits.length)];
+          p.style.color = '#fff'; p.style.fontSize = '20px';
+          p.style.boxShadow = '0 5px 10px rgba(0,0,0,0.5)';
+        } else if (effect.type === 'card') {
+          p.style.width = '40px'; p.style.height = '60px';
+          p.style.background = '#fff'; p.style.borderRadius = '4px';
+          let suit = suits[Math.floor(Math.random() * suits.length)];
+          p.innerText = suit;
+          p.style.color = (suit === '♥' || suit === '♦') ? '#e74c3c' : '#2c3e50';
+          p.style.fontSize = '24px'; p.style.border = '1px solid #ccc';
+        } else if (effect.type === 'gold') {
+          if (Math.random() > 0.5) { 
+            p.style.width = '40px'; p.style.height = '40px'; p.style.borderRadius = '50%';
+            p.style.background = 'radial-gradient(circle, #f1c40f, #d35400)';
+            p.innerText = '¥'; p.style.color = '#fff'; p.style.fontSize = '20px';
+          } else { 
+            p.style.width = '50px'; p.style.height = '25px'; p.style.background = '#27ae60';
+            p.style.borderRadius = '2px';
+            p.innerText = '$'; p.style.color = '#fff';
           }
+        } else if (effect.type === 'confetti') {
+          p.style.width = '15px'; p.style.height = '15px';
+          p.style.background = colors[Math.floor(Math.random() * colors.length)];
+          dur = Math.random() * 3 + 2; 
+        } else if (effect.type === 'slot') {
+          p.innerText = slots[Math.floor(Math.random() * slots.length)];
+          p.style.fontSize = '45px';
+        } else if (effect.type === 'star') {
+          p.innerText = '★';
+          p.style.color = colors[Math.floor(Math.random() * colors.length)];
+          p.style.fontSize = (Math.random() * 30 + 20) + 'px';
+          p.style.textShadow = '0 0 10px #fff';
+        } else if (effect.type === 'firework') {
+          p.style.width = '10px'; p.style.height = '10px'; p.style.borderRadius = '50%';
+          p.style.background = colors[Math.floor(Math.random() * colors.length)];
+          p.style.boxShadow = '0 0 20px ' + p.style.background;
+          p.style.setProperty('--tx', ((Math.random() - 0.5) * 50) + 'vw');
+        } else if (effect.type === 'laser') {
+          p.style.width = '4px'; p.style.height = '150px';
+          p.style.background = colors[Math.floor(Math.random() * colors.length)];
+          p.style.boxShadow = '0 0 20px ' + p.style.background;
+          dur = Math.random() * 0.5 + 0.3; 
+        } else if (effect.type === 'ring') {
+          p.style.width = '50px'; p.style.height = '50px';
+          p.style.borderRadius = '50%';
+          p.style.border = '5px solid ' + colors[Math.floor(Math.random() * colors.length)];
+          p.style.boxShadow = '0 0 15px ' + p.style.borderColor;
+          p.style.setProperty('--s', Math.random() * 4 + 2);
+        } else if (effect.type === 'hand') {
+          let suit = suits[Math.floor(Math.random() * suits.length)];
+          let rank = ranks[Math.floor(Math.random() * ranks.length)];
+          p.innerText = rank + suit;
+          p.style.fontSize = '30px';
+          p.style.color = (suit === '♥' || suit === '♦') ? '#e74c3c' : '#2c3e50';
+          p.style.background = '#fff'; p.style.padding = '5px 10px';
+          p.style.borderRadius = '5px'; p.style.border = '2px solid #d4af37';
+          p.style.left = '50vw'; p.style.top = '50vh';
+          p.style.setProperty('--s', Math.random() * 3 + 1.5);
+        }
 
-          let html = '';
-          players.forEach((player, index) => {
-            let rankStr = (index + 1);
-            let rankClass = "rank-other";
-            
-            if (index === 0) { rankClass = "rank-1"; }
-            else if (index === 1) { rankClass = "rank-2"; }
-            else if (index === 2) { rankClass = "rank-3"; }
+        p.style.animation = `${effect.anim} ${dur}s linear ${delay}s forwards`;
+        container.appendChild(p);
+      }
 
-            // GASから渡される player.pay を使用してプラスマイナスを判定
-            let scoreClass = player.pay > 0 ? "score-plus" : (player.pay < 0 ? "score-minus" : "");
-            let scoreSign = player.pay > 0 ? "+" : "";
-
-            html += `
-              <div class="rank-card ${rankClass}">
-                <div class="rank-col">
-                  <div class="rank-badge-text">${rankStr}</div>
-                </div>
-                <div class="name-col">
-                  <div class="player-name">${player.name}</div>
-                  <div class="games-played">${player.games} GAMES PLAYED</div>
-                </div>
-                <div class="score-col ${scoreClass}">
-                  <span class="num">${scoreSign}${formatNumber(player.pay)}</span>
-                </div>
-              </div>
-            `;
-          });
-          board.innerHTML = html;
-        })
-        .catch(error => {
-          console.error("エラー:", error);
-          board.innerHTML = '<div class="empty-text" style="color:#e74c3c; font-size:14px; line-height:1.5;">データの読み込みに失敗しました。<br>GASのデプロイ設定「アクセスできるユーザー」が<br>「全員」になっているか確認してください。</div>';
-        });
+      setTimeout(() => {
+        container.style.opacity = '0';
+        container.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => container.remove(), 500);
+      }, 4000);
     }
 
-    // 画面が読み込まれたら自動でランキングを取得開始
-    window.onload = loadRanking;
+    function renderBoard(data) {
+      const playersBoard = document.getElementById('activePlayersBoard');
+      const rankingBoard = document.getElementById('topLiveBoard');
+      
+      let activePlayers = [];
+      let reEntryPlayers = [];
+
+      data.forEach(player => {
+        if (player.name && player.name.trim() !== "" && displayedNames.includes(player.name) && player.entry > 0) { 
+          activePlayers.push({ name: player.name });
+          if (player.entry > 1) {
+            reEntryPlayers.push({ name: player.name, reEntry: player.entry - 1 });
+          }
+        }
+      });
+
+      if (reEntryPlayers.length === 0) {
+        const emptyHtml = '<div class="empty-text">現在リエントリー中のプレイヤーはいません<br><span>🕊 ALL PLAYERS SURVIVING</span></div>';
+        if (rankingBoard.innerHTML !== emptyHtml) rankingBoard.innerHTML = emptyHtml;
+      } else {
+        let groups = {};
+        reEntryPlayers.forEach(p => {
+          let key = p.reEntry; 
+          if (!groups[key]) {
+            groups[key] = { reEntry: p.reEntry, names: [] };
+          }
+          groups[key].names.push(p.name);
+        });
+
+        let groupArray = Object.values(groups);
+        groupArray.sort((a, b) => b.reEntry - a.reEntry);
+
+        let html = '';
+        groupArray.forEach((group, index) => {
+          let rankStr = String(index + 1).padStart(2, '0');
+          let rankClass = "worst-other";
+          if (index === 0) { rankClass = "worst-1"; }
+          else if (index === 1) { rankClass = "worst-2"; }
+          else if (index === 2) { rankClass = "worst-3"; }
+
+          let namesHtml = group.names.map(name => `<div class="player-name-item">${name}</div>`).join('');
+          let entryText = `<span class="num">${group.reEntry}</span><span class="unit">RE</span>`;
+
+          html += `
+            <div class="live-rank-card ${rankClass}">
+              <svg class="card-skull-bg" viewBox="0 0 448 512"><path d="M439.2 236.1l-20.1-11.9c-6.4-3.8-14.6-1.6-18.4 5.1-18.9 34.6-56.3 58.7-99.1 58.7-42.8 0-80.1-24.1-99.1-58.7-3.8-6.7-12-8.9-18.4-5.1l-20.1 11.9c-6.7 4-8.9 12.6-5 19.3C181.8 290.4 200.7 320 224 320s42.2-29.6 66.8-64.7c3.9-6.7 1.7-15.3-5-19.3zm-111.2-120c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zm64 0c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zM224 0C100.3 0 0 100.3 0 224v192c0 53 43 96 96 96h256c53 0 96-43 96-96V224C448 100.3 347.7 0 224 0zm96 416c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm-128 0c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm160-224C352 110.3 294.5 48 224 48s-128 62.3-128 144v14.1c0 23.6 15.1 44.8 36.9 52.8l10.8 4c16.3 6 30.1 16.6 39.4 30.2 11.2-16.1 27.6-29 46.9-36l10.8-4c21.8-8 36.9-29.2 36.9-52.8V192zm-32 96c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"/></svg>
+              <div class="rank-col"><div class="rank-badge-text">${rankStr}</div></div>
+              <div class="name-col">${namesHtml}</div>
+              <div class="entry-col"><div class="entry-badge">${entryText}</div></div>
+            </div>
+          `;
+        });
+        if (rankingBoard.innerHTML !== html) rankingBoard.innerHTML = html;
+      }
+
+      if (activePlayers.length === 0) {
+        const emptyHtml = '<div class="empty-text">現在プレイ中の参加者はいません</div>';
+        if (playersBoard.innerHTML !== emptyHtml) playersBoard.innerHTML = emptyHtml;
+      } else {
+        let playersHtml = '';
+        activePlayers.forEach(p => {
+          playersHtml += `
+            <div class="player-tag">
+              <span class="status-dot"></span>
+              <span class="tag-name">${p.name}</span>
+            </div>
+          `;
+        });
+        if (playersBoard.innerHTML !== playersHtml) playersBoard.innerHTML = playersHtml;
+      }
+    }
+
+    let currentTimerState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
+    onValue(ref(db, 'pokerSession/timer'), (snapshot) => {
+      const data = snapshot.val();
+      if (data) currentTimerState = data;
+    });
+
+    setInterval(() => {
+      let currentElapsed = currentTimerState.elapsedSeconds;
+      if (currentTimerState.running) {
+        const elapsedSinceUpdate = Math.floor((Date.now() - currentTimerState.lastUpdate) / 1000);
+        currentElapsed += elapsedSinceUpdate;
+      }
+      const h = Math.floor(currentElapsed / 3600);
+      const m = Math.floor((currentElapsed % 3600) / 60);
+      const s = currentElapsed % 60;
+      
+      const newTimerText = (h > 0 ? String(h).padStart(2, '0') + ':' : '') + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      const timerDisplay = document.getElementById('mainTimer');
+      if (timerDisplay.innerText !== newTimerText) timerDisplay.innerText = newTimerText;
+    }, 1000);
+
+    onValue(ref(db, 'pokerSession/players'), (snapshot) => {
+      latestData = snapshot.val() || [];
+      
+      if (isFirstLoad) {
+        latestData.forEach(p => {
+          if (p.name && p.name.trim() !== "") {
+            displayedNames.push(p.name);
+          }
+        });
+        isFirstLoad = false;
+        renderBoard(latestData);
+        return;
+      }
+
+      latestData.forEach(p => {
+        let name = p.name ? p.name.trim() : "";
+        if (name !== "" && p.entry > 0) {
+          if (!displayedNames.includes(name) && !pendingNames.includes(name)) {
+            pendingNames.push(name);
+            
+            setTimeout(() => {
+              pendingNames = pendingNames.filter(n => n !== name);
+              const stillExists = latestData.some(player => player.name === name);
+              if (stillExists) {
+                if (!displayedNames.includes(name)) {
+                  displayedNames.push(name);
+                }
+                triggerNewChallenger(name); 
+                renderBoard(latestData);
+              }
+            }, 60000); 
+          }
+        }
+      });
+
+      renderBoard(latestData);
+    });
+
+    const now = new Date();
+    document.getElementById('todayDate').innerText = now.getFullYear() + "/" + String(now.getMonth() + 1).padStart(2, '0') + "/" + String(now.getDate()).padStart(2, '0');
+
+    window.showPasswordModal = function() {
+      const modal = document.getElementById('passModal');
+      const input = document.getElementById('adminPass');
+      modal.style.display = 'flex';
+      input.value = '';
+      input.focus(); 
+    };
+
+    window.closeModal = function() {
+      document.getElementById('passModal').style.display = 'none';
+    };
+
+    document.getElementById('adminPass').addEventListener('input', function(e) {
+      if (this.value.length === 4) {
+        if (this.value === "5424") {
+          location.href = 'calc.html';
+        } else {
+          alert("INCORRECT PIN");
+          this.value = '';
+        }
+      }
+    });
   </script>
 </body>
 </html>
