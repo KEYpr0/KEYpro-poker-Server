@@ -36,20 +36,6 @@
   .board-title { color: #ff4757; font-size: 20px; letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(255, 71, 87, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(255, 71, 87, 0.4); margin-bottom: 15px; flex-shrink: 0; }
   .board-title::before { content: ''; display: inline-block; width: 6px; height: 20px; background-color: #ff4757; box-shadow: 0 0 10px #ff4757; }
   
-  /* 🟢 新設：参加者リスト（ACTIVE PLAYERS） */
-  .title-active { color: #2ed573; border-bottom-color: rgba(46, 213, 115, 0.4); text-shadow: 0 0 10px rgba(46, 213, 115, 0.4); }
-  .title-active::before { background-color: #2ed573; box-shadow: 0 0 10px #2ed573; }
-
-  .active-players-grid { display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; max-height: 140px; overflow-y: auto; padding-right: 10px; flex-shrink: 0; }
-  .active-players-grid::-webkit-scrollbar { width: 4px; }
-  .active-players-grid::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-  .active-players-grid::-webkit-scrollbar-thumb { background: #57606f; }
-
-  /* 参加者タグ */
-  .player-tag { background: rgba(0, 0, 0, 0.6); border: 1px solid #2f3542; padding: 8px 18px; border-radius: 50px; font-size: 16px; color: #f1f2f6; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); font-weight: bold; letter-spacing: 1px; }
-  .player-tag .status-dot { width: 8px; height: 8px; background: #2ed573; border-radius: 50%; box-shadow: 0 0 8px #2ed573; animation: blink 2s infinite; }
-  @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
   /* 🔴 リエントリーランキング */
   .live-ranking-list { display: flex; flex-direction: column; gap: 15px; width: 100%; flex-grow: 1; overflow-y: auto; padding-right: 15px; }
   .live-ranking-list::-webkit-scrollbar { width: 4px; }
@@ -98,6 +84,20 @@
   .worst-3 .entry-col { color: #eccc68; text-shadow: 0 0 15px rgba(236, 204, 104, 0.3); }
   .worst-other .entry-col { color: #bdc3c7; text-shadow: none; }
 
+  /* 🟢 新設：参加者リスト（ACTIVE PLAYERS） */
+  .title-active { color: #2ed573; border-bottom-color: rgba(46, 213, 115, 0.4); text-shadow: 0 0 10px rgba(46, 213, 115, 0.4); margin-top: auto; /* 下部に押しやる */ }
+  .title-active::before { background-color: #2ed573; box-shadow: 0 0 10px #2ed573; }
+
+  .active-players-grid { display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; max-height: 140px; overflow-y: auto; padding-right: 10px; flex-shrink: 0; }
+  .active-players-grid::-webkit-scrollbar { width: 4px; }
+  .active-players-grid::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+  .active-players-grid::-webkit-scrollbar-thumb { background: #57606f; }
+
+  /* 参加者タグ */
+  .player-tag { background: rgba(0, 0, 0, 0.6); border: 1px solid #2f3542; padding: 8px 18px; border-radius: 50px; font-size: 16px; color: #f1f2f6; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); font-weight: bold; letter-spacing: 1px; }
+  .player-tag .status-dot { width: 8px; height: 8px; background: #2ed573; border-radius: 50%; box-shadow: 0 0 8px #2ed573; animation: blink 2s infinite; }
+  @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
   .empty-text { color: #57606f; font-size: 14px; width: 100%; text-align: center; margin-top: 30px; letter-spacing: 2px; line-height: 1.8; font-weight: bold; }
   .empty-text span { color: #2ed573; font-weight: bold; font-size: 13px; }
   
@@ -130,7 +130,6 @@
     
     .board-title { font-size: 18px; text-align: center; justify-content: center; margin-right: -4px; }
     .board-title::before { display: none; }
-    .active-players-grid { justify-content: center; max-height: none; }
     
     .live-ranking-list { height: auto; overflow-y: visible; padding-right: 0; }
     .live-rank-card { padding: 12px; border-radius: 4px; border-left-width: 4px; }
@@ -142,6 +141,9 @@
     
     .entry-col { font-size: 28px; width: 100px; }
     .entry-unit { font-size: 12px; top: -4px; margin-left: 4px; }
+    
+    .title-active { margin-top: 10px; }
+    .active-players-grid { justify-content: center; max-height: none; }
     
     .footer-text { position: static; text-align: center; margin-top: 20px; padding-bottom: 20px; }
   }
@@ -166,14 +168,14 @@
     </div>
 
     <div class="right-col">
-      <div class="board-title title-active">ACTIVE PLAYERS</div>
-      <div id="activePlayersBoard" class="active-players-grid">
-        <div class="empty-text">現在プレイ中の参加者はいません</div>
-      </div>
-
       <div class="board-title">RE-ENTRY RANKING</div>
       <div id="topLiveBoard" class="live-ranking-list">
         <div class="empty-text">現在リエントリー中のプレイヤーはいません<br><span>🕊 ALL PLAYERS SURVIVING</span></div>
+      </div>
+
+      <div class="board-title title-active">ACTIVE PLAYERS</div>
+      <div id="activePlayersBoard" class="active-players-grid">
+        <div class="empty-text">現在プレイ中の参加者はいません</div>
       </div>
     </div>
   </div>
@@ -250,7 +252,53 @@
         }
       });
 
-      // 🟢 参加者リストの描画
+      // 🔴 リエントリーランキングの描画（上段）
+      if (reEntryPlayers.length === 0) {
+        rankingBoard.innerHTML = '<div class="empty-text">現在リエントリー中のプレイヤーはいません<br><br><span>🕊 ALL PLAYERS SURVIVING</span></div>';
+      } else {
+        let groups = {};
+        reEntryPlayers.forEach(p => {
+          let key = p.reEntry; 
+          if (!groups[key]) {
+            groups[key] = { reEntry: p.reEntry, names: [] };
+          }
+          groups[key].names.push(p.name);
+        });
+
+        let groupArray = Object.values(groups);
+        groupArray.sort((a, b) => b.reEntry - a.reEntry);
+
+        let html = '<div class="live-ranking-list">';
+        groupArray.forEach((group, index) => {
+          let rankStr = (index + 1);
+          let rankClass = "worst-other";
+          let liabilityTitle = "RE-ENTRY"; // 分かりやすい英語に変更
+          
+          if (index === 0) { rankClass = "worst-1"; liabilityTitle = "MAX RE-ENTRY"; }
+          else if (index === 1) { rankClass = "worst-2"; liabilityTitle = "HIGH RE-ENTRY"; }
+          else if (index === 2) { rankClass = "worst-3"; liabilityTitle = "RE-ENTRY"; }
+
+          let namesHtml = group.names.map(name => `<div class="player-name-item">${name}</div>`).join('');
+          let entryText = group.reEntry + `<span class="entry-unit">RE</span>`;
+
+          html += `
+            <div class="live-rank-card ${rankClass}">
+              <div class="rank-col">
+                <div class="rank-badge-text">${rankStr}</div>
+              </div>
+              <div class="name-col">
+                <div class="reentry-info">${liabilityTitle}</div>
+                ${namesHtml}
+              </div>
+              <div class="entry-col">${entryText}</div>
+            </div>
+          `;
+        });
+        html += '</div>';
+        rankingBoard.innerHTML = html;
+      }
+
+      // 🟢 参加者リストの描画（下段）
       if (activePlayers.length === 0) {
         playersBoard.innerHTML = '<div class="empty-text">現在プレイ中の参加者はいません</div>';
       } else {
@@ -265,53 +313,6 @@
         });
         playersBoard.innerHTML = playersHtml;
       }
-
-      // 🔴 リエントリーランキングの描画
-      if (reEntryPlayers.length === 0) {
-        rankingBoard.innerHTML = '<div class="empty-text">現在リエントリー中のプレイヤーはいません<br><br><span>🕊 ALL PLAYERS SURVIVING</span></div>';
-        return;
-      }
-
-      let groups = {};
-      reEntryPlayers.forEach(p => {
-        let key = p.reEntry; 
-        if (!groups[key]) {
-          groups[key] = { reEntry: p.reEntry, names: [] };
-        }
-        groups[key].names.push(p.name);
-      });
-
-      let groupArray = Object.values(groups);
-      groupArray.sort((a, b) => b.reEntry - a.reEntry);
-
-      let html = '<div class="live-ranking-list">';
-      groupArray.forEach((group, index) => {
-        let rankStr = (index + 1);
-        let rankClass = "worst-other";
-        let liabilityTitle = "RE-ENTRY"; // 分かりやすい英語に変更
-        
-        if (index === 0) { rankClass = "worst-1"; liabilityTitle = "MAX RE-ENTRY"; }
-        else if (index === 1) { rankClass = "worst-2"; liabilityTitle = "HIGH RE-ENTRY"; }
-        else if (index === 2) { rankClass = "worst-3"; liabilityTitle = "RE-ENTRY"; }
-
-        let namesHtml = group.names.map(name => `<div class="player-name-item">${name}</div>`).join('');
-        let entryText = group.reEntry + `<span class="entry-unit">RE</span>`;
-
-        html += `
-          <div class="live-rank-card ${rankClass}">
-            <div class="rank-col">
-              <div class="rank-badge-text">${rankStr}</div>
-            </div>
-            <div class="name-col">
-              <div class="reentry-info">${liabilityTitle}</div>
-              ${namesHtml}
-            </div>
-            <div class="entry-col">${entryText}</div>
-          </div>
-        `;
-      });
-      html += '</div>';
-      rankingBoard.innerHTML = html;
     });
 
     const now = new Date();
