@@ -23,43 +23,42 @@
   p.subtitle { font-size: 14px; margin-bottom: 30px; color: #7f8fa6; letter-spacing: 3px; text-transform: uppercase; }
 
   /* 共通タイトルデザイン */
-  .board-title { color: #d4af37; font-size: 24px; letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-bottom: 20px; flex-shrink: 0; }
-  .board-title::before { content: ''; display: inline-block; width: 6px; height: 24px; background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
+  .board-title { color: #d4af37; font-size: 20px; letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-bottom: 20px; flex-shrink: 0; }
+  .board-title::before { content: ''; display: inline-block; width: 6px; height: 20px; background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
 
   /* 🏆 ランキングリスト */
-  .ranking-list { display: flex; flex-direction: column; gap: 12px; width: 100%; flex-grow: 1; overflow-y: auto; padding-right: 15px; margin-bottom: 20px; }
+  .ranking-list { display: flex; flex-direction: column; gap: 15px; width: 100%; flex-grow: 1; overflow-y: auto; padding-right: 15px; margin-bottom: 20px; }
   .ranking-list::-webkit-scrollbar { width: 4px; }
   .ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
   .ranking-list::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
 
-  /* カードデザイン（VIPゴールド仕様） */
-  .rank-card { display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.02); border-left: 4px solid transparent; padding: 15px 25px; border-radius: 0 8px 8px 0; box-shadow: inset 0 -1px 0 rgba(255,255,255,0.05); flex-shrink: 0; transition: all 0.3s; }
+  /* ★ お気に入りのネオン・カードデザインを復活 */
+  .rank-card { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.7); border: 1px solid #333; padding: 15px 25px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.6); flex-shrink: 0; transition: all 0.3s; border-left: 5px solid #7f8fa6; position: relative; overflow: hidden; }
+  .rank-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%); opacity: 0.7; pointer-events: none; }
   
-  .rank-card.rank-1 { border-left-color: #f1c40f; background: linear-gradient(90deg, rgba(241, 196, 15, 0.15) 0%, rgba(0,0,0,0) 100%); }
-  .rank-card.rank-2 { border-left-color: #bdc3c7; background: linear-gradient(90deg, rgba(189, 195, 199, 0.1) 0%, rgba(0,0,0,0) 100%); }
-  .rank-card.rank-3 { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0) 100%); }
+  .rank-card.rank-1 { border-left-color: #f1c40f; background: linear-gradient(90deg, rgba(241, 196, 15, 0.15) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(241, 196, 15, 0.4); box-shadow: 0 0 25px rgba(241, 196, 15, 0.2); }
+  .rank-card.rank-2 { border-left-color: #bdc3c7; background: linear-gradient(90deg, rgba(189, 195, 199, 0.1) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(189, 195, 199, 0.3); }
+  .rank-card.rank-3 { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(205, 127, 50, 0.2); }
 
-  /* ★ 順位表示（円を無くし、アウトラインの数字のみに） */
-  .rank-col { width: 70px; display: flex; align-items: center; justify-content: flex-start; }
-  .rank-badge-text { font-family: 'Work Sans', sans-serif; font-size: 46px; font-weight: 900; font-style: italic; color: transparent; -webkit-text-stroke: 1.5px #57606f; letter-spacing: 2px; line-height: 1; }
+  /* ★ 順位表示（円を無くし、数字のみが発光するデザイン） */
+  .rank-col { display: flex; align-items: center; justify-content: center; width: 40px; margin-right: 15px; z-index: 1; }
+  .rank-badge-text { font-family: 'Courier New', monospace; font-size: 42px; font-weight: bold; color: #7f8fa6; letter-spacing: 2px; }
   
-  .rank-1 .rank-badge-text { -webkit-text-stroke-color: #f1c40f; filter: drop-shadow(0 0 12px rgba(241, 196, 15, 0.7)); }
-  .rank-2 .rank-badge-text { -webkit-text-stroke-color: #bdc3c7; filter: drop-shadow(0 0 10px rgba(189, 195, 199, 0.5)); }
-  .rank-3 .rank-badge-text { -webkit-text-stroke-color: #cd7f32; filter: drop-shadow(0 0 8px rgba(205, 127, 50, 0.4)); }
+  .rank-1 .rank-badge-text { color: #f1c40f; text-shadow: 0 0 15px rgba(241, 196, 15, 0.7); }
+  .rank-2 .rank-badge-text { color: #bdc3c7; text-shadow: 0 0 10px rgba(189, 195, 199, 0.6); }
+  .rank-3 .rank-badge-text { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
 
   /* 名前表示 */
-  .name-col { flex-grow: 1; text-align: left; padding-left: 15px; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
-  .player-name { font-size: 22px; font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; }
-  .rank-1 .player-name { font-size: 26px; color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.4); }
+  .name-col { flex-grow: 1; text-align: left; padding-left: 10px; display: flex; flex-direction: column; gap: 4px; justify-content: center; z-index: 1; }
+  .player-name { font-size: 22px; font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; text-shadow: 1px 1px 2px #000; }
+  .rank-1 .player-name { font-size: 26px; color: #f1c40f; }
 
   /* スコア（ポイント）表示 */
-  .score-col { display: flex; align-items: center; justify-content: flex-end; width: 160px; }
-  .score-badge { display: flex; align-items: baseline; gap: 6px; }
-  .score-badge .num { font-family: 'Courier New', monospace; font-size: 34px; font-weight: 900; line-height: 1; color: #7f8fa6; }
-  .score-badge .unit { font-size: 14px; color: #7f8fa6; font-weight: normal; letter-spacing: 1px; }
+  .score-col { font-weight: bold; font-size: 38px; text-align: right; font-family: 'Courier New', monospace; letter-spacing: 1px; line-height: 1; z-index: 1; }
+  .score-unit { font-size: 16px; font-weight: normal; margin-left: 6px; color: #bdc3c7; font-family: 'KEYpro', sans-serif; position: relative; top: -6px; }
 
-  .score-plus .num { color: #2ed573; text-shadow: 0 0 15px rgba(46, 213, 115, 0.5); }
-  .score-minus .num { color: #ff4757; text-shadow: 0 0 15px rgba(255, 71, 87, 0.5); }
+  .score-plus { color: #2ed573; text-shadow: 0 0 15px rgba(46, 213, 115, 0.4); }
+  .score-minus { color: #ff4757; text-shadow: 0 0 15px rgba(255, 71, 87, 0.4); }
 
   .empty-text { color: #57606f; font-size: 16px; width: 100%; text-align: center; margin-top: 40px; letter-spacing: 2px; line-height: 2; font-weight: bold; }
 
@@ -75,21 +74,20 @@
     h1 { font-size: 36px; letter-spacing: -2px; }
     h1 span { font-size: 12px; }
     
-    .board-title { font-size: 20px; }
+    .board-title { font-size: 18px; margin-right: -4px; }
     
-    .ranking-list { padding-right: 0; }
-    .rank-card { padding: 12px 15px; border-left-width: 3px; }
+    .ranking-list { padding-right: 0; gap: 12px; }
+    .rank-card { padding: 12px 15px; border-left-width: 4px; border-radius: 6px; }
     
-    .rank-col { width: 50px; }
-    .rank-badge-text { font-size: 36px; }
+    .rank-col { width: 30px; margin-right: 10px; }
+    .rank-badge-text { font-size: 28px; }
     
     .name-col { padding-left: 5px; }
     .player-name { font-size: 16px; }
     .rank-1 .player-name { font-size: 18px; }
     
-    .score-col { width: 100px; }
-    .score-badge .num { font-size: 24px; }
-    .score-badge .unit { font-size: 11px; }
+    .score-col { font-size: 24px; }
+    .score-unit { font-size: 12px; top: -2px; }
     
     .btn-back { padding: 15px; font-size: 14px; margin-top: 15px; }
   }
@@ -104,7 +102,7 @@
     <div class="board-title">CURRENT SESSION RANKING</div>
     
     <div id="rankingBoard" class="ranking-list">
-      <div class="empty-text">データがありません</div>
+      <div class="empty-text">現在プレイ中の参加者はいません</div>
     </div>
 
     <a href="index.html" class="btn-back">◀ ダッシュボードに戻る</a>
@@ -158,13 +156,14 @@
 
       let html = '';
       players.forEach((player, index) => {
-        let rankStr = String(index + 1).padStart(2, '0');
+        let rankStr = (index + 1);
         let rankClass = "rank-other";
         
         if (index === 0) { rankClass = "rank-1"; }
         else if (index === 1) { rankClass = "rank-2"; }
         else if (index === 2) { rankClass = "rank-3"; }
 
+        // スコアがプラスなら緑色、マイナスなら赤色
         let scoreClass = player.score > 0 ? "score-plus" : (player.score < 0 ? "score-minus" : "");
         let scoreSign = player.score > 0 ? "+" : "";
 
@@ -176,11 +175,9 @@
             <div class="name-col">
               <div class="player-name">${player.name}</div>
             </div>
-            <div class="score-col">
-              <div class="score-badge ${scoreClass}">
-                <span class="num">${scoreSign}${formatNumber(player.score)}</span>
-                <span class="unit">pt</span>
-              </div>
+            <div class="score-col ${scoreClass}">
+              <span class="num">${scoreSign}${formatNumber(player.score)}</span>
+              <span class="score-unit">pt</span>
             </div>
           </div>
         `;
