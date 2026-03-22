@@ -235,6 +235,7 @@
     
     .footer-text { position: static; text-align: center; margin-top: 20px; padding-bottom: 20px; }
     
+    /* スマホ版の演出サイズ */
     .new-challenger-title { font-size: 28px; }
     .new-challenger-name { font-size: 40px; letter-spacing: 4px; text-align: center; padding: 0 10px; }
     .falling-chip { width: 40px; height: 40px; font-size: 16px; border-width: 3px; }
@@ -432,11 +433,25 @@
       }
     }
 
+    // ★ ここにタイマーの心臓部（setInterval）をしっかり追加！ ★
     let currentTimerState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
     onValue(ref(db, 'pokerSession/timer'), (snapshot) => {
       const data = snapshot.val();
       if (data) currentTimerState = data;
     });
+
+    setInterval(() => {
+      let currentElapsed = currentTimerState.elapsedSeconds;
+      if (currentTimerState.running) {
+        const elapsedSinceUpdate = Math.floor((Date.now() - currentTimerState.lastUpdate) / 1000);
+        currentElapsed += elapsedSinceUpdate;
+      }
+      const h = Math.floor(currentElapsed / 3600);
+      const m = Math.floor((currentElapsed % 3600) / 60);
+      const s = currentElapsed % 60;
+      document.getElementById('mainTimer').innerText = 
+        (h > 0 ? String(h).padStart(2, '0') + ':' : '') + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }, 1000);
 
     onValue(ref(db, 'pokerSession/players'), (snapshot) => {
       latestData = snapshot.val() || [];
