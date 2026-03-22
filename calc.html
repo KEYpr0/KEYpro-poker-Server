@@ -16,7 +16,7 @@
   /* コンテナ：高級感のあるダーク＆ゴールド */
   .container { width: 100%; max-width: 900px; margin: 0 auto; background-color: rgba(0, 0, 0, 0.7); padding: 25px 20px; border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 10px 40px rgba(0,0,0,0.7); }
   
-  /* タイトル */
+  /* タイトル：シンプルに「チップ精算」 */
   h2 { color: #d4af37; margin-top: 0; margin-bottom: 20px; font-size: 24px; border-bottom: 2px solid #d4af37; padding-bottom: 15px; text-shadow: 0px 4px 10px rgba(0,0,0,0.8); letter-spacing: 3px; text-align: center; font-weight: bold; }
 
   /* タイマーコントロールパネル */
@@ -70,7 +70,7 @@
   .error .status-badge { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid #e74c3c; animation: pulse 2s infinite; }
   @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); } }
 
-  .draft-notice { font-size: 12px; color: #bdc3c7; margin-top: 15px; text-align: center; letter-spacing: 1px; }
+  .draft-notice { font-size: 14px; color: #f1c40f; margin-top: 15px; text-align: center; letter-spacing: 1px; font-weight: bold; }
 
   /* 📱 スマホ向け（絶対にはみ出さない縦型アプリレイアウト） */
   @media screen and (max-width: 600px) {
@@ -78,18 +78,16 @@
     .container { padding: 20px 15px; border-radius: 12px; }
     h2 { font-size: 20px; letter-spacing: 2px; margin-bottom: 20px; }
     
-    /* はみ出しの元凶だった table の設定を完全リセット */
     .table-wrapper { overflow: hidden; box-shadow: none; background: transparent; margin-bottom: 10px; }
     table { min-width: 0 !important; width: 100%; border: none; }
     table, thead, tbody, tr, td { display: block; }
     thead { display: none; }
     
-    /* 1人分のアプリ風カード */
     tr { 
       background: linear-gradient(145deg, rgba(20, 25, 30, 0.9), rgba(0, 0, 0, 0.9)); 
       margin-bottom: 20px; 
       border-radius: 12px; 
-      border: 1px solid rgba(212, 175, 55, 0.4); /* VIPゴールド枠 */
+      border: 1px solid rgba(212, 175, 55, 0.4); 
       padding: 15px 15px 55px 15px; 
       position: relative; 
       box-shadow: 0 6px 15px rgba(0,0,0,0.5); 
@@ -105,7 +103,6 @@
     }
     td:nth-last-child(2) { border-bottom: none; }
     
-    /* ★ 名前入力欄を一番上に独立させて広く確保 */
     td[data-label="名前"] {
       flex-direction: column;
       align-items: flex-start;
@@ -116,21 +113,17 @@
     td[data-label="名前"]::before { width: 100%; color: #d4af37; margin-bottom: 8px; font-size: 14px; letter-spacing: 1px; }
     td[data-label="名前"] input { width: 100%; font-size: 18px; padding: 12px; background: rgba(255,255,255,0.05); }
 
-    /* その他の数字入力欄 */
     td:not([data-label="名前"])::before { content: attr(data-label); color: #bdc3c7; font-size: 13px; width: 40%; flex-shrink: 0; font-weight: bold; text-align: left; }
     td:not([data-label="名前"]) input { width: 60%; flex-grow: 1; padding: 10px; font-size: 18px; text-align: right; min-width: 0; }
     td:not([data-label="名前"]) .readonly { width: 60%; text-align: right; font-size: 16px; color: #fff; padding: 8px 5px; font-weight: bold; }
 
-    /* 削除ボタン */
     td:last-child { position: absolute; bottom: 12px; right: 15px; padding: 0; display: block; width: auto; border: none; }
     td:last-child::before { display: none; }
     .del-btn { padding: 8px 25px; font-size: 13px; border-radius: 50px; background: rgba(231, 76, 60, 0.1); }
     
-    /* タイマー */
     .timer-display-small { font-size: 42px; }
     .timer-btns .t-btn { padding: 12px 5px; font-size: 12px; }
     
-    /* 合計とボタン */
     .summary { flex-direction: column; align-items: flex-start; gap: 12px; font-size: 16px; padding: 15px; }
     #totalPay { font-size: 26px !important; }
     .save-btn { font-size: 16px; padding: 16px; margin-top: 10px; }
@@ -244,7 +237,7 @@
       <div id="statusMessage" class="match"><span class="status-badge">✨ 確認済 (誤差なし)</span></div>
     </div>
     
-    <div class="draft-notice">※入力内容はクラウドへ自動同期されています</div>
+    <div class="draft-notice">🔄 全員の画面とリアルタイム同期中...</div>
 
     <div class="btn-group">
       <button class="btn add-btn" onclick="window.addRow()">+ プレイヤー行を追加</button>
@@ -308,6 +301,9 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    // -------------------------
+    // タイマー処理
+    // -------------------------
     let currentTimerState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
 
     onValue(ref(db, 'pokerSession/timer'), (snapshot) => {
@@ -353,10 +349,92 @@
     const STARTING_CHIPS = 20000;
     const RATE = 10;
     const INITIAL_ROWS = 5;
+    let isFirstLoad = true;
 
     function formatNumber(num) {
       return num.toLocaleString();
     }
+
+    // ★ リアルタイム同期のメイン処理
+    onValue(ref(db, 'pokerSession/players'), (snapshot) => {
+      const draftData = snapshot.val();
+      const tableBody = document.getElementById('tableBody');
+      
+      // データがない場合の初期化（5行作成）
+      if (!draftData && isFirstLoad) {
+        tableBody.innerHTML = '';
+        for (let i = 0; i < INITIAL_ROWS; i++) {
+           tableBody.appendChild(window.createRow());
+        }
+        isFirstLoad = false;
+        window.calculate(); 
+        return;
+      }
+
+      isFirstLoad = false;
+      const data = draftData || [];
+
+      // ★ 自分が現在入力しているセルの位置を特定（上書きによるキャレット飛びを防ぐため）
+      const activeEl = document.activeElement;
+      let activeIndex = -1;
+      let activeClass = '';
+      if (activeEl && activeEl.tagName === 'INPUT') {
+         const tr = activeEl.closest('tr');
+         if(tr && tr.parentNode === tableBody) {
+            activeIndex = Array.from(tableBody.children).indexOf(tr);
+            activeClass = activeEl.className;
+         }
+      }
+
+      // 他の人が行を追加・削除した時の同期
+      while(tableBody.children.length < data.length) {
+         tableBody.appendChild(window.createRow());
+      }
+      while(tableBody.children.length > data.length) {
+         tableBody.lastChild.remove();
+      }
+
+      let totalPaySum = 0;
+
+      // データの反映
+      data.forEach((p, index) => {
+         const row = tableBody.children[index];
+         const nameInput = row.querySelector('.name-input');
+         const entryInput = row.querySelector('.entry');
+         const chipsInput = row.querySelector('.final-chips');
+         
+         // ★ 自分が入力中のセル以外を最新データで更新
+         if (!(activeIndex === index && activeClass.includes('name-input'))) {
+             nameInput.value = p.name || "";
+         }
+         if (!(activeIndex === index && activeClass.includes('entry'))) {
+             entryInput.value = p.entry !== undefined ? p.entry : 1;
+         }
+         if (!(activeIndex === index && activeClass.includes('final-chips'))) {
+             chipsInput.value = p.finalChips !== undefined ? p.finalChips : 0;
+         }
+
+         const entry = parseFloat(entryInput.value) || 0;
+         const finalChips = parseFloat(chipsInput.value) || 0;
+         const result = finalChips - (entry * STARTING_CHIPS);
+         const pay = result / RATE;
+
+         row.querySelector('.result').value = formatNumber(result);
+         row.querySelector('.pay').value = formatNumber(pay);
+
+         totalPaySum += pay;
+      });
+
+      document.getElementById('totalPay').innerText = formatNumber(totalPaySum);
+      const msg = document.getElementById('statusMessage');
+      if (totalPaySum === 0) {
+        msg.innerText = "✨ 確認済 (誤差なし)";
+        msg.className = "summary match";
+      } else {
+        msg.innerText = `⚠️ エラー: ${totalPaySum > 0 ? '+' : ''}${formatNumber(totalPaySum)} のズレ`;
+        msg.className = "summary error";
+      }
+    });
 
     window.calculate = function() {
       const rows = document.querySelectorAll('#tableBody tr');
@@ -364,7 +442,7 @@
       let draftData = []; 
 
       rows.forEach(row => {
-        const name = row.querySelector('.name-input').value.trim();
+        const name = row.querySelector('.name-input').value; // 空白でもそのまま保存
         const entry = parseFloat(row.querySelector('.entry').value) || 0;
         const finalChips = parseFloat(row.querySelector('.final-chips').value) || 0;
         
@@ -375,7 +453,7 @@
         row.querySelector('.pay').value = formatNumber(pay);
 
         totalPaySum += pay;
-        draftData.push({ name: row.querySelector('.name-input').value, entry, finalChips });
+        draftData.push({ name, entry, finalChips });
       });
 
       document.getElementById('totalPay').innerText = formatNumber(totalPaySum);
@@ -388,7 +466,7 @@
         msg.className = "summary error";
       }
 
-      localStorage.setItem('pokerDraft', JSON.stringify(draftData));
+      // 計算結果をFirebaseに送信（これが他の人の画面に同期される）
       set(ref(db, 'pokerSession/players'), draftData);
     };
 
@@ -413,23 +491,6 @@
     window.removeRow = function(btn) {
       btn.closest('tr').remove();
       window.calculate(); 
-    };
-
-    window.loadDraft = function() {
-      const draft = localStorage.getItem('pokerDraft');
-      const tableBody = document.getElementById('tableBody');
-      tableBody.innerHTML = ''; 
-      
-      if (draft) {
-        const draftData = JSON.parse(draft);
-        draftData.forEach(data => {
-          tableBody.appendChild(window.createRow(data.name, data.entry, data.finalChips));
-        });
-        window.calculate(); 
-      } else {
-        for (let i = 0; i < INITIAL_ROWS; i++) tableBody.appendChild(window.createRow());
-        window.calculate();
-      }
     };
 
     window.confirmAndSave = function() {
@@ -533,7 +594,7 @@
         btn.disabled = false;
         
         if(confirm("画面とタイマーをリセットして次のゲーム（または次回）の準備をしますか？")) {
-          localStorage.removeItem('pokerDraft');
+          // ★ 次のゲームのためにFirebaseをリセット
           set(ref(db, 'pokerSession/players'), []); 
           let newState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
           update(ref(db, 'pokerSession/timer'), newState);
@@ -545,8 +606,6 @@
         btn.disabled = false;
       });
     }
-
-    window.onload = window.loadDraft;
   </script>
 </body>
 </html>
