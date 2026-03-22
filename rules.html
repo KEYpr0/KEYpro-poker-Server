@@ -21,17 +21,16 @@
   .section h2 { color: #2ed573; font-size: 22px; border-left: 5px solid #2ed573; padding-left: 15px; margin-bottom: 25px; letter-spacing: 2px; text-shadow: 0 0 10px rgba(46, 213, 115, 0.3); }
   
   .info-block { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 8px; margin-bottom: 20px; line-height: 1.6; }
-  .info-block h3 { color: #f1c40f; margin-top: 0; font-size: 18px; letter-spacing: 1px; margin-bottom: 10px; }
   .info-block p { color: #dcdde1; font-size: 15px; margin: 0; }
 
-  /* リストデザイン（アクション・用語共通） */
+  /* リストデザイン */
   .action-list { padding-left: 20px; color: #dcdde1; font-size: 15px; margin: 0; }
   .action-list li { margin-bottom: 15px; }
   .action-list li:last-child { margin-bottom: 0; }
   .action-list li strong { color: #ff4757; margin-right: 5px; font-size: 16px; letter-spacing: 1px; text-shadow: 0 0 5px rgba(255, 71, 87, 0.3); }
 
   /* ----------------------------------------------------------------
-     ★ カッコいい仮想トランプのデザイン（リアルな扇形配置）
+     ★ カッコいい仮想トランプのデザイン（左が上でリアルな扇形）
   ---------------------------------------------------------------- */
   .hand-rank-block { margin-bottom: 35px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 30px; }
   .hand-rank-block:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
@@ -44,7 +43,8 @@
   .hand-display { display: flex; justify-content: center; padding: 20px 0 10px 0; perspective: 1000px; }
 
   /* カード1枚の基本デザイン */
-  .card-visual { width: 70px; height: 100px; background: rgba(255, 255, 255, 0.95); border-radius: 6px; border: 1px solid #d4af37; color: #000; font-family: 'Courier New', monospace; font-weight: bold; font-size: 22px; display: flex; flex-direction: column; justify-content: space-between; padding: 6px; box-shadow: -2px 5px 15px rgba(0,0,0,0.6); position: relative; transition: transform 0.3s; transform-style: preserve-3d; transform-origin: bottom center; }
+  /* 左が上になるので、影が右下に落ちるように box-shadow を調整（3px 5px 15px） */
+  .card-visual { width: 70px; height: 100px; background: rgba(255, 255, 255, 0.95); border-radius: 6px; border: 1px solid #d4af37; color: #000; font-family: 'Courier New', monospace; font-weight: bold; font-size: 22px; display: flex; flex-direction: column; justify-content: space-between; padding: 6px; box-shadow: 4px 4px 12px rgba(0,0,0,0.6); position: relative; transition: transform 0.3s; transform-style: preserve-3d; transform-origin: bottom center; }
   
   /* カード同士の重なり具合 */
   .card-visual:not(:first-child) { margin-left: -25px; }
@@ -64,16 +64,27 @@
   .hand-flush .card-visual { border-color: #ffa502; box-shadow: 0 0 18px rgba(255, 165, 2, 0.5); }
   .hand-straight .card-visual { border-color: #ff4757; box-shadow: 0 0 15px rgba(255, 71, 87, 0.5); }
   .hand-three .card-visual { border-color: #eccc68; box-shadow: 0 0 15px rgba(236, 204, 104, 0.4); }
-  .hand-twopair .card-visual { border-color: rgba(46, 213, 115, 0.6); box-shadow: -2px 5px 15px rgba(0,0,0,0.6); }
-  .hand-onepair .card-visual { border-color: rgba(255, 71, 87, 0.6); box-shadow: -2px 5px 15px rgba(0,0,0,0.6); }
-  .hand-highcard .card-visual { border-color: #7f8fa6; box-shadow: -2px 5px 10px rgba(0,0,0,0.5); }
+  .hand-twopair .card-visual { border-color: rgba(46, 213, 115, 0.6); box-shadow: 3px 5px 12px rgba(0,0,0,0.6); }
+  .hand-onepair .card-visual { border-color: rgba(255, 71, 87, 0.6); box-shadow: 3px 5px 12px rgba(0,0,0,0.6); }
+  .hand-highcard .card-visual { border-color: #7f8fa6; box-shadow: 3px 5px 10px rgba(0,0,0,0.5); }
 
-  /* 扇形の角度と高さ計算 */
-  .hand-display .card-visual:nth-child(1) { transform: rotate(-20deg) translateY(12px); z-index: 1; }
-  .hand-display .card-visual:nth-child(2) { transform: rotate(-10deg) translateY(3px); z-index: 2; }
+  /* ★ PC用：5枚の扇形（左が上になるようz-indexを逆順に） */
+  .hand-display .card-visual:nth-child(1) { transform: rotate(-20deg) translateY(12px); z-index: 5; }
+  .hand-display .card-visual:nth-child(2) { transform: rotate(-10deg) translateY(3px); z-index: 4; }
   .hand-display .card-visual:nth-child(3) { transform: rotate(0deg) translateY(0); z-index: 3; }
-  .hand-display .card-visual:nth-child(4) { transform: rotate(10deg) translateY(3px); z-index: 4; }
-  .hand-display .card-visual:nth-child(5) { transform: rotate(20deg) translateY(12px); z-index: 5; }
+  .hand-display .card-visual:nth-child(4) { transform: rotate(10deg) translateY(3px); z-index: 2; }
+  .hand-display .card-visual:nth-child(5) { transform: rotate(20deg) translateY(12px); z-index: 1; }
+
+  /* ★ PC用：4枚の扇形（フォーカード専用） */
+  .hand-quads .hand-display .card-visual:nth-child(1) { transform: rotate(-15deg) translateY(8px); z-index: 4; }
+  .hand-quads .hand-display .card-visual:nth-child(2) { transform: rotate(-5deg) translateY(2px); z-index: 3; }
+  .hand-quads .hand-display .card-visual:nth-child(3) { transform: rotate(5deg) translateY(2px); z-index: 2; }
+  .hand-quads .hand-display .card-visual:nth-child(4) { transform: rotate(15deg) translateY(8px); z-index: 1; }
+
+  /* ★ PC用：3枚の扇形（スリーカード専用） */
+  .hand-three .hand-display .card-visual:nth-child(1) { transform: rotate(-10deg) translateY(4px); z-index: 3; }
+  .hand-three .hand-display .card-visual:nth-child(2) { transform: rotate(0deg) translateY(0); z-index: 2; }
+  .hand-three .hand-display .card-visual:nth-child(3) { transform: rotate(10deg) translateY(4px); z-index: 1; }
 
   /* 戻るボタン */
   .btn-back { display: block; width: 100%; max-width: 300px; margin: 50px auto 0; padding: 18px; background: transparent; color: #ffffff; font-size: 16px; font-weight: bold; text-align: center; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; }
@@ -100,11 +111,23 @@
     .card-visual:not(:first-child) { margin-left: -20px; }
     .visual-suit { font-size: 18px; margin-top: 1px; }
     
-    .hand-display .card-visual:nth-child(1) { transform: rotate(-24deg) translateY(8px); }
-    .hand-display .card-visual:nth-child(2) { transform: rotate(-12deg) translateY(2px); }
-    .hand-display .card-visual:nth-child(3) { transform: rotate(0deg) translateY(0); }
-    .hand-display .card-visual:nth-child(4) { transform: rotate(12deg) translateY(2px); }
-    .hand-display .card-visual:nth-child(5) { transform: rotate(24deg) translateY(8px); }
+    /* スマホ用：5枚の扇形 */
+    .hand-display .card-visual:nth-child(1) { transform: rotate(-24deg) translateY(8px); z-index: 5; }
+    .hand-display .card-visual:nth-child(2) { transform: rotate(-12deg) translateY(2px); z-index: 4; }
+    .hand-display .card-visual:nth-child(3) { transform: rotate(0deg) translateY(0); z-index: 3; }
+    .hand-display .card-visual:nth-child(4) { transform: rotate(12deg) translateY(2px); z-index: 2; }
+    .hand-display .card-visual:nth-child(5) { transform: rotate(24deg) translateY(8px); z-index: 1; }
+
+    /* スマホ用：4枚の扇形（フォーカード専用） */
+    .hand-quads .hand-display .card-visual:nth-child(1) { transform: rotate(-18deg) translateY(5px); z-index: 4; }
+    .hand-quads .hand-display .card-visual:nth-child(2) { transform: rotate(-6deg) translateY(1px); z-index: 3; }
+    .hand-quads .hand-display .card-visual:nth-child(3) { transform: rotate(6deg) translateY(1px); z-index: 2; }
+    .hand-quads .hand-display .card-visual:nth-child(4) { transform: rotate(18deg) translateY(5px); z-index: 1; }
+
+    /* スマホ用：3枚の扇形（スリーカード専用） */
+    .hand-three .hand-display .card-visual:nth-child(1) { transform: rotate(-14deg) translateY(3px); z-index: 3; }
+    .hand-three .hand-display .card-visual:nth-child(2) { transform: rotate(0deg) translateY(0); z-index: 2; }
+    .hand-three .hand-display .card-visual:nth-child(3) { transform: rotate(14deg) translateY(3px); z-index: 1; }
   }
 </style>
 </head>
@@ -185,7 +208,6 @@
             <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">7<span class="visual-suit suit-red">♦</span></div></div>
             <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">7<span class="visual-suit suit-red">♥</span></div></div>
             <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">7<span class="visual-suit suit-black">♠</span></div></div>
-            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">K<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">K<span class="visual-suit suit-black">♠</span></div></div>
           </div>
         </div>
 
@@ -240,8 +262,6 @@
             <div class="card-visual"><div class="visual-top">Q<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">Q<span class="visual-suit suit-red">♥</span></div></div>
             <div class="card-visual"><div class="visual-top">Q<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">Q<span class="visual-suit suit-red">♦</span></div></div>
             <div class="card-visual"><div class="visual-top">Q<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">Q<span class="visual-suit suit-black">♠</span></div></div>
-            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">2<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">2<span class="visual-suit suit-black">♣</span></div></div>
-            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">5<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">5<span class="visual-suit suit-red">♥</span></div></div>
           </div>
         </div>
 
