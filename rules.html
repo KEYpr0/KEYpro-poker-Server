@@ -28,56 +28,58 @@
   .action-list li strong { color: #ff4757; margin-right: 5px; font-size: 16px; letter-spacing: 1px; text-shadow: 0 0 5px rgba(255, 71, 87, 0.3); }
 
   /* ----------------------------------------------------------------
-     ★ カードデザイン（横一列・トランプ準拠・絵札対応）
+     ★ カッコいい仮想トランプのデザイン（左が上でリアルな扇形）
   ---------------------------------------------------------------- */
   .hand-rank-block { margin-bottom: 35px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 30px; }
   .hand-rank-block:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
   
-  .rank-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+  .rank-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .rank-name { font-size: 20px; font-weight: bold; color: #ffffff; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
   .rank-desc { font-size: 14px; color: #a4b0be; letter-spacing: 1px; }
 
-  /* 横に並べる（重ならない） */
-  .hand-display { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
+  /* カードを扇形に並べるエリア */
+  .hand-display { display: flex; justify-content: center; padding: 20px 0 10px 0; perspective: 1000px; }
 
   /* カード1枚の基本デザイン */
-  .card-visual { width: 75px; height: 110px; background: #f1f2f6; border-radius: 6px; border: 2px solid #d4af37; position: relative; display: flex; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.4); transition: transform 0.2s; overflow: hidden; }
-  .card-visual:hover { transform: translateY(-5px); }
-
-  /* 左上の数字とマーク（インデックス） */
-  .card-corner { position: absolute; top: 5px; left: 5px; font-family: 'Courier New', monospace; font-weight: 900; font-size: 18px; line-height: 0.9; text-align: center; }
-  .card-corner .suit { font-size: 14px; display: block; margin-top: 2px; }
+  .card-visual { width: 70px; height: 100px; background: rgba(255, 255, 255, 0.95); border-radius: 6px; border: 1px solid #d4af37; color: #000; font-family: 'Courier New', monospace; font-weight: bold; font-size: 22px; display: flex; flex-direction: column; justify-content: space-between; padding: 6px; box-shadow: 4px 4px 12px rgba(0,0,0,0.6); position: relative; transition: transform 0.3s; transform-style: preserve-3d; transform-origin: bottom center; }
   
-  /* 中央の大きなマーク */
-  .card-center { font-size: 38px; opacity: 0.85; line-height: 1; }
+  /* カード同士の重なり具合（見やすさ重視の間隔） */
+  .card-visual:not(:first-child) { margin-left: -12px; }
 
-  /* 色分け */
+  .visual-top { display: flex; flex-direction: column; align-items: flex-start; line-height: 0.9; }
+  .visual-bottom { display: flex; flex-direction: column; align-items: flex-end; line-height: 0.9; transform: rotate(180deg); }
+  .visual-suit { font-size: 24px; margin-top: 2px; }
+  
   .suit-red { color: #ff4757; }
   .suit-black { color: #1e272e; }
 
-  /* ★ J, Q, K 用の絵札デザイン（チェス駒＋装飾フレーム） */
-  .face-card .card-center { width: 65%; height: 60%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 26px; /* トランプの絵札のような斜線テクスチャ */ background: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(0,0,0,0.05) 4px, rgba(0,0,0,0.05) 8px); }
-
-  /* ランクごとのネオンエフェクト（独立して綺麗に光る） */
-  .hand-royal .card-visual { border-color: #f1c40f; box-shadow: 0 0 20px rgba(241, 196, 15, 0.6); }
-  .hand-straight-flush .card-visual { border-color: #00d2d3; box-shadow: 0 0 20px rgba(0, 210, 211, 0.6); }
-  .hand-quads .card-visual { border-color: #2ed573; box-shadow: 0 0 15px rgba(46, 213, 115, 0.5); }
-  .hand-fullhouse .card-visual { border-color: #9b59b6; box-shadow: 0 0 15px rgba(155, 89, 182, 0.5); }
-  .hand-flush .card-visual { border-color: #ffa502; box-shadow: 0 0 15px rgba(255, 165, 2, 0.5); }
+  /* ランクごとのネオンエフェクト */
+  .hand-royal .card-visual { border-color: #f1c40f; box-shadow: 0 0 25px rgba(241, 196, 15, 0.6), inset 0 0 10px rgba(241, 196, 15, 0.3); }
+  .hand-straight-flush .card-visual { border-color: #00d2d3; box-shadow: 0 0 25px rgba(0, 210, 211, 0.6), inset 0 0 10px rgba(0, 210, 211, 0.3); }
+  .hand-quads .card-visual { border-color: #2ed573; box-shadow: 0 0 18px rgba(46, 213, 115, 0.5); }
+  .hand-fullhouse .card-visual { border-color: #9b59b6; box-shadow: 0 0 18px rgba(155, 89, 182, 0.5); }
+  .hand-flush .card-visual { border-color: #ffa502; box-shadow: 0 0 18px rgba(255, 165, 2, 0.5); }
   .hand-straight .card-visual { border-color: #ff4757; box-shadow: 0 0 15px rgba(255, 71, 87, 0.5); }
-  .hand-three .card-visual { border-color: #eccc68; box-shadow: 0 0 12px rgba(236, 204, 104, 0.4); }
-  .hand-twopair .card-visual { border-color: rgba(46, 213, 115, 0.6); }
-  .hand-onepair .card-visual { border-color: rgba(255, 71, 87, 0.6); }
-  .hand-highcard .card-visual { border-color: #7f8fa6; }
+  .hand-three .card-visual { border-color: #eccc68; box-shadow: 0 0 15px rgba(236, 204, 104, 0.4); }
+  .hand-twopair .card-visual { border-color: rgba(46, 213, 115, 0.6); box-shadow: 3px 5px 12px rgba(0,0,0,0.6); }
+  .hand-onepair .card-visual { border-color: rgba(255, 71, 87, 0.6); box-shadow: 3px 5px 12px rgba(0,0,0,0.6); }
+  .hand-highcard .card-visual { border-color: #7f8fa6; box-shadow: 3px 5px 10px rgba(0,0,0,0.5); }
+
+  /* ★ PC用：5枚の扇形（左が上になるようz-indexを逆順に、角度を浅く設定） */
+  .hand-display .card-visual:nth-child(1) { transform: rotate(-12deg) translateY(6px); z-index: 5; }
+  .hand-display .card-visual:nth-child(2) { transform: rotate(-6deg) translateY(1px); z-index: 4; }
+  .hand-display .card-visual:nth-child(3) { transform: rotate(0deg) translateY(0); z-index: 3; }
+  .hand-display .card-visual:nth-child(4) { transform: rotate(6deg) translateY(1px); z-index: 2; }
+  .hand-display .card-visual:nth-child(5) { transform: rotate(12deg) translateY(6px); z-index: 1; }
 
   /* 戻るボタン */
   .btn-back { display: block; width: 100%; max-width: 300px; margin: 50px auto 0; padding: 18px; background: transparent; color: #ffffff; font-size: 16px; font-weight: bold; text-align: center; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; }
   .btn-back:hover { background: #ffffff; color: #000; box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
 
-  /* 📱 スマホ用：はみ出さずに綺麗に横並びになるよう調整 */
+  /* 📱 スマホ用 */
   @media screen and (max-width: 600px) {
     body { padding: 10px 5px; }
-    .container { padding: 20px 15px; }
+    .container { padding: 25px 15px; }
     h1 { font-size: 28px; letter-spacing: 2px; }
     .header { margin-bottom: 30px; }
     
@@ -86,19 +88,21 @@
     .action-list { font-size: 14px; }
     .action-list li { margin-bottom: 12px; }
 
-    .rank-header { flex-direction: column; align-items: flex-start; gap: 5px; margin-bottom: 10px; }
-    .rank-name { font-size: 16px; }
-    .rank-desc { font-size: 12px; }
+    .rank-header { flex-direction: column; align-items: flex-start; gap: 5px; margin-bottom: 15px; }
+    .rank-name { font-size: 18px; }
+    .rank-desc { font-size: 13px; }
 
-    .hand-display { gap: 4px; margin: 10px 0; }
-    .card-visual { width: calc(20% - 4px); max-width: 55px; height: 80px; border-width: 1px; }
+    .hand-display { padding: 10px 0 5px 0; }
+    .card-visual { width: 50px; height: 75px; font-size: 16px; padding: 4px; border-width: 1px; }
+    .card-visual:not(:first-child) { margin-left: -8px; }
+    .visual-suit { font-size: 18px; margin-top: 1px; }
     
-    .card-corner { font-size: 14px; top: 3px; left: 4px; }
-    .card-corner .suit { font-size: 12px; }
-    .card-center { font-size: 28px; }
-    
-    /* スマホでの絵札サイズ */
-    .face-card .card-center { font-size: 20px; width: 70%; height: 60%; }
+    /* スマホ用：5枚の扇形 */
+    .hand-display .card-visual:nth-child(1) { transform: rotate(-15deg) translateY(6px); z-index: 5; }
+    .hand-display .card-visual:nth-child(2) { transform: rotate(-7deg) translateY(1px); z-index: 4; }
+    .hand-display .card-visual:nth-child(3) { transform: rotate(0deg) translateY(0); z-index: 3; }
+    .hand-display .card-visual:nth-child(4) { transform: rotate(7deg) translateY(1px); z-index: 2; }
+    .hand-display .card-visual:nth-child(5) { transform: rotate(15deg) translateY(6px); z-index: 1; }
   }
 </style>
 </head>
@@ -147,26 +151,11 @@
             <span class="rank-desc">最強。同スートのT,J,Q,K,A</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-black">
-              <div class="card-corner">10<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
-            <div class="card-visual suit-black face-card">
-              <div class="card-corner">J<br><span class="suit">♠</span></div>
-              <div class="card-center">♞</div>
-            </div>
-            <div class="card-visual suit-black face-card">
-              <div class="card-corner">Q<br><span class="suit">♠</span></div>
-              <div class="card-center">♛</div>
-            </div>
-            <div class="card-visual suit-black face-card">
-              <div class="card-corner">K<br><span class="suit">♠</span></div>
-              <div class="card-center">♚</div>
-            </div>
-            <div class="card-visual suit-black">
-              <div class="card-corner">A<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">10<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">10<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual"><div class="visual-top">J<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">J<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual"><div class="visual-top">Q<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">Q<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual"><div class="visual-top">K<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">K<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual"><div class="visual-top">A<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">A<span class="visual-suit suit-black">♠</span></div></div>
           </div>
         </div>
 
@@ -176,51 +165,25 @@
             <span class="rank-desc">同スートで数字が連続</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-red">
-              <div class="card-corner">5<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">6<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">7<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">8<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">9<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">5<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">5<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">6<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">6<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">7<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">8<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">8<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">9<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">9<span class="visual-suit suit-red">♥</span></div></div>
           </div>
         </div>
 
         <div class="hand-rank-block hand-quads">
           <div class="rank-header">
-            <span class="rank-name">フォーオブアカインド (フォーカード)</span>
+            <span class="rank-name">フォーカード</span>
             <span class="rank-desc">同じ数字が4枚</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-black">
-              <div class="card-corner">7<br><span class="suit">♣</span></div>
-              <div class="card-center">♣</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">7<br><span class="suit">♦</span></div>
-              <div class="card-center">♦</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">7<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-black">
-              <div class="card-corner">7<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">7<span class="visual-suit suit-black">♣</span></div></div>
+            <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">7<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">7<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">7<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">K<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">K<span class="visual-suit suit-black">♠</span></div></div>
           </div>
         </div>
 
@@ -230,26 +193,11 @@
             <span class="rank-desc">スリーカード + ワンペア</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-black">
-              <div class="card-corner">A<br><span class="suit">♣</span></div>
-              <div class="card-center">♣</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">A<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-black">
-              <div class="card-corner">A<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">8<br><span class="suit">♦</span></div>
-              <div class="card-center">♦</div>
-            </div>
-            <div class="card-visual suit-black">
-              <div class="card-corner">8<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">A<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">A<span class="visual-suit suit-black">♣</span></div></div>
+            <div class="card-visual"><div class="visual-top">A<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">A<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">A<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">A<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual"><div class="visual-top">8<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">8<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">8<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">8<span class="visual-suit suit-black">♠</span></div></div>
           </div>
         </div>
 
@@ -259,26 +207,11 @@
             <span class="rank-desc">5枚すべてが同じスート</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-red">
-              <div class="card-corner">4<br><span class="suit">♦</span></div>
-              <div class="card-center">♦</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">6<br><span class="suit">♦</span></div>
-              <div class="card-center">♦</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">9<br><span class="suit">♦</span></div>
-              <div class="card-center">♦</div>
-            </div>
-            <div class="card-visual suit-red face-card">
-              <div class="card-corner">J<br><span class="suit">♦</span></div>
-              <div class="card-center">♞</div>
-            </div>
-            <div class="card-visual suit-red face-card">
-              <div class="card-corner">K<br><span class="suit">♦</span></div>
-              <div class="card-center">♚</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">4<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">4<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">6<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">6<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">9<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">9<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">J<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">J<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">K<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">K<span class="visual-suit suit-red">♦</span></div></div>
           </div>
         </div>
 
@@ -288,47 +221,25 @@
             <span class="rank-desc">5枚の数字が連続（スートは不問）</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-black">
-              <div class="card-corner">7<br><span class="suit">♣</span></div>
-              <div class="card-center">♣</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">8<br><span class="suit">♦</span></div>
-              <div class="card-center">♦</div>
-            </div>
-            <div class="card-visual suit-black">
-              <div class="card-corner">9<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">10<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-black face-card">
-              <div class="card-corner">J<br><span class="suit">♣</span></div>
-              <div class="card-center">♞</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">7<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">7<span class="visual-suit suit-black">♣</span></div></div>
+            <div class="card-visual"><div class="visual-top">8<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">8<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">9<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">9<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual"><div class="visual-top">10<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">10<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">J<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">J<span class="visual-suit suit-black">♣</span></div></div>
           </div>
         </div>
 
         <div class="hand-rank-block hand-three">
           <div class="rank-header">
-            <span class="rank-name">スリーオブアカインド (スリーカード)</span>
+            <span class="rank-name">スリーカード</span>
             <span class="rank-desc">同じ数字が3枚</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-red face-card">
-              <div class="card-corner">Q<br><span class="suit">♥</span></div>
-              <div class="card-center">♛</div>
-            </div>
-            <div class="card-visual suit-red face-card">
-              <div class="card-corner">Q<br><span class="suit">♦</span></div>
-              <div class="card-center">♛</div>
-            </div>
-            <div class="card-visual suit-black face-card">
-              <div class="card-corner">Q<br><span class="suit">♠</span></div>
-              <div class="card-center">♛</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">Q<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">Q<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">Q<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">Q<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">Q<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">Q<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">2<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">2<span class="visual-suit suit-black">♣</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">5<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">5<span class="visual-suit suit-red">♥</span></div></div>
           </div>
         </div>
 
@@ -338,26 +249,11 @@
             <span class="rank-desc">ワンペアが2つ</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-black">
-              <div class="card-corner">9<br><span class="suit">♣</span></div>
-              <div class="card-center">♣</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">9<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-red">
-              <div class="card-corner">4<br><span class="suit">♦</span></div>
-              <div class="card-center">♦</div>
-            </div>
-            <div class="card-visual suit-black">
-              <div class="card-corner">4<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
-            <div class="card-visual suit-red" style="opacity: 0.5; border-color: #555; box-shadow: none;">
-              <div class="card-corner">A<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">9<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">9<span class="visual-suit suit-black">♣</span></div></div>
+            <div class="card-visual"><div class="visual-top">9<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">9<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual"><div class="visual-top">4<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">4<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">4<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">4<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">A<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">A<span class="visual-suit suit-red">♥</span></div></div>
           </div>
         </div>
 
@@ -367,26 +263,11 @@
             <span class="rank-desc">同じ数字が2枚</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-red">
-              <div class="card-corner">10<br><span class="suit">♦</span></div>
-              <div class="card-center">♦</div>
-            </div>
-            <div class="card-visual suit-black">
-              <div class="card-corner">10<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
-            <div class="card-visual suit-black" style="opacity: 0.5; border-color: #555; box-shadow: none;">
-              <div class="card-corner">3<br><span class="suit">♣</span></div>
-              <div class="card-center">♣</div>
-            </div>
-            <div class="card-visual suit-red" style="opacity: 0.5; border-color: #555; box-shadow: none;">
-              <div class="card-corner">6<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
-            <div class="card-visual suit-red face-card" style="opacity: 0.5; border-color: #555; box-shadow: none;">
-              <div class="card-corner">J<br><span class="suit">♦</span></div>
-              <div class="card-center">♞</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">10<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">10<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual"><div class="visual-top">10<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">10<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">3<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">3<span class="visual-suit suit-black">♣</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">6<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">6<span class="visual-suit suit-red">♥</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">J<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">J<span class="visual-suit suit-red">♦</span></div></div>
           </div>
         </div>
 
@@ -396,26 +277,11 @@
             <span class="rank-desc">誰も役がない時、一番強い数字を持つ人が勝ち</span>
           </div>
           <div class="hand-display">
-            <div class="card-visual suit-black">
-              <div class="card-corner">A<br><span class="suit">♠</span></div>
-              <div class="card-center">♠</div>
-            </div>
-            <div class="card-visual suit-red face-card" style="opacity: 0.5; border-color: #555; box-shadow: none;">
-              <div class="card-corner">K<br><span class="suit">♦</span></div>
-              <div class="card-center">♚</div>
-            </div>
-            <div class="card-visual suit-black face-card" style="opacity: 0.5; border-color: #555; box-shadow: none;">
-              <div class="card-corner">J<br><span class="suit">♣</span></div>
-              <div class="card-center">♞</div>
-            </div>
-            <div class="card-visual suit-black" style="opacity: 0.5; border-color: #555; box-shadow: none;">
-              <div class="card-corner">8<br><span class="suit">♣</span></div>
-              <div class="card-center">♣</div>
-            </div>
-            <div class="card-visual suit-red" style="opacity: 0.5; border-color: #555; box-shadow: none;">
-              <div class="card-corner">4<br><span class="suit">♥</span></div>
-              <div class="card-center">♥</div>
-            </div>
+            <div class="card-visual"><div class="visual-top">A<span class="visual-suit suit-black">♠</span></div><div class="visual-bottom">A<span class="visual-suit suit-black">♠</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">K<span class="visual-suit suit-red">♦</span></div><div class="visual-bottom">K<span class="visual-suit suit-red">♦</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">J<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">J<span class="visual-suit suit-black">♣</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">8<span class="visual-suit suit-black">♣</span></div><div class="visual-bottom">8<span class="visual-suit suit-black">♣</span></div></div>
+            <div class="card-visual" style="opacity:0.6; border-color:#555;"><div class="visual-top">4<span class="visual-suit suit-red">♥</span></div><div class="visual-bottom">4<span class="visual-suit suit-red">♥</span></div></div>
           </div>
         </div>
 
