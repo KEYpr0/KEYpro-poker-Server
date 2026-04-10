@@ -10,139 +10,74 @@
 <style>
   /* 全体の設定 */
   *, *::before, *::after { box-sizing: border-box; }
-  html, body { max-width: 100vw; overflow-x: hidden; }
+  html, body { max-width: 100vw; overflow-x: hidden; scroll-behavior: smooth; }
 
-  body, button, h1, p, div { font-family: 'KEYpro', sans-serif; }
-  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: 'KEYpro', sans-serif; }
   
-  .container { display: flex; flex-direction: column; width: 100%; max-width: 900px; height: 85vh; min-height: 650px; background-color: rgba(0, 0, 0, 0.8); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; padding: 40px; position: relative; }
+  /* ★ PCフルスクリーン対応 */
+  .container { display: flex; flex-direction: column; width: 96vw; max-width: 1400px; height: 94vh; min-height: 600px; background-color: rgba(0, 0, 0, 0.8); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; padding: 40px; position: relative; }
 
-  /* ロゴフォント */
-  h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: 50px; margin: 0 0 5px 0; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); letter-spacing: -3px; font-weight: 900; }
-  h1 span { font-family: 'KEYpro', sans-serif; color: #d4af37; font-size: 14px; margin-left: 10px; font-weight: normal; text-transform: uppercase; letter-spacing: 4px; vertical-align: middle; }
+  h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: clamp(40px, 4vw, 64px); margin: 0 0 5px 0; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); letter-spacing: -3px; font-weight: 900; }
+  h1 span { font-family: 'KEYpro', sans-serif; color: #d4af37; font-size: clamp(12px, 1vw, 16px); margin-left: 10px; font-weight: normal; text-transform: uppercase; letter-spacing: 4px; vertical-align: middle; }
 
-  p.subtitle { font-size: 14px; margin-bottom: 30px; color: #7f8fa6; letter-spacing: 3px; text-transform: uppercase; }
+  p.subtitle { font-size: clamp(12px, 1vw, 16px); margin-bottom: 20px; color: #7f8fa6; letter-spacing: 3px; text-transform: uppercase; }
 
-  /* 共通タイトルデザイン */
-  .board-title { color: #d4af37; font-size: 20px; letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-bottom: 20px; flex-shrink: 0; }
+  .board-title { color: #d4af37; font-size: clamp(18px, 1.5vw, 24px); letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-shrink: 0; }
   .board-title::before { content: ''; display: inline-block; width: 6px; height: 20px; background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
 
-  /* 🏆 ランキングリスト */
   .ranking-list { display: flex; flex-direction: column; gap: 15px; width: 100%; flex-grow: 1; overflow-y: auto; padding-right: 15px; margin-bottom: 20px; }
   .ranking-list::-webkit-scrollbar { width: 4px; }
   .ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
   .ranking-list::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
 
-  /* カードデザイン（基本） */
   .rank-card { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.7); border: 1px solid #333; padding: 15px 25px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.6); flex-shrink: 0; transition: all 0.3s; border-left: 5px solid #7f8fa6; position: relative; overflow: hidden; }
   .rank-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%); opacity: 0.7; pointer-events: none; }
   
-  /* 順位表示 */
-  .rank-col { display: flex; align-items: center; justify-content: center; width: 45px; margin-right: 15px; z-index: 1; flex-shrink: 0; }
-  .rank-badge-text { font-family: 'Courier New', monospace; font-size: 42px; font-weight: bold; color: #7f8fa6; letter-spacing: 2px; }
+  .rank-col { display: flex; align-items: center; justify-content: center; width: 55px; margin-right: 15px; z-index: 1; flex-shrink: 0; }
+  .rank-badge-text { font-family: 'Courier New', monospace; font-size: clamp(32px, 3vw, 42px); font-weight: bold; color: #7f8fa6; letter-spacing: 2px; }
 
-  /* 名前表示 */
   .name-col { flex-grow: 1; text-align: left; padding-left: 10px; display: flex; flex-direction: column; gap: 2px; justify-content: center; z-index: 1; overflow: hidden; }
-  .player-name { font-size: 22px; font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; text-shadow: 1px 1px 2px #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player-name { font-size: clamp(16px, 1.8vw, 24px); font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; text-shadow: 1px 1px 2px #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   
-  /* 参加回数表示 */
-  .games-played { font-size: 12px; color: #7f8fa6; letter-spacing: 1px; font-family: 'Courier New', monospace; font-weight: bold; }
+  .games-played { font-size: clamp(10px, 1vw, 14px); color: #7f8fa6; letter-spacing: 1px; font-family: 'Courier New', monospace; font-weight: bold; }
   .rank-1 .games-played { color: rgba(241, 196, 15, 0.8); }
 
-  /* スコア表示 */
-  .score-col { font-weight: bold; font-size: 38px; text-align: right; font-family: 'Courier New', monospace; letter-spacing: 1px; line-height: 1; z-index: 1; flex-shrink: 0; }
+  .score-col { font-weight: bold; font-size: clamp(24px, 3vw, 42px); text-align: right; font-family: 'Courier New', monospace; letter-spacing: 1px; line-height: 1; z-index: 1; flex-shrink: 0; }
+
   .score-plus { color: #2ed573; text-shadow: 0 0 15px rgba(46, 213, 115, 0.4); }
   .score-minus { color: #ff4757; text-shadow: 0 0 15px rgba(255, 71, 87, 0.4); }
 
   .empty-text { color: #d4af37; font-size: 18px; width: 100%; text-align: center; margin-top: 40px; letter-spacing: 2px; line-height: 2; font-weight: bold; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
 
-  /* 戻るボタン */
-  .btn-back { display: block; width: 100%; max-width: 300px; margin: 0 auto; padding: 18px; background: transparent; color: #d4af37; font-size: 16px; font-weight: bold; text-align: center; text-decoration: none; border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 50px; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; flex-shrink: 0; }
-  .btn-back:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
-
-  /* ★★★ トップ3のキラキラ効果 ★★★ */
-  @keyframes shimmer { 0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; } 30% { opacity: 0.6; } 50% { opacity: 0; } 100% { transform: translateX(150%) skewX(-20deg); opacity: 0; } }
-  @keyframes pulsing-glow-1 { 0% { box-shadow: 0 0 15px rgba(241, 196, 15, 0.15), inset 0 0 5px rgba(241, 196, 15, 0.05); } 50% { box-shadow: 0 0 30px rgba(241, 196, 15, 0.5), inset 0 0 10px rgba(241, 196, 15, 0.2); } 100% { box-shadow: 0 0 15px rgba(241, 196, 15, 0.15), inset 0 0 5px rgba(241, 196, 15, 0.05); } }
-  @keyframes pulsing-glow-2 { 0% { box-shadow: 0 0 10px rgba(189, 195, 199, 0.1); } 50% { box-shadow: 0 0 20px rgba(189, 195, 199, 0.4); } 100% { box-shadow: 0 0 10px rgba(189, 195, 199, 0.1); } }
-  @keyframes pulsing-glow-3 { 0% { box-shadow: 0 0 8px rgba(205, 127, 50, 0.08); } 50% { box-shadow: 0 0 18px rgba(205, 127, 50, 0.3); } 100% { box-shadow: 0 0 8px rgba(205, 127, 50, 0.08); } }
-
-  .rank-card.rank-1::before, .rank-card.rank-2::before, .rank-card.rank-3::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.05) 80%, rgba(255, 255, 255, 0) 100%); z-index: 2; pointer-events: none; opacity: 0; }
-  
-  .rank-card.rank-1 { border-left-color: #f1c40f; background: linear-gradient(90deg, rgba(241, 196, 15, 0.15) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(241, 196, 15, 0.4); animation: pulsing-glow-1 4s ease-in-out infinite; }
-  .rank-card.rank-1::before { animation: shimmer 5s linear infinite; animation-delay: 1s; }
-  .rank-1 .rank-badge-text { color: #f1c40f; text-shadow: 0 0 15px rgba(241, 196, 15, 0.7); }
-  .rank-1 .player-name { font-size: 26px; color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
-
-  .rank-card.rank-2 { border-left-color: #bdc3c7; background: linear-gradient(90deg, rgba(189, 195, 199, 0.1) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(189, 195, 199, 0.3); animation: pulsing-glow-2 4s ease-in-out infinite; }
-  .rank-card.rank-2::before { background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.02) 20%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.02) 80%, rgba(255, 255, 255, 0) 100%); animation: shimmer 6s linear infinite; animation-delay: 2s; }
-  .rank-2 .rank-badge-text { color: #bdc3c7; text-shadow: 0 0 10px rgba(189, 195, 199, 0.6); }
-
-  .rank-card.rank-3 { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(205, 127, 50, 0.2); animation: pulsing-glow-3 4s ease-in-out infinite; }
-  .rank-card.rank-3::before { background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.01) 20%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.01) 80%, rgba(255, 255, 255, 0) 100%); animation: shimmer 7s linear infinite; animation-delay: 3s; }
-  .rank-3 .rank-badge-text { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
-
-
-  /* ==========================================================================
-     ★★★ 最下位（ドベ）の地獄デザイン ★★★
-     ========================================================================== */
-  .rank-card.rank-worst {
-    border-left-color: transparent;
-    border-left-image: linear-gradient(180deg, #ff4500, #ff0000, #ff4500);
-    border-left-image-slice: 1;
-    background: linear-gradient(90deg, rgba(128, 0, 0, 0.35) 0%, rgba(0,0,0,0.9) 100%);
-    border-color: rgba(179, 0, 0, 0.4);
-    box-shadow: 0 0 30px rgba(179, 0, 0, 0.7);
-    animation: flameCard 3s ease-in-out infinite alternate, crackFlicker 1.5s ease-in-out infinite;
-  }
-  
-  /* 最下位だけ背景に赤熱するドクロを配置 */
-  .rank-card.rank-worst .card-skull-bg {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 140px; height: 140px; fill: rgba(179, 0, 0, 0.1); filter: drop-shadow(0 0 10px #ff4500);
-    z-index: 0; pointer-events: none; display: block;
-  }
-  .card-skull-bg { display: none; } /* 最下位以外は非表示 */
-
-  .rank-worst .rank-badge-text {
-    font-family: 'Nosifer', sans-serif;
-    font-size: 34px;
-    color: transparent;
-    -webkit-text-stroke: 1.5px #800000;
+  /* ★ 新デザイン：小さくてカッコいい「DASHBOARDボタン」を左上に配置 */
+  .discreet-next-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #7f8fa6;
+    border: 1px solid rgba(127, 140, 141, 0.5);
+    padding: 10px 24px;
+    font-size: 12px;
+    border-radius: 50px;
+    text-decoration: none;
     letter-spacing: 2px;
-    filter: drop-shadow(0 0 10px #ff4500);
-    animation: flameRank 2s ease-in-out infinite alternate;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    z-index: 50;
   }
-
-  .rank-worst .player-name {
-    font-size: 24px;
-    color: #ff4757;
-    text-shadow: 0 0 10px #ff4500, 0 0 5px #fff;
-    animation: flameName 1s ease-in-out infinite alternate;
-  }
-
-  /* 参加回数も不吉な色に */
-  .rank-worst .games-played { color: #e74c3c; }
-
-  /* スコア（Pay）を炎の色に上書き */
-  .rank-worst .score-col {
-    color: #ff4500 !important;
-    text-shadow: 0 0 20px rgba(255, 69, 0, 0.8) !important;
-  }
-
-  /* 地獄アニメーション */
-  @keyframes flameCard { 0% { box-shadow: 0 0 20px rgba(179, 0, 0, 0.6), inset 0 0 10px rgba(179, 0, 0, 0.3); } 100% { box-shadow: 0 0 35px rgba(179, 0, 0, 0.6), inset 0 0 15px rgba(179, 0, 0, 0.3); } }
-  @keyframes flameRank { 0% { filter: drop-shadow(0 0 10px #ff4500) drop-shadow(0 0 15px rgba(179, 0, 0, 0.8)); } 100% { filter: drop-shadow(0 0 15px #ff4500) drop-shadow(0 0 20px rgba(179, 0, 0, 0.8)); } }
-  @keyframes flameName { 0% { text-shadow: 0 0 10px #ff4500, 0 0 5px #fff; } 100% { text-shadow: 0 0 15px #ff4500, 0 0 8px #fff; } }
-  @keyframes crackFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } }
-
+  .discreet-next-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
 
   /* 📱 スマホ用 */
-  @media screen and (max-width: 600px) {
-    body { padding: 10px; display: block; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
-    .container { padding: 25px 15px; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; }
+  @media screen and (max-width: 900px) {
+    body { padding: 10px; display: block; overflow-x: hidden; }
+    .container { padding: 50px 15px 25px 15px; width: 100%; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; display: block; }
+    
     h1 { font-size: 36px; letter-spacing: -2px; }
     h1 span { font-size: 12px; }
+    
     .board-title { font-size: 18px; margin-right: -4px; }
+    
     .ranking-list { padding-right: 0; gap: 12px; }
     .rank-card { padding: 12px 15px; border-left-width: 4px; border-radius: 6px; }
     
@@ -151,19 +86,67 @@
     
     .name-col { padding-left: 5px; }
     .player-name { font-size: 16px; }
-    .rank-1 .player-name { font-size: 18px; }
-    .rank-worst .player-name { font-size: 18px; }
-    .rank-worst .rank-badge-text { font-size: 26px; }
     .games-played { font-size: 10px; }
     
     .score-col { font-size: 24px; }
-    .btn-back { padding: 15px; font-size: 14px; margin-top: 15px; }
+    
+    /* スマホ時はボタンを上に配置しつつ少し小さめに */
+    .discreet-next-btn { top: 15px; left: 15px; padding: 8px 16px; font-size: 10px; }
   }
+
+  /* ★★★ キラキラとさりげない効果 ★★★ */
+  @keyframes shimmer { 0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; } 30% { opacity: 0.6; } 50% { opacity: 0; } 100% { transform: translateX(150%) skewX(-20deg); opacity: 0; } }
+  
+  /* パルス効果をゆっくり滑らかに */
+  @keyframes pulsing-glow-1 { 0% { box-shadow: 0 0 15px rgba(241, 196, 15, 0.15), inset 0 0 5px rgba(241, 196, 15, 0.05); } 50% { box-shadow: 0 0 25px rgba(241, 196, 15, 0.4), inset 0 0 10px rgba(241, 196, 15, 0.2); } 100% { box-shadow: 0 0 15px rgba(241, 196, 15, 0.15), inset 0 0 5px rgba(241, 196, 15, 0.05); } }
+  @keyframes pulsing-glow-2 { 0% { box-shadow: 0 0 10px rgba(189, 195, 199, 0.1); } 50% { box-shadow: 0 0 20px rgba(189, 195, 199, 0.3); } 100% { box-shadow: 0 0 10px rgba(189, 195, 199, 0.1); } }
+  @keyframes pulsing-glow-3 { 0% { box-shadow: 0 0 8px rgba(205, 127, 50, 0.08); } 50% { box-shadow: 0 0 15px rgba(205, 127, 50, 0.2); } 100% { box-shadow: 0 0 8px rgba(205, 127, 50, 0.08); } }
+
+  .rank-card.rank-1::before, .rank-card.rank-2::before, .rank-card.rank-3::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.05) 80%, rgba(255, 255, 255, 0) 100%); z-index: 2; pointer-events: none; opacity: 0; }
+  
+  .rank-card.rank-1 { border-left-color: #f1c40f; background: linear-gradient(90deg, rgba(241, 196, 15, 0.15) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(241, 196, 15, 0.4); animation: pulsing-glow-1 6s ease-in-out infinite; }
+  .rank-card.rank-1::before { animation: shimmer 6s linear infinite; animation-delay: 1s; }
+  .rank-1 .rank-badge-text { color: #f1c40f; text-shadow: 0 0 15px rgba(241, 196, 15, 0.7); }
+  .rank-1 .player-name { color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
+
+  .rank-card.rank-2 { border-left-color: #bdc3c7; background: linear-gradient(90deg, rgba(189, 195, 199, 0.1) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(189, 195, 199, 0.3); animation: pulsing-glow-2 6s ease-in-out infinite; }
+  .rank-card.rank-2::before { background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.02) 20%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.02) 80%, rgba(255, 255, 255, 0) 100%); animation: shimmer 7s linear infinite; animation-delay: 2s; }
+  .rank-2 .rank-badge-text { color: #bdc3c7; text-shadow: 0 0 10px rgba(189, 195, 199, 0.6); }
+
+  .rank-card.rank-3 { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0.7) 50%); border-color: rgba(205, 127, 50, 0.2); animation: pulsing-glow-3 6s ease-in-out infinite; }
+  .rank-card.rank-3::before { background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.01) 20%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.01) 80%, rgba(255, 255, 255, 0) 100%); animation: shimmer 8s linear infinite; animation-delay: 3s; }
+  .rank-3 .rank-badge-text { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
+
+  /* ==========================================================================
+     ★★★ 最下位（ドベ）の地獄デザイン ★★★
+     ========================================================================== */
+  .rank-card.rank-worst {
+    border-left-color: transparent; border-left-image: linear-gradient(180deg, #ff4500, #ff0000, #ff4500); border-left-image-slice: 1;
+    background: linear-gradient(90deg, rgba(128, 0, 0, 0.35) 0%, rgba(0,0,0,0.9) 100%); border-color: rgba(179, 0, 0, 0.4);
+    box-shadow: 0 0 30px rgba(179, 0, 0, 0.7); animation: flameCard 4s ease-in-out infinite alternate, crackFlicker 5s ease-in-out infinite;
+  }
+  
+  .rank-card.rank-worst .card-skull-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; fill: rgba(179, 0, 0, 0.1); filter: drop-shadow(0 0 10px #ff4500); z-index: 0; pointer-events: none; display: block; }
+  .card-skull-bg { display: none; }
+  
+  .rank-worst .rank-badge-text { font-family: 'Nosifer', sans-serif; color: transparent; -webkit-text-stroke: 1.5px #800000; letter-spacing: 2px; filter: drop-shadow(0 0 10px #ff4500); animation: flameRank 4s ease-in-out infinite alternate; }
+  
+  /* ★ 修正ポイント：名前にも黒いフチドリと控えめな炎のシャドウを追加 */
+  .rank-worst .player-name { color: #ffffff; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 10px #ff4500; animation: flameName 3s ease-in-out infinite alternate; }
+  .rank-worst .games-played { color: #e74c3c; }
+  .rank-worst .score-col { color: #ff4500 !important; text-shadow: 0 0 20px rgba(255, 69, 0, 0.8) !important; }
+
+  @keyframes flameCard { 0% { box-shadow: 0 0 20px rgba(179, 0, 0, 0.5), inset 0 0 10px rgba(179, 0, 0, 0.2); } 100% { box-shadow: 0 0 25px rgba(179, 0, 0, 0.7), inset 0 0 15px rgba(179, 0, 0, 0.3); } }
+  @keyframes flameRank { 0% { filter: drop-shadow(0 0 10px rgba(179, 0, 0, 0.6)); } 100% { filter: drop-shadow(0 0 15px rgba(179, 0, 0, 0.9)); } }
+  @keyframes flameName { 0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 8px #ff4500; color: #ffffff; } 100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 12px #ff0000; color: #ffda79; } }
+  @keyframes crackFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.95; } }
 </style>
 </head>
 <body>
 
   <div class="container">
+    <a href="index.html" class="discreet-next-btn">◀ DASHBOARD</a>
+    
     <h1>KEYpro<span>poker</span></h1>
     <p class="subtitle">HALL OF FAME</p>
 
@@ -172,12 +155,9 @@
     <div id="rankingBoard" class="ranking-list">
       <div class="empty-text">👑 過去の全データを集計中...</div>
     </div>
-
-    <a href="index.html" class="btn-back">◀ ダッシュボードに戻る</a>
   </div>
 
   <script>
-    // 指定いただいたご自身のGASの「ウェブアプリのURL」
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxijPOgmKGDL-UL5eAqOBKrxKVfPl4v6hsdLcWbiuwMrCWSPI5fqxu3qOmXIFTrMYCi5A/exec";
 
     function formatNumber(num) {
@@ -206,17 +186,13 @@
             if (index === 0) { rankClass = "rank-1"; }
             else if (index === 1) { rankClass = "rank-2"; }
             else if (index === 2) { rankClass = "rank-3"; }
-            // ★ 人数が4人以上いる場合、一番最後のプレイヤーを「最下位（地獄）」にする
             else if (index === players.length - 1 && players.length > 3) { rankClass = "rank-worst"; }
 
-            // スコアの色分け
             let scoreClass = player.pay > 0 ? "score-plus" : (player.pay < 0 ? "score-minus" : "");
             let scoreSign = player.pay > 0 ? "+" : "";
             
-            // 最下位の時は地獄の色で上書きするのでクラスを外す
             if (rankClass === "rank-worst") { scoreClass = ""; }
 
-            // 最下位専用のドクロSVG
             let skullSvg = rankClass === 'rank-worst' ? `<svg class="card-skull-bg" viewBox="0 0 448 512"><path d="M439.2 236.1l-20.1-11.9c-6.4-3.8-14.6-1.6-18.4 5.1-18.9 34.6-56.3 58.7-99.1 58.7-42.8 0-80.1-24.1-99.1-58.7-3.8-6.7-12-8.9-18.4-5.1l-20.1 11.9c-6.7 4-8.9 12.6-5 19.3C181.8 290.4 200.7 320 224 320s42.2-29.6 66.8-64.7c3.9-6.7 1.7-15.3-5-19.3zm-111.2-120c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zm64 0c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zM224 0C100.3 0 0 100.3 0 224v192c0 53 43 96 96 96h256c53 0 96-43 96-96V224C448 100.3 347.7 0 224 0zm96 416c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm-128 0c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm160-224C352 110.3 294.5 48 224 48s-128 62.3-128 144v14.1c0 23.6 15.1 44.8 36.9 52.8l10.8 4c16.3 6 30.1 16.6 39.4 30.2 11.2-16.1 27.6-29 46.9-36l10.8-4c21.8-8 36.9-29.2 36.9-52.8V192zm-32 96c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"/></svg>` : '';
 
             html += `
@@ -243,7 +219,6 @@
         });
     }
 
-    // 画面が読み込まれたら自動でランキングを取得開始
     window.onload = loadRanking;
   </script>
 </body>
