@@ -37,8 +37,10 @@
   .dashboard-bottom { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 15px; padding: 15px 40px; background: rgba(0, 0, 0, 0.5); border-top: 1px solid rgba(255, 255, 255, 0.05); flex-shrink: 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); }
   
   .bottom-btn { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 240px; padding: 12px 20px; font-weight: bold; text-decoration: none; border-radius: 4px; cursor: pointer; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; text-align: center; }
+  
   .bottom-btn.ranking { background: rgba(255,255,255,0.03); color: #d4af37; font-size: 14px; border: 1px solid rgba(212, 175, 55, 0.6); }
   .bottom-btn.ranking:hover { background: #d4af37; color: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+
   .bottom-btn.rules { background: transparent; color: #7f8fa6; font-size: 12px; border: 1px solid rgba(127, 140, 141, 0.5); }
   .bottom-btn.rules:hover { background: rgba(255,255,255,0.1); color: #ffffff; border-color: #ffffff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
   
@@ -51,15 +53,24 @@
   .live-ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
   .live-ranking-list::-webkit-scrollbar-thumb { background: #800000; }
 
-  .title-re-entry { font-family: 'Nosifer', sans-serif; color: #800000; text-shadow: 0 0 20px rgba(179, 0, 0, 0.8); letter-spacing: 2px; border-bottom-color: rgba(179, 0, 0, 0.5); animation: flameTitle 2s ease-in-out infinite alternate; }
-  .title-re-entry::before { background-color: #800000; box-shadow: 0 0 10px #800000; }
-  .title-re-entry .title-skull { width: 22px; height: 22px; fill: #800000; margin-left: 10px; filter: drop-shadow(0 0 5px #ff4500); }
+  /* ★ 修正ポイント：文字色を明るくし、黒いフチドリとドロップシャドウで文字をくっきりさせる */
+  .title-re-entry { 
+    font-family: 'Nosifer', sans-serif; 
+    color: #ff4757; /* 鮮やかな赤に変更して読みやすく */
+    -webkit-text-stroke: 1px #800000; /* 暗い赤のフチドリ */
+    letter-spacing: 2px; 
+    border-bottom-color: rgba(179, 0, 0, 0.5); 
+    animation: flameTitle 2s ease-in-out infinite alternate; 
+  }
+  .title-re-entry::before { background-color: #ff4757; box-shadow: 0 0 10px #ff4757; }
+  .title-re-entry .title-skull { width: 22px; height: 22px; fill: #ff4757; margin-left: 10px; filter: drop-shadow(0 0 5px #ff0000); }
 
   .live-rank-card { display: flex; justify-content: flex-start; align-items: center; background: rgba(0, 0, 0, 0.9); border-left: 4px solid transparent; padding: 12px 20px; border-radius: 0 8px 8px 0; box-shadow: inset 0 -1px 0 rgba(255,255,255,0.05); flex-shrink: 0; transition: all 0.3s; position: relative; overflow: hidden; border: 1px solid #1a1a1a; animation: crackFlicker 1.5s ease-in-out infinite; }
   .live-rank-card .card-skull-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; fill: rgba(255, 255, 255, 0.04); z-index: 0; pointer-events: none; }
 
   .live-rank-card.worst-1 { border-left-color: transparent; border-left-image: linear-gradient(180deg, #ff4500, #ff0000, #ff4500); border-left-image-slice: 1; background: linear-gradient(90deg, rgba(128, 0, 0, 0.3) 0%, rgba(0,0,0,0.9) 100%); border-color: rgba(179, 0, 0, 0.3); box-shadow: 0 0 30px rgba(179, 0, 0, 0.6); animation: flameCard 3s ease-in-out infinite alternate; }
   .worst-1 .card-skull-bg { fill: rgba(179, 0, 0, 0.08); filter: drop-shadow(0 0 10px #ff4500); }
+  
   .live-rank-card.worst-2 { border-left-color: #bf9b30; background: linear-gradient(90deg, rgba(191, 155, 48, 0.08) 0%, rgba(0,0,0,0.7) 100%); border-color: rgba(191, 155, 48, 0.2); }
   .live-rank-card.worst-3 { border-left-color: #a67c00; background: linear-gradient(90deg, rgba(166, 124, 0, 0.05) 0%, rgba(0,0,0,0.7) 100%); border-color: rgba(166, 124, 0, 0.1); }
 
@@ -73,14 +84,7 @@
   .worst-3 .rank-badge-text { -webkit-text-stroke-color: #a67c00; filter: drop-shadow(0 0 6px rgba(166, 124, 0, 0.4)); animation: none; }
 
   .player-name-item { font-size: 18px; font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  
-  /* ★ 修正ポイント：文字の輪郭を黒でハッキリさせ、光の広がりを抑えてクッキリ読みやすく！ */
-  .worst-1 .player-name-item { 
-    font-size: 20px; 
-    color: #ffffff; 
-    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 10px #ff4500; 
-    animation: flameName 1.5s ease-in-out infinite alternate; 
-  }
+  .worst-1 .player-name-item { font-size: 20px; color: #ffffff; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 10px #ff4500; animation: flameName 1.5s ease-in-out infinite alternate; }
 
   .entry-badge { display: flex; align-items: baseline; justify-content: flex-end; gap: 4px; width: 100%; }
   .entry-badge .num { font-family: 'Nosifer', sans-serif; font-size: 32px; font-weight: normal; line-height: 1; color: #7f8fa6; }
@@ -90,17 +94,15 @@
   .worst-2 .entry-badge .num { color: #bf9b30; text-shadow: 0 0 12px rgba(191, 155, 48, 0.5); }
   .worst-3 .entry-badge .num { color: #a67c00; text-shadow: 0 0 10px rgba(166, 124, 0, 0.4); }
 
-  @keyframes flameTitle { 0% { text-shadow: 0 0 10px #ff4500, 0 0 20px rgba(179, 0, 0, 0.8), 0 0 30px #ff4500; } 100% { text-shadow: 0 0 15px #ff4500, 0 0 30px rgba(179, 0, 0, 0.8), 0 0 45px #ff4500; } }
+  /* ★ 修正ポイント：タイトルの光を強すぎないように調整し、黒い影（文字の輪郭）を追加 */
+  @keyframes flameTitle { 
+    0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 10px #ff4500, 0 0 20px #ff0000; } 
+    100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 15px #ff4500, 0 0 30px #ff0000; } 
+  }
   @keyframes flameCard { 0% { box-shadow: 0 0 20px rgba(179, 0, 0, 0.6), inset 0 0 10px rgba(179, 0, 0, 0.3); } 100% { box-shadow: 0 0 35px rgba(179, 0, 0, 0.6), inset 0 0 15px rgba(179, 0, 0, 0.3); } }
   @keyframes flameRank { 0% { filter: drop-shadow(0 0 10px #ff4500) drop-shadow(0 0 15px rgba(179, 0, 0, 0.8)); } 100% { filter: drop-shadow(0 0 15px #ff4500) drop-shadow(0 0 20px rgba(179, 0, 0, 0.8)); } }
   @keyframes flameEntry { 0% { text-shadow: 0 0 15px #ff4500, 0 0 20px rgba(255, 69, 0, 0.7); } 100% { text-shadow: 0 0 20px #ff4500, 0 0 25px rgba(255, 69, 0, 0.7); } }
-  
-  /* ★ アニメーションも輪郭を維持したまま、光の強さだけが揺らぐように修正 */
-  @keyframes flameName { 
-    0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 8px #ff4500; color: #ffffff; } 
-    100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px #ff0000; color: #ffda79; } 
-  }
-  
+  @keyframes flameName { 0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 8px #ff4500; color: #ffffff; } 100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px #ff0000; color: #ffda79; } }
   @keyframes crackFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } }
 
   /* 🟢 参加者リスト */
@@ -193,8 +195,11 @@
     .timer-display { font-size: 56px; padding: 10px 20px; margin-bottom: 10px; }
     .board-title { font-size: 18px; text-align: center; justify-content: center; margin-right: -4px; }
     .board-title::before { display: none; }
+    
+    /* スマホ版でもタイトルが読めるように調整 */
     .title-re-entry { letter-spacing: 1px; font-size: 16px; }
     .title-re-entry .title-skull { display: none; }
+    
     .live-ranking-list { height: auto; padding-right: 0; }
     .live-rank-card { padding: 10px 15px; border-radius: 0 4px 4px 0; border-left-width: 3px; }
     .live-rank-card .card-skull-bg { width: 90px; height: 90px; }
