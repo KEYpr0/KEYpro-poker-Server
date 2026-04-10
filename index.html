@@ -8,69 +8,49 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nosifer&family=Work+Sans:wght@900&display=swap" rel="stylesheet">
 <style>
-  /* 全体の設定 */
   *, *::before, *::after { box-sizing: border-box; }
   html, body { max-width: 100vw; overflow-x: hidden; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-  body, button, p, div { font-family: 'KEYpro', sans-serif; }
-  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: 'KEYpro', sans-serif; }
   
-  .dashboard-container { display: flex; flex-direction: column; width: 100%; max-width: 1200px; height: 85vh; min-height: 650px; background-color: rgba(10, 0, 0, 0.85); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; position: relative; }
+  /* ★ PCフルスクリーン対応：幅と高さを限界まで拡大 */
+  .dashboard-container { display: flex; flex-direction: column; width: 96vw; max-width: 1800px; height: 94vh; min-height: 600px; background-color: rgba(10, 0, 0, 0.85); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; position: relative; }
   .dashboard-main { display: flex; flex-direction: row; flex: 1; overflow: hidden; }
 
   .left-col { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid rgba(127, 140, 141, 0.3); background: rgba(0,0,0,0.4); position: relative; }
-  .right-col { flex: 1.5; padding: 40px; display: flex; flex-direction: column; overflow: hidden; background: rgba(15, 0, 0, 0.6); gap: 30px; }
+  .right-col { flex: 1.5; padding: 40px; display: flex; flex-direction: column; overflow: hidden; background: rgba(15, 0, 0, 0.6); gap: 20px; }
 
-  .suits { font-size: 28px; letter-spacing: 12px; margin-bottom: 10px; opacity: 0.9; margin-right: -12px; }
+  .suits { font-size: clamp(20px, 2vw, 32px); letter-spacing: 12px; margin-bottom: 10px; opacity: 0.9; margin-right: -12px; }
   .suit-red { color: #ff4757; }
   .suit-black { color: #ffffff; }
   
-  h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: 50px; margin: 0 -4px 10px 0; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); letter-spacing: -3px; font-weight: 900; }
-  h1 span { font-family: 'KEYpro', sans-serif; color: #d4af37; font-size: 14px; margin-left: 10px; font-weight: normal; text-transform: uppercase; letter-spacing: 4px; vertical-align: middle; }
+  h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: clamp(40px, 4vw, 64px); margin: 0 -4px 10px 0; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); letter-spacing: -3px; font-weight: 900; }
+  h1 span { font-family: 'KEYpro', sans-serif; color: #d4af37; font-size: clamp(12px, 1vw, 16px); margin-left: 10px; font-weight: normal; text-transform: uppercase; letter-spacing: 4px; vertical-align: middle; }
 
-  p.subtitle { font-size: 14px; margin-bottom: 40px; margin-right: -3px; color: #7f8fa6; letter-spacing: 3px; text-transform: uppercase; }
+  p.subtitle { font-size: clamp(12px, 1vw, 16px); margin-bottom: 30px; margin-right: -3px; color: #7f8fa6; letter-spacing: 3px; text-transform: uppercase; }
   
-  .date-header { font-size: 18px; font-weight: bold; color: #dcdde1; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 10px 30px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); letter-spacing: 2px; margin-right: -2px; }
+  .date-header { font-size: clamp(16px, 1.5vw, 20px); font-weight: bold; color: #dcdde1; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 10px 30px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); letter-spacing: 2px; }
   
-  .timer-label { font-size: 16px; color: #7f8fa6; margin-bottom: 10px; letter-spacing: 3px; text-transform: uppercase; margin-right: -3px; }
-  .timer-display { background: #000; color: #2ed573; font-family: 'Courier New', monospace; font-size: 76px; font-weight: bold; padding: 15px 30px; border-radius: 8px; border: 1px solid #2f3542; margin-bottom: 20px; text-shadow: 0 0 25px rgba(46, 213, 115, 0.5); box-shadow: inset 0 0 30px rgba(0,0,0,1); letter-spacing: 2px; margin-right: -2px; }
+  .timer-label { font-size: clamp(14px, 1.2vw, 18px); color: #7f8fa6; margin-bottom: 10px; letter-spacing: 3px; text-transform: uppercase; }
+  .timer-display { background: #000; color: #2ed573; font-family: 'Courier New', monospace; font-size: clamp(60px, 6vw, 100px); font-weight: bold; padding: 15px 30px; border-radius: 8px; border: 1px solid #2f3542; text-shadow: 0 0 25px rgba(46, 213, 115, 0.5); box-shadow: inset 0 0 30px rgba(0,0,0,1); letter-spacing: 2px; }
   
-  .dashboard-bottom { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 15px; padding: 15px 40px; background: rgba(0, 0, 0, 0.5); border-top: 1px solid rgba(255, 255, 255, 0.05); flex-shrink: 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); }
-  
-  .bottom-btn { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 240px; padding: 12px 20px; font-weight: bold; text-decoration: none; border-radius: 4px; cursor: pointer; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; text-align: center; }
-  
-  .bottom-btn.ranking { background: rgba(255,255,255,0.03); color: #d4af37; font-size: 14px; border: 1px solid rgba(212, 175, 55, 0.6); }
-  .bottom-btn.ranking:hover { background: #d4af37; color: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
-
-  .bottom-btn.rules { background: transparent; color: #7f8fa6; font-size: 12px; border: 1px solid rgba(127, 140, 141, 0.5); }
-  .bottom-btn.rules:hover { background: rgba(255,255,255,0.1); color: #ffffff; border-color: #ffffff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
-  
-  .board-title { color: #d4af37; font-size: 20px; letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-bottom: 10px; flex-shrink: 0; }
+  .board-title { color: #d4af37; font-size: clamp(18px, 1.5vw, 24px); letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-shrink: 0; }
   .board-title::before { content: ''; display: inline-block; width: 6px; height: 20px; background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
   
-  /* 🔴 リエントリーランキング */
   .live-ranking-list { display: flex; flex-direction: column; gap: 8px; width: 100%; flex-grow: 1; overflow-y: auto; padding-right: 15px; margin-bottom: 10px; position: relative; }
   .live-ranking-list::-webkit-scrollbar { width: 4px; }
   .live-ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
   .live-ranking-list::-webkit-scrollbar-thumb { background: #800000; }
 
-  /* ★ 修正ポイント：文字色を明るくし、黒いフチドリとドロップシャドウで文字をくっきりさせる */
-  .title-re-entry { 
-    font-family: 'Nosifer', sans-serif; 
-    color: #ff4757; /* 鮮やかな赤に変更して読みやすく */
-    -webkit-text-stroke: 1px #800000; /* 暗い赤のフチドリ */
-    letter-spacing: 2px; 
-    border-bottom-color: rgba(179, 0, 0, 0.5); 
-    animation: flameTitle 2s ease-in-out infinite alternate; 
-  }
+  /* ★ 滑らかで目に優しいアニメーションに修正 */
+  .title-re-entry { font-family: 'Nosifer', sans-serif; color: #ff4757; -webkit-text-stroke: 1px #800000; letter-spacing: 2px; border-bottom-color: rgba(179, 0, 0, 0.5); animation: flameTitle 4s ease-in-out infinite alternate; }
   .title-re-entry::before { background-color: #ff4757; box-shadow: 0 0 10px #ff4757; }
   .title-re-entry .title-skull { width: 22px; height: 22px; fill: #ff4757; margin-left: 10px; filter: drop-shadow(0 0 5px #ff0000); }
 
-  .live-rank-card { display: flex; justify-content: flex-start; align-items: center; background: rgba(0, 0, 0, 0.9); border-left: 4px solid transparent; padding: 12px 20px; border-radius: 0 8px 8px 0; box-shadow: inset 0 -1px 0 rgba(255,255,255,0.05); flex-shrink: 0; transition: all 0.3s; position: relative; overflow: hidden; border: 1px solid #1a1a1a; animation: crackFlicker 1.5s ease-in-out infinite; }
+  .live-rank-card { display: flex; justify-content: flex-start; align-items: center; background: rgba(0, 0, 0, 0.9); border-left: 4px solid transparent; padding: 12px 20px; border-radius: 0 8px 8px 0; box-shadow: inset 0 -1px 0 rgba(255,255,255,0.05); flex-shrink: 0; transition: all 0.3s; position: relative; overflow: hidden; border: 1px solid #1a1a1a; animation: crackFlicker 5s ease-in-out infinite; }
   .live-rank-card .card-skull-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; fill: rgba(255, 255, 255, 0.04); z-index: 0; pointer-events: none; }
 
-  .live-rank-card.worst-1 { border-left-color: transparent; border-left-image: linear-gradient(180deg, #ff4500, #ff0000, #ff4500); border-left-image-slice: 1; background: linear-gradient(90deg, rgba(128, 0, 0, 0.3) 0%, rgba(0,0,0,0.9) 100%); border-color: rgba(179, 0, 0, 0.3); box-shadow: 0 0 30px rgba(179, 0, 0, 0.6); animation: flameCard 3s ease-in-out infinite alternate; }
+  .live-rank-card.worst-1 { border-left-color: transparent; border-left-image: linear-gradient(180deg, #ff4500, #ff0000, #ff4500); border-left-image-slice: 1; background: linear-gradient(90deg, rgba(128, 0, 0, 0.3) 0%, rgba(0,0,0,0.9) 100%); border-color: rgba(179, 0, 0, 0.3); animation: flameCard 4s ease-in-out infinite alternate; }
   .worst-1 .card-skull-bg { fill: rgba(179, 0, 0, 0.08); filter: drop-shadow(0 0 10px #ff4500); }
-  
   .live-rank-card.worst-2 { border-left-color: #bf9b30; background: linear-gradient(90deg, rgba(191, 155, 48, 0.08) 0%, rgba(0,0,0,0.7) 100%); border-color: rgba(191, 155, 48, 0.2); }
   .live-rank-card.worst-3 { border-left-color: #a67c00; background: linear-gradient(90deg, rgba(166, 124, 0, 0.05) 0%, rgba(0,0,0,0.7) 100%); border-color: rgba(166, 124, 0, 0.1); }
 
@@ -78,34 +58,30 @@
   .name-col { flex-grow: 1; text-align: left; padding-left: 10px; display: flex; flex-direction: column; gap: 4px; justify-content: center; z-index: 1; overflow: hidden; }
   .entry-col { width: 100px; display: flex; align-items: center; justify-content: flex-end; z-index: 1; flex-shrink: 0; text-align: right; }
   
-  .rank-badge-text { font-family: 'Nosifer', sans-serif; font-size: 34px; font-weight: normal; color: transparent; -webkit-text-stroke: 1.5px #800000; letter-spacing: 2px; line-height: 1; filter: drop-shadow(0 0 15px rgba(179, 0, 0, 0.8)); animation: flameRank 2s ease-in-out infinite alternate; }
-  .worst-1 .rank-badge-text { font-size: 36px; -webkit-text-stroke-color: #800000; filter: drop-shadow(0 0 10px #ff4500); }
+  .rank-badge-text { font-family: 'Nosifer', sans-serif; font-size: clamp(24px, 2.5vw, 34px); font-weight: normal; color: transparent; -webkit-text-stroke: 1.5px #800000; letter-spacing: 2px; line-height: 1; animation: flameRank 4s ease-in-out infinite alternate; }
+  .worst-1 .rank-badge-text { font-size: clamp(28px, 3vw, 38px); -webkit-text-stroke-color: #800000; filter: drop-shadow(0 0 10px #ff4500); }
   .worst-2 .rank-badge-text { -webkit-text-stroke-color: #bf9b30; filter: drop-shadow(0 0 8px rgba(191, 155, 48, 0.5)); animation: none; }
   .worst-3 .rank-badge-text { -webkit-text-stroke-color: #a67c00; filter: drop-shadow(0 0 6px rgba(166, 124, 0, 0.4)); animation: none; }
 
-  .player-name-item { font-size: 18px; font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .worst-1 .player-name-item { font-size: 20px; color: #ffffff; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 10px #ff4500; animation: flameName 1.5s ease-in-out infinite alternate; }
+  .player-name-item { font-size: clamp(14px, 1.5vw, 18px); font-weight: bold; color: #f1f2f6; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .worst-1 .player-name-item { font-size: clamp(16px, 1.8vw, 22px); color: #ffffff; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 10px #ff4500; animation: flameName 3s ease-in-out infinite alternate; }
 
   .entry-badge { display: flex; align-items: baseline; justify-content: flex-end; gap: 4px; width: 100%; }
-  .entry-badge .num { font-family: 'Nosifer', sans-serif; font-size: 32px; font-weight: normal; line-height: 1; color: #7f8fa6; }
+  .entry-badge .num { font-family: 'Nosifer', sans-serif; font-size: clamp(22px, 2.5vw, 32px); font-weight: normal; line-height: 1; color: #7f8fa6; }
   .entry-badge .unit { font-size: 14px; color: #7f8fa6; font-weight: normal; letter-spacing: 1px; }
 
-  .worst-1 .entry-badge .num { color: #ff4500; text-shadow: 0 0 20px rgba(255, 69, 0, 0.7); animation: flameEntry 1.5s ease-in-out infinite alternate; }
+  .worst-1 .entry-badge .num { color: #ff4500; text-shadow: 0 0 15px rgba(255, 69, 0, 0.5); animation: flameEntry 4s ease-in-out infinite alternate; }
   .worst-2 .entry-badge .num { color: #bf9b30; text-shadow: 0 0 12px rgba(191, 155, 48, 0.5); }
   .worst-3 .entry-badge .num { color: #a67c00; text-shadow: 0 0 10px rgba(166, 124, 0, 0.4); }
 
-  /* ★ 修正ポイント：タイトルの光を強すぎないように調整し、黒い影（文字の輪郭）を追加 */
-  @keyframes flameTitle { 
-    0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 10px #ff4500, 0 0 20px #ff0000; } 
-    100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 15px #ff4500, 0 0 30px #ff0000; } 
-  }
-  @keyframes flameCard { 0% { box-shadow: 0 0 20px rgba(179, 0, 0, 0.6), inset 0 0 10px rgba(179, 0, 0, 0.3); } 100% { box-shadow: 0 0 35px rgba(179, 0, 0, 0.6), inset 0 0 15px rgba(179, 0, 0, 0.3); } }
-  @keyframes flameRank { 0% { filter: drop-shadow(0 0 10px #ff4500) drop-shadow(0 0 15px rgba(179, 0, 0, 0.8)); } 100% { filter: drop-shadow(0 0 15px #ff4500) drop-shadow(0 0 20px rgba(179, 0, 0, 0.8)); } }
-  @keyframes flameEntry { 0% { text-shadow: 0 0 15px #ff4500, 0 0 20px rgba(255, 69, 0, 0.7); } 100% { text-shadow: 0 0 20px #ff4500, 0 0 25px rgba(255, 69, 0, 0.7); } }
-  @keyframes flameName { 0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 8px #ff4500; color: #ffffff; } 100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px #ff0000; color: #ffda79; } }
-  @keyframes crackFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } }
+  /* 視覚的疲労を防ぐ滑らかな揺らぎへ変更 */
+  @keyframes flameTitle { 0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 10px #ff4500; } 100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 15px #ff4500; } }
+  @keyframes flameCard { 0% { box-shadow: 0 0 20px rgba(179, 0, 0, 0.5), inset 0 0 10px rgba(179, 0, 0, 0.2); } 100% { box-shadow: 0 0 25px rgba(179, 0, 0, 0.7), inset 0 0 15px rgba(179, 0, 0, 0.3); } }
+  @keyframes flameRank { 0% { filter: drop-shadow(0 0 10px rgba(179, 0, 0, 0.6)); } 100% { filter: drop-shadow(0 0 15px rgba(179, 0, 0, 0.9)); } }
+  @keyframes flameEntry { 0% { text-shadow: 0 0 15px rgba(255, 69, 0, 0.5); } 100% { text-shadow: 0 0 20px rgba(255, 69, 0, 0.8); } }
+  @keyframes flameName { 0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 8px #ff4500; color: #ffffff; } 100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 12px #ff4500; color: #fff5e6; } }
+  @keyframes crackFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.95; } }
 
-  /* 🟢 参加者リスト */
   .title-active { color: #d4af37; border-bottom-color: rgba(212, 175, 55, 0.4); text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-top: auto; }
   .title-active::before { background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
 
@@ -114,13 +90,13 @@
   .active-players-grid::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
   .active-players-grid::-webkit-scrollbar-thumb { background: #57606f; }
 
-  .player-tag { background: rgba(0, 0, 0, 0.6); border: 1px solid #2f3542; padding: 8px 18px; border-radius: 50px; font-size: 16px; color: #f1f2f6; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); font-weight: bold; letter-spacing: 1px; transition: all 0.3s; }
-  .player-tag .status-dot { width: 8px; height: 8px; background: #d4af37; border-radius: 50%; box-shadow: 0 0 8px #d4af37; animation: blink 2s infinite; }
-  @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+  .player-tag { background: rgba(0, 0, 0, 0.6); border: 1px solid #2f3542; padding: 8px 18px; border-radius: 50px; font-size: clamp(12px, 1vw, 16px); color: #f1f2f6; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); font-weight: bold; letter-spacing: 1px; transition: all 0.3s; }
+  .player-tag .status-dot { width: 8px; height: 8px; background: #d4af37; border-radius: 50%; box-shadow: 0 0 8px #d4af37; animation: blink 4s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-  /* ★ 歴代トップ3のVIPタグ＆王冠デザイン */
+  /* VIP王冠 */
   .crown-icon { width: 18px; height: 18px; margin-left: 6px; margin-top: -2px; }
-  .crown-gold { fill: #f1c40f; filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.8)); animation: goldGlow 2s infinite alternate; }
+  .crown-gold { fill: #f1c40f; filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.8)); animation: goldGlow 4s infinite alternate; }
   .crown-silver { fill: #bdc3c7; filter: drop-shadow(0 0 5px rgba(189, 195, 199, 0.8)); }
   .crown-bronze { fill: #cd7f32; filter: drop-shadow(0 0 5px rgba(205, 127, 50, 0.8)); }
   .vip-tag-1 { border-color: rgba(241, 196, 15, 0.6) !important; box-shadow: 0 0 10px rgba(241, 196, 15, 0.3), inset 0 0 10px rgba(241, 196, 15, 0.1) !important; color: #f1c40f !important; }
@@ -128,13 +104,31 @@
   .vip-tag-3 { border-color: rgba(205, 127, 50, 0.5) !important; box-shadow: 0 0 8px rgba(205, 127, 50, 0.2) !important; color: #cd7f32 !important; }
   @keyframes goldGlow { 0% { filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.5)); } 100% { filter: drop-shadow(0 0 12px rgba(241, 196, 15, 1)); } }
 
-  .empty-text { color: #57606f; font-size: 14px; width: 100%; text-align: center; margin-top: 20px; letter-spacing: 2px; line-height: 1.8; font-weight: bold; }
-  .empty-text span { color: #d4af37; font-weight: bold; font-size: 13px; }
+  .empty-text { color: #57606f; font-size: clamp(12px, 1vw, 14px); width: 100%; text-align: center; margin-top: 20px; letter-spacing: 2px; line-height: 1.8; font-weight: bold; }
+  .empty-text span { color: #d4af37; font-weight: bold; font-size: clamp(11px, 1vw, 13px); }
   
-  .footer-text { position: absolute; bottom: 15px; right: 20px; font-size: 11px; color: #57606f; letter-spacing: 1px; text-transform: uppercase; }
-  
-  .secret-btn { position: fixed; bottom: 15px; left: 15px; background: transparent; color: #57606f; border: none; font-size: 24px; cursor: pointer; padding: 10px; transition: color 0.3s; outline: none; z-index: 100; }
+  .footer-text { position: absolute; bottom: 15px; left: 20px; font-size: 11px; color: #57606f; letter-spacing: 1px; text-transform: uppercase; }
+  .secret-btn { position: fixed; top: 15px; left: 15px; background: transparent; color: #57606f; border: none; font-size: 24px; cursor: pointer; padding: 10px; transition: color 0.3s; outline: none; z-index: 100; }
   .secret-btn:hover { color: #ffffff; }
+
+  /* ★ 新デザイン：小さくてカッコいい「NEXTボタン」を右下に配置 */
+  .discreet-next-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #7f8fa6;
+    border: 1px solid rgba(127, 140, 141, 0.5);
+    padding: 10px 24px;
+    font-size: 12px;
+    border-radius: 50px;
+    text-decoration: none;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    z-index: 50;
+  }
+  .discreet-next-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
 
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
   .modal-content { background: #121212; padding: 40px; border-radius: 8px; border: 1px solid #333; text-align: center; width: 90%; max-width: 350px; box-shadow: 0 0 30px rgba(0,0,0,1); }
@@ -145,35 +139,14 @@
   .modal-close-btn { background: transparent; color: #7f8fa6; border: 1px solid #555; padding: 10px 30px; border-radius: 50px; cursor: pointer; font-size: 12px; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; margin-right: -2px; }
   .modal-close-btn:hover { background: #ffffff; color: #000; border-color: #ffffff; }
 
-  /* ==========================================================================
-     ★★★ ド派手な格ゲー風 NEW CHALLENGER 演出 ★★★
-     ========================================================================= */
-  .new-challenger-overlay {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.9); z-index: 10000; display: flex; flex-direction: column;
-    justify-content: center; align-items: center; animation: flashBg 0.5s ease-out; overflow: hidden;
-  }
-  @keyframes flashBg { 0% { background: rgba(255, 255, 255, 0.8); } 100% { background: rgba(0, 0, 0, 0.9); } }
-  
-  .new-challenger-title {
-    color: #ff4757; font-family: 'Bangers', cursive; font-size: 100px;
-    text-shadow: 4px 4px 0 #000, -2px -2px 0 #fff, 0 0 30px #ff4757; 
-    letter-spacing: 8px; margin-bottom: 10px; animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 10001;
-  }
-  
-  .new-challenger-name {
-    color: #ffffff; font-family: Impact, 'Arial Black', sans-serif; font-style: italic; font-size: 90px;
-    text-transform: uppercase; letter-spacing: 8px; -webkit-text-stroke: 4px #000; 
-    text-shadow: 6px 6px 0 #d4af37, 12px 12px 0 #000, 0 0 50px rgba(212,175,55,0.8); 
-    animation: smashIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
-    opacity: 0; transform: translateY(100px) skewX(-10deg) scale(0.8); z-index: 10001; text-align: center; padding: 0 20px; line-height: 1.1;
-  }
-
-  @keyframes scaleIn { 0% { transform: scale(3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-  @keyframes smashIn { 0% { transform: translateY(100px) skewX(-15deg) scale(0.5); opacity: 0; filter: brightness(2); } 70% { transform: translateY(-10px) skewX(-15deg) scale(1.1); opacity: 1; filter: brightness(1.5); } 100% { transform: translateY(0) skewX(-15deg) scale(1); opacity: 1; filter: brightness(1); } }
-  
+  /* 乱入演出（滑らかに表示） */
+  .new-challenger-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: flashBg 1s ease-out forwards; overflow: hidden; }
+  @keyframes flashBg { 0% { background: rgba(0, 0, 0, 0); } 100% { background: rgba(0, 0, 0, 0.95); } }
+  .new-challenger-title { color: #ff4757; font-family: 'Bangers', cursive; font-size: 100px; text-shadow: 4px 4px 0 #000, -2px -2px 0 #fff, 0 0 30px #ff4757; letter-spacing: 8px; margin-bottom: 10px; animation: scaleIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 10001; opacity: 0; }
+  .new-challenger-name { color: #ffffff; font-family: Impact, 'Arial Black', sans-serif; font-style: italic; font-size: 90px; text-transform: uppercase; letter-spacing: 8px; -webkit-text-stroke: 4px #000; text-shadow: 6px 6px 0 #d4af37, 12px 12px 0 #000, 0 0 50px rgba(212,175,55,0.8); animation: smashIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards; opacity: 0; transform: translateY(50px) scale(0.9); z-index: 10001; text-align: center; padding: 0 20px; line-height: 1.1; }
+  @keyframes scaleIn { 0% { transform: scale(1.2); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes smashIn { 0% { transform: translateY(50px) scale(0.9); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
   .particle { position: absolute; pointer-events: none; z-index: 10000; display: flex; justify-content: center; align-items: center; font-weight: bold; }
-
   @keyframes fall { 0% { top: -10vh; transform: rotate(0deg) scale(1); opacity: 1; } 100% { top: 110vh; transform: rotate(720deg) scale(1.2); opacity: 0; } }
   @keyframes explode { 0% { left: 50vw; top: 50vh; transform: translate(-50%, -50%) scale(0); opacity: 1; } 100% { left: var(--tx); top: var(--ty); transform: translate(-50%, -50%) scale(var(--s)); opacity: 0; } }
   @keyframes rise { 0% { top: 110vh; transform: translateX(0) scale(1); opacity: 1; } 100% { top: -10vh; transform: translateX(var(--tx)) scale(0.5); opacity: 0; } }
@@ -182,28 +155,22 @@
   /* 📱 スマホ用 */
   @media screen and (max-width: 900px) {
     body { padding: 10px; display: block; overflow-x: hidden; }
-    .dashboard-container { flex-direction: column; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; }
+    .dashboard-container { flex-direction: column; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; width: 100%; max-width: 100%; }
     .dashboard-main { flex-direction: column; }
     .left-col { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 15px; }
     .right-col { padding: 25px 15px; gap: 20px; }
-    .dashboard-bottom { flex-direction: row; gap: 10px; padding: 15px 10px; }
-    .bottom-btn { padding: 10px 15px; max-width: 180px; letter-spacing: 1px; }
-    .bottom-btn.ranking { font-size: 13px; }
-    .bottom-btn.rules { font-size: 11px; }
+    
     .suits { font-size: 32px; }
     h1 { font-size: 36px; } 
     .timer-display { font-size: 56px; padding: 10px 20px; margin-bottom: 10px; }
     .board-title { font-size: 18px; text-align: center; justify-content: center; margin-right: -4px; }
     .board-title::before { display: none; }
-    
-    /* スマホ版でもタイトルが読めるように調整 */
     .title-re-entry { letter-spacing: 1px; font-size: 16px; }
     .title-re-entry .title-skull { display: none; }
-    
     .live-ranking-list { height: auto; padding-right: 0; }
     .live-rank-card { padding: 10px 15px; border-radius: 0 4px 4px 0; border-left-width: 3px; }
     .live-rank-card .card-skull-bg { width: 90px; height: 90px; }
-    .rank-col { width: 60px; flex-shrink: 0; }
+    .rank-col { width: 55px; flex-shrink: 0; }
     .rank-badge-text { font-size: 26px; }
     .worst-1 .rank-badge-text { font-size: 30px; letter-spacing: 2px; }
     .name-col { padding-left: 10px; gap: 2px; overflow: hidden; }
@@ -214,7 +181,12 @@
     .entry-badge .unit { font-size: 10px; }
     .title-active { margin-top: 10px; }
     .active-players-grid { justify-content: center; max-height: none; }
-    .footer-text { position: static; text-align: center; margin-top: 20px; padding-bottom: 20px; }
+    
+    /* スマホ時はボタンを元の中央下配置に戻す */
+    .discreet-next-btn { position: relative; bottom: auto; right: auto; margin: 20px auto; display: block; max-width: 200px; text-align: center; }
+    .footer-text { position: static; text-align: center; margin-top: 10px; padding-bottom: 20px; }
+    .secret-btn { top: auto; bottom: 15px; left: 15px; }
+    
     .new-challenger-title { font-size: 40px; text-shadow: 2px 2px 0 #000, -1px -1px 0 #fff, 0 0 10px #ff4757; }
     .new-challenger-name { font-size: 50px; -webkit-text-stroke: 2px #000; text-shadow: 3px 3px 0 #d4af37, 6px 6px 0 #000, 0 0 20px rgba(212,175,55,0.8); letter-spacing: 4px; }
   }
@@ -248,11 +220,8 @@
         <div id="activePlayersBoard" class="active-players-grid"></div>
       </div>
     </div>
-
-    <div class="dashboard-bottom">
-      <a href="ranking.html" class="bottom-btn ranking">HALL OF FAME</a>
-      <a href="rules.html" class="bottom-btn rules">HOW TO PLAY</a>
-    </div>
+    
+    <a href="ranking.html" class="discreet-next-btn">HALL OF FAME ➔</a>
   </div>
 
   <div class="footer-text">© 2026 KEYpro poker Server</div>
@@ -333,7 +302,7 @@
       for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
-        let dur = Math.random() * 2 + 1.5;
+        let dur = Math.random() * 3 + 3; /* 滑らかにするため遅く */
         let delay = Math.random() * 0.5;
         p.style.left = (Math.random() * 100) + 'vw';
         p.style.setProperty('--tx', (Math.random() * 100) + 'vw');
@@ -351,17 +320,17 @@
         } else if (effect.type === 'gold') {
           if (Math.random() > 0.5) { p.style.width = '40px'; p.style.height = '40px'; p.style.borderRadius = '50%'; p.style.background = 'radial-gradient(circle, #f1c40f, #d35400)'; p.innerText = '¥'; p.style.color = '#fff'; p.style.fontSize = '20px';
           } else { p.style.width = '50px'; p.style.height = '25px'; p.style.background = '#27ae60'; p.style.borderRadius = '2px'; p.innerText = '$'; p.style.color = '#fff'; }
-        } else if (effect.type === 'confetti') { p.style.width = '15px'; p.style.height = '15px'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; dur = Math.random() * 3 + 2; 
+        } else if (effect.type === 'confetti') { p.style.width = '15px'; p.style.height = '15px'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; dur = Math.random() * 4 + 3; 
         } else if (effect.type === 'slot') { p.innerText = slots[Math.floor(Math.random() * slots.length)]; p.style.fontSize = '45px';
         } else if (effect.type === 'star') { p.innerText = '★'; p.style.color = colors[Math.floor(Math.random() * colors.length)]; p.style.fontSize = (Math.random() * 30 + 20) + 'px'; p.style.textShadow = '0 0 10px #fff';
         } else if (effect.type === 'firework') { p.style.width = '10px'; p.style.height = '10px'; p.style.borderRadius = '50%'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; p.style.boxShadow = '0 0 20px ' + p.style.background; p.style.setProperty('--tx', ((Math.random() - 0.5) * 50) + 'vw');
-        } else if (effect.type === 'laser') { p.style.width = '4px'; p.style.height = '150px'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; p.style.boxShadow = '0 0 20px ' + p.style.background; dur = Math.random() * 0.5 + 0.3; 
+        } else if (effect.type === 'laser') { p.style.width = '4px'; p.style.height = '150px'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; p.style.boxShadow = '0 0 20px ' + p.style.background; dur = Math.random() * 1 + 0.5; 
         } else if (effect.type === 'ring') { p.style.width = '50px'; p.style.height = '50px'; p.style.borderRadius = '50%'; p.style.border = '5px solid ' + colors[Math.floor(Math.random() * colors.length)]; p.style.boxShadow = '0 0 15px ' + p.style.borderColor; p.style.setProperty('--s', Math.random() * 4 + 2);
         } else if (effect.type === 'hand') { let suit = suits[Math.floor(Math.random() * suits.length)]; let rank = ranks[Math.floor(Math.random() * ranks.length)]; p.innerText = rank + suit; p.style.fontSize = '30px'; p.style.color = (suit === '♥' || suit === '♦') ? '#e74c3c' : '#2c3e50'; p.style.background = '#fff'; p.style.padding = '5px 10px'; p.style.borderRadius = '5px'; p.style.border = '2px solid #d4af37'; p.style.left = '50vw'; p.style.top = '50vh'; p.style.setProperty('--s', Math.random() * 3 + 1.5); }
         p.style.animation = `${effect.anim} ${dur}s linear ${delay}s forwards`;
         container.appendChild(p);
       }
-      setTimeout(() => { container.style.opacity = '0'; container.style.transition = 'opacity 0.5s ease'; setTimeout(() => container.remove(), 500); }, 4000);
+      setTimeout(() => { container.style.opacity = '0'; container.style.transition = 'opacity 1s ease'; setTimeout(() => container.remove(), 1000); }, 5000);
     }
 
     function renderBoard(data) {
