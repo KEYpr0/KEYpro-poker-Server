@@ -27,25 +27,22 @@
   .board-title { color: #d4af37; font-size: clamp(18px, 1.5vw, 24px); letter-spacing: 4px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-bottom: 20px; flex-shrink: 0; }
   .board-title::before { content: ''; display: inline-block; width: 6px; height: 20px; background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
 
-  /* ルールコンテンツ表示エリア */
-  .rules-content { flex-grow: 1; overflow-y: auto; padding-right: 15px; margin-bottom: 20px; text-align: left; }
+  /* ルールコンテンツ表示エリア（シンプルな縦並び） */
+  .rules-content { display: flex; flex-direction: column; gap: 30px; flex-grow: 1; overflow-y: auto; padding-right: 15px; margin-bottom: 20px; text-align: left; }
   .rules-content::-webkit-scrollbar { width: 6px; }
   .rules-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
   .rules-content::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
 
-  /* ★ PC大画面用にカードをグリッド配置 */
-  .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; align-items: start; }
-
-  /* ルールごとのカードデザイン */
-  .rule-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid #d4af37; padding: 25px; border-radius: 8px; transition: all 0.3s; }
-  .rule-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(212, 175, 55, 0.4); box-shadow: 0 10px 20px rgba(0,0,0,0.5); transform: translateY(-2px); }
+  /* 個別のルールブロック */
+  .rule-block { padding-bottom: 20px; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); }
+  .rule-block:last-child { border-bottom: none; }
   
-  .rule-card h3 { color: #d4af37; font-size: clamp(16px, 1.5vw, 22px); margin-top: 0; margin-bottom: 15px; letter-spacing: 2px; border-bottom: 1px dashed rgba(212, 175, 55, 0.3); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-  .rule-card p { font-size: clamp(14px, 1.2vw, 16px); color: #dcdde1; line-height: 1.8; margin-bottom: 10px; letter-spacing: 1px; }
-  .rule-card p:last-child { margin-bottom: 0; }
+  .rule-block h3 { color: #d4af37; font-size: clamp(18px, 1.8vw, 24px); margin-top: 0; margin-bottom: 10px; letter-spacing: 2px; }
+  .rule-block p { font-size: clamp(15px, 1.4vw, 18px); color: #dcdde1; line-height: 1.8; margin-bottom: 8px; letter-spacing: 1px; }
+  .rule-block p:last-child { margin-bottom: 0; }
   
-  .highlight { color: #2ecc71; font-weight: bold; font-size: 110%; }
-  .warning { color: #e74c3c; font-weight: bold; font-size: 110%; }
+  .highlight { color: #2ecc71; font-weight: bold; }
+  .warning { color: #e74c3c; font-weight: bold; }
 
   /* 左上のダッシュボードに戻るボタン */
   .discreet-next-btn {
@@ -76,12 +73,10 @@
     
     .board-title { font-size: 18px; margin-right: -4px; }
     
-    .rules-content { padding-right: 0; }
-    .rules-grid { grid-template-columns: 1fr; gap: 15px; }
-    
-    .rule-card { padding: 15px; border-left-width: 3px; }
-    .rule-card h3 { font-size: 16px; margin-bottom: 10px; padding-bottom: 8px; }
-    .rule-card p { font-size: 13px; line-height: 1.6; }
+    .rules-content { padding-right: 0; gap: 20px; }
+    .rule-block { padding-bottom: 15px; }
+    .rule-block h3 { font-size: 16px; margin-bottom: 8px; }
+    .rule-block p { font-size: 14px; line-height: 1.6; }
     
     .discreet-next-btn { top: 15px; left: 15px; padding: 8px 16px; font-size: 10px; }
   }
@@ -98,46 +93,44 @@
     <div class="board-title">HOW TO PLAY</div>
     
     <div class="rules-content">
-      <div class="rules-grid">
         
-        <div class="rule-card">
-          <h3>🃏 1. 基本ルール設定</h3>
-          <p>・スタートチップ: <span class="highlight">20,000点</span></p>
-          <p>・精算レート: 1pt = <span class="highlight">10</span></p>
-          <p>終了時の持ち点から、エントリー分の点数（20,000点 × 回数）を引いたスコアが最終結果となります。</p>
-        </div>
-
-        <div class="rule-card">
-          <h3>🔄 2. リエントリーについて</h3>
-          <p>チップが全損した場合、<span class="highlight">何度でもリエントリーが可能</span>です。</p>
-          <p>リエントリーを行ったプレイヤーは、ダッシュボードの「RE-ENTRY RANKING（地獄のワーストランキング）」に表示されます。回数が多いほど上位（ワースト）に表示されます。</p>
-        </div>
-
-        <div class="rule-card">
-          <h3>💰 3. チップの精算方法</h3>
-          <p>ゲーム終了後、管理者が「⚙（設定アイコン）」からパスワードを入力し、精算画面を開きます。</p>
-          <p>「最終持ち点」と「エントリー回数」を入力すると、システムが自動でプラス/マイナスを計算します。合計のズレが<span class="highlight">「0 (誤差なし)」</span>になったことを確認してから記録してください。</p>
-        </div>
-
-        <div class="rule-card">
-          <h3>👑 4. HALL OF FAME (歴代ランキング)</h3>
-          <p>精算画面で「成績を確定して記録」を実行すると、そのゲームの成績がサーバーのデータベースに永久保存されます。</p>
-          <p>歴代の累計成績は「HALL OF FAME」画面で確認でき、歴代トップ3のプレイヤーが現在のゲームに参加すると、ダッシュボードの名前の横に<span class="highlight">王冠マーク</span>が輝きます。</p>
-        </div>
-
-        <div class="rule-card">
-          <h3>📸 5. レポート画像の保存</h3>
-          <p>成績を確定すると、その日のセッションの「レポート画像」が自動生成されます。</p>
-          <p>スマホの場合は<span class="warning">画像を指で長押し</span>して「写真に追加」や「画像を保存」を選び、デバイスに保存してください。PCの場合は右クリックから保存が可能です。</p>
-        </div>
-
-        <div class="rule-card">
-          <h3>⚠️ 6. 注意事項</h3>
-          <p>・ゲーム中のタイマーは全員の画面でリアルタイムに同期されています。</p>
-          <p>・画像の保存前に画面をリセットしてしまうと、画像が取得できなくなりますのでご注意ください。</p>
-        </div>
-
+      <div class="rule-block">
+        <h3>1. 基本ルール設定</h3>
+        <p>・スタートチップ: <span class="highlight">20,000点</span></p>
+        <p>・精算レート: 1pt = <span class="highlight">10</span></p>
+        <p>終了時の持ち点から、エントリー分の点数（20,000点 × 回数）を引いたスコアが最終結果となります。</p>
       </div>
+
+      <div class="rule-block">
+        <h3>2. リエントリーについて</h3>
+        <p>チップが全損した場合、<span class="highlight">何度でもリエントリーが可能</span>です。</p>
+        <p>リエントリーを行ったプレイヤーは、ダッシュボードの「RE-ENTRY RANKING（地獄のワーストランキング）」に表示されます。回数が多いほど上位（ワースト）に表示されます。</p>
+      </div>
+
+      <div class="rule-block">
+        <h3>3. チップの精算方法</h3>
+        <p>ゲーム終了後、管理者が「⚙（設定アイコン）」からパスワードを入力し、精算画面を開きます。</p>
+        <p>「最終持ち点」と「エントリー回数」を入力すると、システムが自動でプラス/マイナスを計算します。合計のズレが<span class="highlight">「0 (誤差なし)」</span>になったことを確認してから記録してください。</p>
+      </div>
+
+      <div class="rule-block">
+        <h3>4. HALL OF FAME (歴代ランキング)</h3>
+        <p>精算画面で「成績を確定して記録」を実行すると、そのゲームの成績がサーバーのデータベースに永久保存されます。</p>
+        <p>歴代の累計成績は「HALL OF FAME」画面で確認でき、歴代トップ3のプレイヤーが現在のゲームに参加すると、ダッシュボードの名前の横に<span class="highlight">王冠マーク</span>が輝きます。</p>
+      </div>
+
+      <div class="rule-block">
+        <h3>5. レポート画像の保存</h3>
+        <p>成績を確定すると、その日のセッションの「レポート画像」が自動生成されます。</p>
+        <p>スマホの場合は<span class="warning">画像を指で長押し</span>して「写真に追加」や「画像を保存」を選び、デバイスに保存してください。PCの場合は右クリックから保存が可能です。</p>
+      </div>
+
+      <div class="rule-block">
+        <h3>6. 注意事項</h3>
+        <p>・ゲーム中のタイマーは全員の画面でリアルタイムに同期されています。</p>
+        <p>・画像の保存前に画面をリセットしてしまうと、画像が取得できなくなりますのでご注意ください。</p>
+      </div>
+
     </div>
   </div>
 
