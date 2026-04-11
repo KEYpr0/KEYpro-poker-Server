@@ -15,13 +15,11 @@
   
   .dashboard-container { display: flex; flex-direction: column; width: 98vw; max-width: 2000px; height: 96vh; min-height: 600px; background-color: rgba(10, 0, 0, 0.85); border-radius: 12px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; position: relative; }
   
-  /* ★ メインエリアとフッターエリアを分割して、絶対に要素が被らない構造にする */
   .dashboard-main { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; }
 
   .left-col { flex: 1; padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid rgba(127, 140, 141, 0.3); background: rgba(0,0,0,0.4); position: relative; }
   .right-col { flex: 1.5; padding: 20px 30px; display: flex; flex-direction: column; overflow: hidden; background: rgba(15, 0, 0, 0.6); gap: 15px; }
 
-  /* 文字のド迫力サイズはキープ */
   .suits { font-size: clamp(32px, 4vw, 60px); letter-spacing: 12px; margin-bottom: 5px; opacity: 0.9; margin-right: -12px; }
   .suit-red { color: #ff4757; }
   .suit-black { color: #ffffff; }
@@ -36,7 +34,6 @@
   .timer-label { font-size: clamp(20px, 2.5vw, 36px); color: #7f8fa6; margin-bottom: 10px; letter-spacing: 4px; text-transform: uppercase; }
   .timer-display { background: #000; color: #2ed573; font-family: 'Courier New', monospace; font-size: clamp(70px, 10vw, 150px); font-weight: bold; padding: 15px 20px; border-radius: 12px; border: 1px solid #2f3542; text-shadow: 0 0 30px rgba(46, 213, 115, 0.6); box-shadow: inset 0 0 40px rgba(0,0,0,1); letter-spacing: 2px; line-height: 1; margin-bottom: 20px; }
   
-  /* ★ 修正：タイトルは絶対に1行に収めるため、少しだけ縮め、改行禁止を強化 */
   .board-title { color: #d4af37; font-size: clamp(20px, 2vw, 34px); letter-spacing: 2px; font-weight: bold; text-align: left; border-bottom: 2px solid rgba(212, 175, 55, 0.4); padding-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .board-title::before { content: ''; display: inline-block; width: 8px; height: 32px; background-color: #d4af37; box-shadow: 0 0 12px #d4af37; }
   
@@ -86,25 +83,72 @@
 
   .active-players-grid { display: flex; width: 100%; max-height: 250px; overflow: hidden; flex-shrink: 0; align-items: flex-start; justify-content: center; }
 
-  .player-tag { background: rgba(0, 0, 0, 0.6); border: 1px solid #2f3542; padding: 12px 30px; border-radius: 50px; font-size: clamp(20px, 2.5vw, 36px); color: #f1f2f6; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); font-weight: bold; letter-spacing: 2px; transition: all 0.3s; }
-  .player-tag .status-dot { width: clamp(10px, 1.2vw, 16px); height: clamp(10px, 1.2vw, 16px); background: #d4af37; border-radius: 50%; box-shadow: 0 0 8px #d4af37; animation: blink 4s infinite; }
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  /* =====================================================================
+     ★ 新設：アクティブプレイヤーのタグをメカニカルなネームプレート風に
+     ===================================================================== */
+  .player-tag { 
+    background: linear-gradient(135deg, rgba(30, 35, 40, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%); 
+    border: 1px solid rgba(127, 140, 141, 0.4); 
+    border-right: 2px solid rgba(212, 175, 55, 0.6); 
+    border-bottom: 2px solid rgba(212, 175, 55, 0.6); 
+    padding: 12px 30px 12px 25px; 
+    border-radius: 4px 15px 4px 15px; 
+    font-size: clamp(20px, 2.5vw, 36px); 
+    color: #ffffff; 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    box-shadow: 4px 4px 15px rgba(0,0,0,0.8); 
+    font-weight: bold; 
+    letter-spacing: 3px; 
+    transition: all 0.3s ease; 
+    position: relative; 
+    overflow: hidden; 
+  }
+  
+  .player-tag::before { 
+    content: ''; 
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    width: 6px; 
+    height: 100%; 
+    background: #d4af37; 
+    box-shadow: 0 0 15px #d4af37; 
+    animation: slowGlow 4s ease-in-out infinite alternate; 
+  }
+  
+  .player-tag:hover { 
+    transform: translateY(-3px) scale(1.02); 
+    border-color: #d4af37; 
+    background: linear-gradient(135deg, rgba(40, 45, 50, 0.9) 0%, rgba(15, 15, 15, 0.95) 100%); 
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3); 
+  }
+  
+  .player-tag .status-dot { display: none; }
+  
+  @keyframes slowGlow { 0% { opacity: 0.5; box-shadow: 0 0 5px #d4af37; } 100% { opacity: 1; box-shadow: 0 0 20px #d4af37; } }
 
-  .crown-icon { width: clamp(24px, 2.5vw, 36px); height: clamp(24px, 2.5vw, 36px); margin-left: 8px; margin-top: -2px; }
+  .crown-icon { width: clamp(24px, 2.5vw, 36px); height: clamp(24px, 2.5vw, 36px); margin-left: 8px; margin-top: -2px; z-index: 1; }
   .crown-gold { fill: #f1c40f; filter: drop-shadow(0 0 8px rgba(241, 196, 15, 0.8)); animation: goldGlow 4s infinite alternate; }
   .crown-silver { fill: #bdc3c7; filter: drop-shadow(0 0 8px rgba(189, 195, 199, 0.8)); }
   .crown-bronze { fill: #cd7f32; filter: drop-shadow(0 0 8px rgba(205, 127, 50, 0.8)); }
-  .vip-tag-1 { border-color: rgba(241, 196, 15, 0.6) !important; box-shadow: 0 0 15px rgba(241, 196, 15, 0.3), inset 0 0 10px rgba(241, 196, 15, 0.1) !important; color: #f1c40f !important; }
-  .vip-tag-2 { border-color: rgba(189, 195, 199, 0.5) !important; box-shadow: 0 0 12px rgba(189, 195, 199, 0.2) !important; color: #bdc3c7 !important; }
-  .vip-tag-3 { border-color: rgba(205, 127, 50, 0.5) !important; box-shadow: 0 0 12px rgba(205, 127, 50, 0.2) !important; color: #cd7f32 !important; }
+  
+  .vip-tag-1 { border-color: rgba(241, 196, 15, 0.6) !important; border-right: 2px solid #f1c40f !important; border-bottom: 2px solid #f1c40f !important; box-shadow: 0 0 15px rgba(241, 196, 15, 0.3), inset 0 0 10px rgba(241, 196, 15, 0.1) !important; color: #f1c40f !important; }
+  .vip-tag-1::before { background: #f1c40f; box-shadow: 0 0 15px #f1c40f; animation: slowGlowGold 4s ease-in-out infinite alternate; }
+  .vip-tag-2 { border-color: rgba(189, 195, 199, 0.5) !important; border-right: 2px solid #bdc3c7 !important; border-bottom: 2px solid #bdc3c7 !important; box-shadow: 0 0 12px rgba(189, 195, 199, 0.2) !important; color: #bdc3c7 !important; }
+  .vip-tag-2::before { background: #bdc3c7; box-shadow: 0 0 15px #bdc3c7; animation: slowGlowSilver 4s ease-in-out infinite alternate; }
+  .vip-tag-3 { border-color: rgba(205, 127, 50, 0.5) !important; border-right: 2px solid #cd7f32 !important; border-bottom: 2px solid #cd7f32 !important; box-shadow: 0 0 12px rgba(205, 127, 50, 0.2) !important; color: #cd7f32 !important; }
+  .vip-tag-3::before { background: #cd7f32; box-shadow: 0 0 15px #cd7f32; animation: slowGlowBronze 4s ease-in-out infinite alternate; }
+
+  @keyframes slowGlowGold { 0% { opacity: 0.5; box-shadow: 0 0 5px #f1c40f; } 100% { opacity: 1; box-shadow: 0 0 20px #f1c40f; } }
+  @keyframes slowGlowSilver { 0% { opacity: 0.5; box-shadow: 0 0 5px #bdc3c7; } 100% { opacity: 1; box-shadow: 0 0 20px #bdc3c7; } }
+  @keyframes slowGlowBronze { 0% { opacity: 0.5; box-shadow: 0 0 5px #cd7f32; } 100% { opacity: 1; box-shadow: 0 0 20px #cd7f32; } }
   @keyframes goldGlow { 0% { filter: drop-shadow(0 0 8px rgba(241, 196, 15, 0.5)); } 100% { filter: drop-shadow(0 0 18px rgba(241, 196, 15, 1)); } }
 
   .empty-text { color: #57606f; font-size: clamp(18px, 2vw, 26px); width: 100%; text-align: center; margin-top: 20px; letter-spacing: 2px; line-height: 1.8; font-weight: bold; }
   .empty-text span { color: #d4af37; font-weight: bold; font-size: clamp(16px, 1.8vw, 22px); }
   
-  /* =====================================================================
-     ★ 新設：絶対に要素が被らない最強のフッターエリア
-     ===================================================================== */
   .dashboard-footer {
     display: flex;
     justify-content: space-between;
@@ -118,14 +162,12 @@
 
   .footer-left { flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: 15px; }
   .footer-center { flex: 1; display: flex; justify-content: center; gap: 20px; }
-  .footer-right { flex: 1; /* 右側はプレイヤーリスト領域に被らないよう空間を確保 */ }
+  .footer-right { flex: 1; }
 
-  /* フッター内の文字要素 */
   .secret-btn { background: transparent; color: #57606f; border: none; font-size: clamp(20px, 1.5vw, 28px); cursor: pointer; padding: 5px; outline: none; transition: color 0.3s; display: flex; align-items: center; justify-content: center; }
   .secret-btn:hover { color: #ffffff; }
   .footer-text { font-size: clamp(10px, 0.8vw, 14px); color: #57606f; letter-spacing: 2px; text-transform: uppercase; margin: 0; white-space: nowrap; }
 
-  /* ナビゲーションボタン */
   .discreet-btn {
     background: rgba(0, 0, 0, 0.6);
     color: #7f8fa6;
@@ -142,8 +184,6 @@
   }
   .discreet-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); transform: translateY(-2px); }
 
-
-  /* モーダル・乱入演出 */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
   .modal-content { background: #121212; padding: 40px; border-radius: 8px; border: 1px solid #333; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(0,0,0,1); }
   .modal-content h3 { color: #ffffff; margin-top: 0; font-size: 20px; margin-bottom: 10px; letter-spacing: 3px; text-transform: uppercase; }
@@ -196,7 +236,6 @@
     .title-active { margin-top: 10px; }
     .active-players-grid { justify-content: center; max-height: none; overflow: hidden; }
     
-    /* スマホ時はフッターを縦に積み上げ、ボタン→⚙・©️の順にする */
     .dashboard-footer { flex-direction: column; padding: 20px 15px; gap: 20px; }
     .footer-left { flex: none; justify-content: center; order: 2; width: 100%; gap: 10px; }
     .footer-center { flex: none; flex-wrap: wrap; justify-content: center; order: 1; width: 100%; gap: 10px; }
@@ -254,7 +293,7 @@
         <a href="rules.html" class="discreet-btn">HOW TO PLAY</a>
       </div>
       <div class="footer-right">
-        </div>
+      </div>
     </div>
 
   </div>
@@ -365,7 +404,6 @@
       setTimeout(() => { container.style.opacity = '0'; container.style.transition = 'opacity 1s ease'; setTimeout(() => container.remove(), 1000); }, 5000);
     }
 
-    // ★ 完璧なオートスケール（自動縮小）関数
     function applyAutoScale() {
       const rankContainer = document.getElementById('topLiveBoard');
       if (rankContainer) {
@@ -376,9 +414,9 @@
           const availableHeight = rankContainer.clientHeight;
           const contentHeight = wrapper.scrollHeight;
           if (contentHeight > availableHeight && availableHeight > 0) {
-            const scale = (availableHeight / contentHeight) * 0.98;
+            const scale = (availableHeight / contentHeight) * 0.98; 
             wrapper.style.transform = `scale(${scale})`;
-            wrapper.style.width = `${100 / scale}%`;
+            wrapper.style.width = `${100 / scale}%`; 
           }
         }
       }
@@ -394,7 +432,7 @@
           if (contentHeight > availableHeight && availableHeight > 0) {
             const scale = (availableHeight / contentHeight) * 0.98;
             wrapper.style.transform = `scale(${scale})`;
-            wrapper.style.width = `${100 / scale}%`;
+            wrapper.style.width = `${100 / scale}%`; 
           }
         }
       }
@@ -477,7 +515,6 @@
 
           playersHtml += `
             <div class="${tagClass}">
-              <span class="status-dot"></span>
               <span class="tag-name">${p.name}</span>
               ${crownSvg}
             </div>
@@ -493,7 +530,6 @@
         playersBoard.dataset.state = purePlayersHtml;
       }
 
-      // 要素が描画された直後に自動縮小を適用
       setTimeout(applyAutoScale, 50);
     }
 
