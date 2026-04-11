@@ -8,226 +8,178 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nosifer&family=Work+Sans:wght@900&display=swap" rel="stylesheet">
 <style>
-  /* 全体の設定 */
+  /* ==========================================================================
+     ★★★ サイバー×高級感×重厚感のハイエンドUIデザイン ★★★
+     ========================================================================== */
   *, *::before, *::after { box-sizing: border-box; }
   html, body { max-width: 100vw; overflow-x: hidden; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px; font-family: 'KEYpro', sans-serif; }
   
-  .dashboard-container { display: flex; flex-direction: column; width: 98vw; max-width: 2000px; height: 96vh; min-height: 600px; background-color: rgba(10, 0, 0, 0.85); border-radius: 12px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; position: relative; }
+  /* 深淵なダークカーボン＆サイバーグリッド背景 */
+  body { 
+    background-color: #05070a;
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.03) 0%, transparent 60%),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100vw 100vh, 40px 40px, 40px 40px;
+    color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: 'KEYpro', sans-serif; 
+  }
   
-  .dashboard-main { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; }
+  /* 重厚なガラスパネルコンテナ */
+  .dashboard-container { 
+    display: flex; flex-direction: column; width: 96vw; max-width: 1800px; height: 94vh; min-height: 600px; 
+    background: linear-gradient(135deg, rgba(15, 20, 25, 0.85) 0%, rgba(5, 7, 10, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 16px; 
+    border: 1px solid rgba(212, 175, 55, 0.3); 
+    box-shadow: 0 30px 80px rgba(0,0,0,1), inset 0 0 30px rgba(212, 175, 55, 0.05); 
+    overflow: hidden; position: relative; 
+  }
 
-  .left-col { flex: 1; padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid rgba(127, 140, 141, 0.3); background: rgba(0,0,0,0.4); position: relative; }
-  .right-col { flex: 1.5; padding: 20px 30px; display: flex; flex-direction: column; overflow: hidden; background: rgba(15, 0, 0, 0.6); gap: 15px; }
+  /* サイバーなスキャンライン（画面全体に薄く走る線） */
+  .dashboard-container::after {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
+    pointer-events: none; z-index: 9999; opacity: 0.5;
+  }
 
-  .suits { font-size: clamp(32px, 4vw, 60px); letter-spacing: 12px; margin-bottom: 5px; opacity: 0.9; margin-right: -12px; }
-  .suit-red { color: #ff4757; }
-  .suit-black { color: #ffffff; }
-  
-  h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: clamp(60px, 8vw, 120px); margin: 0 -4px 10px 0; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); letter-spacing: -3px; font-weight: 900; line-height: 1; }
-  h1 span { font-family: 'KEYpro', sans-serif; color: #d4af37; font-size: clamp(16px, 2vw, 30px); margin-left: 10px; font-weight: normal; text-transform: uppercase; letter-spacing: 4px; vertical-align: middle; }
+  .dashboard-main { display: flex; flex-direction: row; flex: 1; overflow: hidden; position: relative; z-index: 10; }
 
-  p.subtitle { font-size: clamp(16px, 2vw, 28px); margin-bottom: 25px; margin-right: -3px; color: #7f8fa6; letter-spacing: 3px; text-transform: uppercase; }
-  
-  .date-header { font-size: clamp(24px, 3vw, 42px); font-weight: bold; color: #dcdde1; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 15px 30px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); letter-spacing: 3px; }
-  
-  .timer-label { font-size: clamp(20px, 2.5vw, 36px); color: #7f8fa6; margin-bottom: 10px; letter-spacing: 4px; text-transform: uppercase; }
-  .timer-display { background: #000; color: #2ed573; font-family: 'Courier New', monospace; font-size: clamp(70px, 10vw, 150px); font-weight: bold; padding: 15px 20px; border-radius: 12px; border: 1px solid #2f3542; text-shadow: 0 0 30px rgba(46, 213, 115, 0.6); box-shadow: inset 0 0 40px rgba(0,0,0,1); letter-spacing: 2px; line-height: 1; margin-bottom: 20px; }
-  
-  .board-title { color: #d4af37; font-size: clamp(20px, 2vw, 34px); letter-spacing: 2px; font-weight: bold; text-align: left; border-bottom: 2px solid rgba(212, 175, 55, 0.4); padding-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .board-title::before { content: ''; display: inline-block; width: 8px; height: 32px; background-color: #d4af37; box-shadow: 0 0 12px #d4af37; }
-  
-  .live-ranking-list { display: flex; flex-direction: column; width: 100%; flex-grow: 1; min-height: 0; overflow: hidden; margin-bottom: 10px; position: relative; }
-  
-  .title-re-entry { font-family: 'Nosifer', sans-serif; color: #ff4757; -webkit-text-stroke: 1.5px #800000; border-bottom-color: rgba(179, 0, 0, 0.5); animation: flameTitle 4s ease-in-out infinite alternate; }
-  .title-re-entry::before { background-color: #ff4757; box-shadow: 0 0 15px #ff4757; }
-  .title-re-entry .title-skull { width: clamp(24px, 2.5vw, 36px); height: clamp(24px, 2.5vw, 36px); fill: #ff4757; margin-left: 10px; filter: drop-shadow(0 0 8px #ff0000); flex-shrink: 0; }
+  .left-col { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid rgba(255,255,255,0.05); background: radial-gradient(circle at center, rgba(212,175,55,0.02) 0%, transparent 70%); }
+  .right-col { flex: 1.5; padding: 40px; display: flex; flex-direction: column; overflow: hidden; background: rgba(0, 0, 0, 0.4); gap: 20px; }
 
-  .live-rank-card { display: flex; justify-content: flex-start; align-items: center; background: rgba(0, 0, 0, 0.9); border-left: 5px solid transparent; padding: clamp(12px, 1.5vw, 20px) clamp(15px, 2vw, 30px); border-radius: 0 10px 10px 0; box-shadow: inset 0 -1px 0 rgba(255,255,255,0.05); flex-shrink: 0; transition: all 0.3s; position: relative; overflow: hidden; border: 1px solid #1a1a1a; animation: crackFlicker 5s ease-in-out infinite; }
-  .live-rank-card .card-skull-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: clamp(120px, 15vw, 200px); height: clamp(120px, 15vw, 200px); fill: rgba(255, 255, 255, 0.04); z-index: 0; pointer-events: none; }
+  .suits { font-size: clamp(28px, 3.5vw, 50px); letter-spacing: 12px; margin-bottom: 10px; opacity: 0.8; margin-right: -12px; }
+  .suit-red { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.5); }
+  .suit-black { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+  
+  h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: clamp(50px, 6vw, 90px); margin: 0 -4px 15px 0; text-shadow: 0 0 20px rgba(212, 175, 55, 0.5), 0 5px 10px rgba(0,0,0,0.8); letter-spacing: -3px; font-weight: 900; }
+  h1 span { font-family: 'KEYpro', sans-serif; color: #d4af37; font-size: clamp(14px, 1.5vw, 24px); margin-left: 10px; font-weight: normal; text-transform: uppercase; letter-spacing: 6px; vertical-align: middle; opacity: 0.8; }
 
-  .live-rank-card.worst-1 { border-left-color: transparent; border-left-image: linear-gradient(180deg, #ff4500, #ff0000, #ff4500); border-left-image-slice: 1; background: linear-gradient(90deg, rgba(128, 0, 0, 0.3) 0%, rgba(0,0,0,0.9) 100%); border-color: rgba(179, 0, 0, 0.4); animation: flameCard 4s ease-in-out infinite alternate; }
-  .worst-1 .card-skull-bg { fill: rgba(179, 0, 0, 0.08); filter: drop-shadow(0 0 15px #ff4500); }
-  .live-rank-card.worst-2 { border-left-color: #bf9b30; background: linear-gradient(90deg, rgba(191, 155, 48, 0.08) 0%, rgba(0,0,0,0.7) 100%); border-color: rgba(191, 155, 48, 0.2); }
-  .live-rank-card.worst-3 { border-left-color: #a67c00; background: linear-gradient(90deg, rgba(166, 124, 0, 0.05) 0%, rgba(0,0,0,0.7) 100%); border-color: rgba(166, 124, 0, 0.1); }
+  p.subtitle { font-size: clamp(14px, 1.5vw, 22px); margin-bottom: 40px; margin-right: -3px; color: #57606f; letter-spacing: 6px; text-transform: uppercase; font-weight: bold; }
+  
+  .date-header { font-size: clamp(20px, 2vw, 32px); font-weight: bold; color: #00f0ff; margin-bottom: 25px; background: rgba(0, 240, 255, 0.05); padding: 15px 40px; border-radius: 4px; border: 1px solid rgba(0, 240, 255, 0.2); letter-spacing: 3px; font-family: 'Courier New', monospace; box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); }
+  
+  .timer-label { font-size: clamp(18px, 2vw, 28px); color: #7f8fa6; margin-bottom: 15px; letter-spacing: 4px; text-transform: uppercase; font-weight: bold; }
+  /* タイマーはサイバーなシアンブルーに */
+  .timer-display { background: #05070a; color: #00f0ff; font-family: 'Courier New', monospace; font-size: clamp(80px, 9vw, 150px); font-weight: bold; padding: 20px 40px; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.3); text-shadow: 0 0 20px rgba(0, 240, 255, 0.6), 0 0 40px rgba(0, 240, 255, 0.2); box-shadow: inset 0 0 50px rgba(0,0,0,1), 0 0 20px rgba(0, 240, 255, 0.05); letter-spacing: 4px; }
+  
+  .board-title { color: #d4af37; font-size: clamp(20px, 2vw, 30px); letter-spacing: 6px; font-weight: bold; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
+  /* サイバーな装飾 */
+  .board-title::before { content: ''; display: inline-block; width: 4px; height: 20px; background-color: #d4af37; box-shadow: 0 0 15px #d4af37; }
+  
+  .live-ranking-list { display: flex; flex-direction: column; gap: 12px; width: 100%; flex-grow: 1; overflow-y: auto; padding-right: 20px; margin-bottom: 10px; position: relative; }
+  .live-ranking-list::-webkit-scrollbar { width: 4px; }
+  .live-ranking-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+  .live-ranking-list::-webkit-scrollbar-thumb { background: #800000; border-radius: 2px; }
 
-  .rank-col { width: clamp(80px, 9vw, 130px); display: flex; align-items: center; justify-content: flex-start; z-index: 1; flex-shrink: 0; }
+  /* 🔴 ハザード（地獄）ランキング */
+  .title-re-entry { font-family: 'Nosifer', sans-serif; color: #ff4757; -webkit-text-stroke: 1px #800000; letter-spacing: 4px; border-bottom-color: rgba(255, 71, 87, 0.3); animation: hazardPulse 4s ease-in-out infinite alternate; }
+  .title-re-entry::before { background-color: #ff4757; box-shadow: 0 0 20px #ff4757; }
+  .title-re-entry .title-skull { width: clamp(24px, 2.5vw, 36px); height: clamp(24px, 2.5vw, 36px); fill: #ff4757; margin-left: 15px; filter: drop-shadow(0 0 10px #ff0000); }
+
+  .live-rank-card { display: flex; justify-content: flex-start; align-items: center; background: rgba(10, 5, 5, 0.9); border-left: 4px solid transparent; padding: clamp(15px, 2vw, 25px) clamp(20px, 3vw, 40px); border-radius: 0 8px 8px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.8); flex-shrink: 0; transition: all 0.3s; position: relative; overflow: hidden; border: 1px solid rgba(255,0,0,0.1); }
+  .live-rank-card .card-skull-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: clamp(120px, 15vw, 200px); height: clamp(120px, 15vw, 200px); fill: rgba(255, 255, 255, 0.02); z-index: 0; pointer-events: none; }
+
+  .live-rank-card.worst-1 { border-left-color: #ff4500; background: linear-gradient(90deg, rgba(255, 69, 0, 0.15) 0%, rgba(10,0,0,0.9) 100%); border-color: rgba(255, 69, 0, 0.3); animation: hazardCard 3s ease-in-out infinite alternate; }
+  .worst-1 .card-skull-bg { fill: rgba(255, 69, 0, 0.05); filter: drop-shadow(0 0 20px #ff4500); }
+  .live-rank-card.worst-2 { border-left-color: #bf9b30; background: linear-gradient(90deg, rgba(191, 155, 48, 0.08) 0%, rgba(10,10,10,0.9) 100%); border-color: rgba(191, 155, 48, 0.15); }
+  .live-rank-card.worst-3 { border-left-color: #a67c00; background: linear-gradient(90deg, rgba(166, 124, 0, 0.05) 0%, rgba(10,10,10,0.9) 100%); border-color: rgba(166, 124, 0, 0.1); }
+
+  .rank-col { width: clamp(75px, 8vw, 120px); display: flex; align-items: center; justify-content: flex-start; z-index: 1; flex-shrink: 0; }
   .name-col { flex-grow: 1; text-align: left; padding-left: 15px; display: flex; flex-direction: column; gap: 6px; justify-content: center; z-index: 1; overflow: hidden; }
-  .entry-col { width: clamp(110px, 13vw, 180px); display: flex; align-items: center; justify-content: flex-end; z-index: 1; flex-shrink: 0; text-align: right; }
+  .entry-col { width: clamp(100px, 12vw, 160px); display: flex; align-items: center; justify-content: flex-end; z-index: 1; flex-shrink: 0; text-align: right; }
   
-  .rank-badge-text { font-family: 'Nosifer', sans-serif; font-size: clamp(34px, 3.5vw, 50px); font-weight: normal; color: transparent; -webkit-text-stroke: 1.5px #800000; letter-spacing: 2px; line-height: 1; animation: flameRank 4s ease-in-out infinite alternate; }
-  .worst-1 .rank-badge-text { font-size: clamp(40px, 4.5vw, 65px); -webkit-text-stroke-color: #800000; filter: drop-shadow(0 0 12px #ff4500); }
-  .worst-2 .rank-badge-text { -webkit-text-stroke-color: #bf9b30; filter: drop-shadow(0 0 8px rgba(191, 155, 48, 0.5)); animation: none; }
-  .worst-3 .rank-badge-text { -webkit-text-stroke-color: #a67c00; filter: drop-shadow(0 0 6px rgba(166, 124, 0, 0.4)); animation: none; }
+  .rank-badge-text { font-family: 'Nosifer', sans-serif; font-size: clamp(34px, 3.5vw, 50px); font-weight: normal; color: transparent; -webkit-text-stroke: 1.5px #800000; letter-spacing: 2px; line-height: 1; }
+  .worst-1 .rank-badge-text { font-size: clamp(40px, 4.5vw, 65px); -webkit-text-stroke-color: #ff4500; filter: drop-shadow(0 0 15px rgba(255, 69, 0, 0.8)); }
+  .worst-2 .rank-badge-text { -webkit-text-stroke-color: #bf9b30; filter: drop-shadow(0 0 10px rgba(191, 155, 48, 0.5)); }
+  .worst-3 .rank-badge-text { -webkit-text-stroke-color: #a67c00; filter: drop-shadow(0 0 8px rgba(166, 124, 0, 0.4)); }
 
-  .player-name-item { font-size: clamp(24px, 3vw, 46px); font-weight: bold; color: #f1f2f6; letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .worst-1 .player-name-item { font-size: clamp(30px, 3.8vw, 56px); color: #ffffff; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px #ff4500; animation: flameName 3s ease-in-out infinite alternate; }
+  .player-name-item { font-size: clamp(18px, 2.2vw, 32px); font-weight: bold; color: #f1f2f6; letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .worst-1 .player-name-item { font-size: clamp(24px, 2.8vw, 40px); color: #ffffff; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px #ff4500; }
 
-  .entry-badge { display: flex; align-items: baseline; justify-content: flex-end; gap: 8px; width: 100%; }
-  .entry-badge .num { font-family: 'Nosifer', sans-serif; font-size: clamp(38px, 4.5vw, 65px); font-weight: normal; line-height: 1; color: #7f8fa6; }
-  .entry-badge .unit { font-size: clamp(16px, 2vw, 28px); color: #7f8fa6; font-weight: normal; letter-spacing: 2px; }
+  .entry-badge { display: flex; align-items: baseline; justify-content: flex-end; gap: 6px; width: 100%; }
+  .entry-badge .num { font-family: 'Nosifer', sans-serif; font-size: clamp(32px, 3.5vw, 50px); font-weight: normal; line-height: 1; color: #7f8fa6; }
+  .entry-badge .unit { font-size: clamp(14px, 1.5vw, 20px); color: #7f8fa6; font-weight: normal; letter-spacing: 2px; }
 
-  .worst-1 .entry-badge .num { color: #ff4500; text-shadow: 0 0 20px rgba(255, 69, 0, 0.6); animation: flameEntry 4s ease-in-out infinite alternate; }
+  .worst-1 .entry-badge .num { color: #ff4500; text-shadow: 0 0 20px rgba(255, 69, 0, 0.6); }
   .worst-2 .entry-badge .num { color: #bf9b30; text-shadow: 0 0 12px rgba(191, 155, 48, 0.5); }
   .worst-3 .entry-badge .num { color: #a67c00; text-shadow: 0 0 10px rgba(166, 124, 0, 0.4); }
 
-  @keyframes flameTitle { 0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 10px #ff4500; } 100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 15px #ff4500; } }
-  @keyframes flameCard { 0% { box-shadow: 0 0 20px rgba(179, 0, 0, 0.5), inset 0 0 10px rgba(179, 0, 0, 0.2); } 100% { box-shadow: 0 0 25px rgba(179, 0, 0, 0.7), inset 0 0 15px rgba(179, 0, 0, 0.3); } }
-  @keyframes flameRank { 0% { filter: drop-shadow(0 0 10px rgba(179, 0, 0, 0.6)); } 100% { filter: drop-shadow(0 0 15px rgba(179, 0, 0, 0.9)); } }
-  @keyframes flameEntry { 0% { text-shadow: 0 0 15px rgba(255, 69, 0, 0.5); } 100% { text-shadow: 0 0 20px rgba(255, 69, 0, 0.8); } }
-  @keyframes flameName { 0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 8px #ff4500; color: #ffffff; } 100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 12px #ff4500; color: #fff5e6; } }
-  @keyframes crackFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.95; } }
+  @keyframes hazardPulse { 0% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 10px rgba(255,71,87,0.5); } 100% { text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 20px rgba(255,71,87,1); } }
+  @keyframes hazardCard { 0% { box-shadow: 0 5px 15px rgba(0,0,0,0.8), inset 0 0 10px rgba(255,69,0,0.1); } 100% { box-shadow: 0 5px 25px rgba(255,69,0,0.2), inset 0 0 20px rgba(255,69,0,0.2); } }
 
-  .title-active { color: #d4af37; border-bottom-color: rgba(212, 175, 55, 0.4); text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-top: auto; }
-  .title-active::before { background-color: #d4af37; box-shadow: 0 0 10px #d4af37; }
+  /* 🟢 アクティブプレイヤーリスト（サイバーHUD仕様） */
+  .title-active { color: #00f0ff; border-bottom-color: rgba(0, 240, 255, 0.3); text-shadow: 0 0 15px rgba(0, 240, 255, 0.4); margin-top: auto; }
+  .title-active::before { background-color: #00f0ff; box-shadow: 0 0 15px #00f0ff; }
 
-  .active-players-grid { display: flex; width: 100%; max-height: 250px; overflow: hidden; flex-shrink: 0; align-items: flex-start; justify-content: center; }
+  .active-players-grid { display: flex; flex-wrap: wrap; gap: 15px; align-content: flex-start; max-height: 180px; overflow-y: auto; padding-right: 10px; flex-shrink: 0; }
+  .active-players-grid::-webkit-scrollbar { width: 4px; }
+  .active-players-grid::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+  .active-players-grid::-webkit-scrollbar-thumb { background: #00f0ff; border-radius: 2px; }
 
-  /* =====================================================================
-     ★ 刷新：アクティブプレイヤーをハイエンドなメカニカルHUDデザインに
-     ===================================================================== */
+  /* 高度なHUD名札デザイン */
   .player-tag { 
-    background: linear-gradient(135deg, rgba(25, 30, 35, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%);
-    background-image: 
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(25, 30, 35, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%);
-    background-size: 4px 4px, 4px 4px, 100% 100%;
-    border: 1px solid rgba(100, 120, 140, 0.3);
-    border-left: 5px solid #7f8fa6;
-    padding: 15px 25px; 
+    background: linear-gradient(135deg, rgba(15, 20, 25, 0.9) 0%, rgba(5, 10, 15, 0.95) 100%); 
+    border: 1px solid rgba(255,255,255,0.05); 
+    border-left: 3px solid #00f0ff; 
+    padding: 10px 20px; 
     border-radius: 4px; 
-    font-size: clamp(20px, 2.5vw, 36px); 
-    color: #f1f2f6; 
-    display: flex; 
-    flex-direction: column;
-    align-items: flex-start; 
-    gap: 0; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1); 
-    font-weight: bold; 
-    letter-spacing: 2px; 
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-    position: relative; 
-    cursor: pointer;
-    min-width: clamp(220px, 22vw, 320px);
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    display: flex; flex-direction: column; gap: 4px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6); 
+    transition: all 0.3s; position: relative; 
   }
+  .tag-header { display: flex; align-items: center; gap: 10px; }
+  .tag-name { font-size: clamp(16px, 1.8vw, 24px); font-weight: bold; color: #ffffff; letter-spacing: 2px; text-transform: uppercase; }
   
-  .player-tag::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -150%;
-    width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    transform: skewX(-20deg);
-    transition: all 0.6s ease;
-  }
+  /* 追加：何位中何位のサイバーテキスト */
+  .tag-rank { font-family: 'Courier New', monospace; font-size: clamp(10px, 1vw, 14px); color: #00f0ff; letter-spacing: 1px; opacity: 0.8; text-align: left; }
   
-  .player-tag:hover { 
-    transform: translateY(-3px); 
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 15px rgba(127, 140, 141, 0.4); 
-  }
-  .player-tag:hover::after {
-    left: 150%;
-  }
+  .player-tag .status-dot { width: clamp(6px, 0.8vw, 10px); height: clamp(6px, 0.8vw, 10px); background: #00f0ff; border-radius: 50%; box-shadow: 0 0 10px #00f0ff; animation: hudBlink 2s infinite; }
+  @keyframes hudBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  .tag-header { display: flex; align-items: center; justify-content: space-between; width: 100%; position: relative; z-index: 2; }
-
-  /* VIPタグのサイバー発光化 */
-  .vip-tag-1 { 
-    border-left: 5px solid #f1c40f !important;
-    background-image: 
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(40, 35, 10, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%) !important;
-    border-color: rgba(241, 196, 15, 0.4) !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(241, 196, 15, 0.3), inset 0 1px 1px rgba(255,255,255,0.1) !important;
-  }
-  .vip-tag-1:hover { border-color: rgba(241, 196, 15, 0.8) !important; box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(241, 196, 15, 0.6) !important; }
-  .vip-tag-1 .tag-name { color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
-
-  .vip-tag-2 { 
-    border-left: 5px solid #bdc3c7 !important;
-    background-image: 
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(30, 35, 40, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%) !important;
-    border-color: rgba(189, 195, 199, 0.4) !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(189, 195, 199, 0.2), inset 0 1px 1px rgba(255,255,255,0.1) !important;
-  }
-  .vip-tag-2:hover { border-color: rgba(189, 195, 199, 0.8) !important; box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(189, 195, 199, 0.5) !important; }
-  .vip-tag-2 .tag-name { color: #bdc3c7; text-shadow: 0 0 10px rgba(189, 195, 199, 0.5); }
-
-  .vip-tag-3 { 
-    border-left: 5px solid #cd7f32 !important;
-    background-image: 
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(40, 25, 15, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%) !important;
-    border-color: rgba(205, 127, 50, 0.4) !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(205, 127, 50, 0.2), inset 0 1px 1px rgba(255,255,255,0.1) !important;
-  }
-  .vip-tag-3:hover { border-color: rgba(205, 127, 50, 0.8) !important; box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(205, 127, 50, 0.5) !important; }
-  .vip-tag-3 .tag-name { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
-
-  /* タップで展開される戦績エリア (HUD風グリッド) */
-  .player-stats {
-    display: none;
-    width: 100%;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-family: 'Courier New', monospace;
-    font-size: clamp(13px, 1.4vw, 18px);
-    color: #a4b0be;
-    text-align: left;
-    letter-spacing: 1px;
-    font-weight: normal;
-    position: relative;
-    z-index: 2;
-  }
-  .player-tag.open .player-stats { display: block; animation: expandStats 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  @keyframes expandStats { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* ★ TIMEを消し、3項目が綺麗に並ぶように3列グリッドに変更 */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px 15px;
-  }
-  .stat-item { display: flex; flex-direction: column; }
-  .stat-label { color: #7f8fa6; font-size: 0.8em; letter-spacing: 2px; margin-bottom: 2px; }
-  .stat-val { color: #ffffff; font-weight: bold; font-size: 1.1em; }
-  .stat-val.plus { color: #2ed573; text-shadow: 0 0 8px rgba(46, 213, 115, 0.4); }
-  .stat-val.minus { color: #ff4757; text-shadow: 0 0 8px rgba(255, 71, 87, 0.4); }
+  /* VIP王冠＆カラー変更 */
+  .crown-icon { width: clamp(18px, 1.8vw, 26px); height: clamp(18px, 1.8vw, 26px); margin-left: 6px; margin-top: -2px; }
+  .crown-gold { fill: #f1c40f; filter: drop-shadow(0 0 8px rgba(241, 196, 15, 0.8)); }
+  .crown-silver { fill: #bdc3c7; filter: drop-shadow(0 0 8px rgba(189, 195, 199, 0.8)); }
+  .crown-bronze { fill: #cd7f32; filter: drop-shadow(0 0 8px rgba(205, 127, 50, 0.8)); }
   
-  .crown-icon { width: clamp(20px, 2.5vw, 32px); height: clamp(20px, 2.5vw, 32px); margin-left: 8px; margin-top: -2px; z-index: 1; }
+  .vip-tag-1 { border-left-color: #f1c40f; border-color: rgba(241, 196, 15, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.6), inset 0 0 15px rgba(241, 196, 15, 0.1); }
+  .vip-tag-1 .tag-name { color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
+  .vip-tag-1 .tag-rank { color: #f1c40f; }
+  .vip-tag-1 .status-dot { background: #f1c40f; box-shadow: 0 0 10px #f1c40f; }
 
-  .empty-text { color: #57606f; font-size: clamp(18px, 2vw, 26px); width: 100%; text-align: center; margin-top: 20px; letter-spacing: 2px; line-height: 1.8; font-weight: bold; }
-  .empty-text span { color: #d4af37; font-weight: bold; font-size: clamp(16px, 1.8vw, 22px); }
+  .vip-tag-2 { border-left-color: #bdc3c7; border-color: rgba(189, 195, 199, 0.3); }
+  .vip-tag-2 .tag-name { color: #bdc3c7; }
+  .vip-tag-2 .tag-rank { color: #bdc3c7; }
+  .vip-tag-2 .status-dot { background: #bdc3c7; box-shadow: 0 0 10px #bdc3c7; }
+
+  .vip-tag-3 { border-left-color: #cd7f32; border-color: rgba(205, 127, 50, 0.3); }
+  .vip-tag-3 .tag-name { color: #cd7f32; }
+  .vip-tag-3 .tag-rank { color: #cd7f32; }
+  .vip-tag-3 .status-dot { background: #cd7f32; box-shadow: 0 0 10px #cd7f32; }
+
+  .empty-text { color: #57606f; font-size: clamp(16px, 1.5vw, 22px); width: 100%; text-align: center; margin-top: 20px; letter-spacing: 2px; line-height: 1.8; font-weight: bold; }
+  .empty-text span { color: #d4af37; font-weight: bold; font-size: clamp(14px, 1.2vw, 20px); }
   
-  .dashboard-footer { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: rgba(0, 0, 0, 0.5); border-top: 1px solid rgba(127, 140, 141, 0.3); flex-shrink: 0; z-index: 50; }
-  .footer-left { flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: 15px; }
-  .footer-center { flex: 1; display: flex; justify-content: center; gap: 20px; }
-  .footer-right { flex: 1; }
-
-  .secret-btn { background: transparent; color: #57606f; border: none; font-size: clamp(20px, 1.5vw, 28px); cursor: pointer; padding: 5px; outline: none; transition: color 0.3s; display: flex; align-items: center; justify-content: center; }
+  .footer-text { position: absolute; bottom: 15px; left: 20px; font-size: 12px; color: #57606f; letter-spacing: 2px; text-transform: uppercase; z-index: 10; }
+  .secret-btn { position: fixed; top: 15px; left: 15px; background: transparent; color: #57606f; border: none; font-size: 28px; cursor: pointer; padding: 10px; transition: color 0.3s; outline: none; z-index: 100; }
   .secret-btn:hover { color: #ffffff; }
-  .footer-text { font-size: clamp(10px, 0.8vw, 14px); color: #57606f; letter-spacing: 2px; text-transform: uppercase; margin: 0; white-space: nowrap; }
 
-  .discreet-btn { background: rgba(0, 0, 0, 0.6); color: #7f8fa6; border: 1px solid rgba(127, 140, 141, 0.5); padding: 10px 25px; font-size: clamp(12px, 1.2vw, 16px); border-radius: 50px; text-decoration: none; letter-spacing: 2px; transition: all 0.3s ease; font-weight: bold; text-align: center; white-space: nowrap; }
-  .discreet-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); transform: translateY(-2px); }
+  /* ナビゲーションボタン（サイバースタイル） */
+  .nav-buttons { position: absolute; bottom: 30px; right: 30px; display: flex; gap: 20px; z-index: 50; }
+  .discreet-btn { background: rgba(0, 0, 0, 0.8); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.3); padding: 10px 25px; font-size: clamp(12px, 1.2vw, 16px); border-radius: 4px; text-decoration: none; letter-spacing: 3px; transition: all 0.3s ease; font-weight: bold; text-align: center; font-family: 'Courier New', monospace; box-shadow: 0 5px 15px rgba(0,0,0,0.8); text-transform: uppercase; }
+  .discreet-btn:hover { background: #00f0ff; color: #000; box-shadow: 0 0 20px rgba(0, 240, 255, 0.6); transform: translateY(-2px); }
 
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-  .modal-content { background: #121212; padding: 40px; border-radius: 8px; border: 1px solid #333; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(0,0,0,1); }
-  .modal-content h3 { color: #ffffff; margin-top: 0; font-size: 20px; margin-bottom: 10px; letter-spacing: 3px; text-transform: uppercase; }
+  .modal-content { background: #05070a; padding: 40px; border-radius: 8px; border: 1px solid #d4af37; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 40px rgba(212,175,55,0.2); }
+  .modal-content h3 { color: #d4af37; margin-top: 0; font-size: 20px; margin-bottom: 10px; letter-spacing: 3px; text-transform: uppercase; }
   .modal-content p { font-size: 14px; color: #7f8fa6; margin-bottom: 25px; letter-spacing: 1px; }
   #adminPass { width: 160px; padding: 15px; font-size: 42px; text-align: center; letter-spacing: 12px; border-radius: 4px; border: 1px solid #555; background: #000; color: #d4af37; margin-bottom: 30px; outline: none; transition: all 0.3s; font-family: 'Courier New', monospace; padding-left: 24px; }
-  #adminPass:focus { border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+  #adminPass:focus { border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
   .modal-close-btn { background: transparent; color: #7f8fa6; border: 1px solid #555; padding: 12px 35px; border-radius: 50px; cursor: pointer; font-size: 14px; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; }
-  .modal-close-btn:hover { background: #ffffff; color: #000; border-color: #ffffff; }
+  .modal-close-btn:hover { background: #ffffff; border-color: #ffffff; }
 
+  /* 乱入演出 */
   .new-challenger-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: flashBg 1s ease-out forwards; overflow: hidden; }
   @keyframes flashBg { 0% { background: rgba(0, 0, 0, 0); } 100% { background: rgba(0, 0, 0, 0.95); } }
   .new-challenger-title { color: #ff4757; font-family: 'Bangers', cursive; font-size: clamp(80px, 8vw, 150px); text-shadow: 4px 4px 0 #000, -2px -2px 0 #fff, 0 0 30px #ff4757; letter-spacing: 8px; margin-bottom: 10px; animation: scaleIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 10001; opacity: 0; }
@@ -237,16 +189,14 @@
   .particle { position: absolute; pointer-events: none; z-index: 10000; display: flex; justify-content: center; align-items: center; font-weight: bold; }
   @keyframes fall { 0% { top: -10vh; transform: rotate(0deg) scale(1); opacity: 1; } 100% { top: 110vh; transform: rotate(720deg) scale(1.2); opacity: 0; } }
   @keyframes explode { 0% { left: 50vw; top: 50vh; transform: translate(-50%, -50%) scale(0); opacity: 1; } 100% { left: var(--tx); top: var(--ty); transform: translate(-50%, -50%) scale(var(--s)); opacity: 0; } }
-  @keyframes rise { 0% { top: 110vh; transform: translateX(0) scale(1); opacity: 1; } 100% { top: -10vh; transform: translateX(var(--tx)) scale(0.5); opacity: 0; } }
-  @keyframes zoom { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; left: 50vw; top: 50vh; } 20% { opacity: 1; } 100% { transform: translate(-50%, -50%) scale(var(--s)); opacity: 0; left: var(--tx); top: var(--ty); } }
 
   /* 📱 スマホ用 */
   @media screen and (max-width: 900px) {
     body { padding: 10px; display: block; overflow-x: hidden; }
-    .dashboard-container { flex-direction: column; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; width: 100%; max-width: 100%; }
+    .dashboard-container { flex-direction: column; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; width: 100%; max-width: 100%; padding-bottom: 20px;}
     .dashboard-main { flex-direction: column; }
     .left-col { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 15px; }
-    .right-col { padding: 25px 15px; gap: 20px; }
+    .right-col { padding: 25px 15px; gap: 20px; background: rgba(0,0,0,0.6); }
     
     .suits { font-size: 32px; }
     h1 { font-size: 36px; } 
@@ -255,8 +205,7 @@
     .board-title::before { display: none; }
     .title-re-entry { letter-spacing: 1px; font-size: 16px; }
     .title-re-entry .title-skull { display: none; }
-    
-    .live-ranking-list { height: auto; padding-right: 0; overflow: hidden; }
+    .live-ranking-list { height: auto; padding-right: 0; }
     .live-rank-card { padding: 10px 15px; border-radius: 0 4px 4px 0; border-left-width: 3px; }
     .live-rank-card .card-skull-bg { width: 90px; height: 90px; }
     .rank-col { width: 55px; flex-shrink: 0; }
@@ -269,25 +218,18 @@
     .entry-badge .num { font-size: 24px; }
     .entry-badge .unit { font-size: 10px; }
     .title-active { margin-top: 10px; }
-    .active-players-grid { justify-content: center; max-height: none; overflow: hidden; }
+    .active-players-grid { justify-content: center; max-height: none; }
     
-    .dashboard-footer { flex-direction: column; padding: 20px 15px; gap: 20px; }
-    .footer-left { flex: none; justify-content: center; order: 2; width: 100%; gap: 10px; }
-    .footer-center { flex: none; flex-wrap: wrap; justify-content: center; order: 1; width: 100%; gap: 10px; }
-    .footer-right { display: none; }
+    .nav-buttons { position: static; justify-content: center; margin-top: 15px; margin-bottom: 20px; gap: 10px; }
     .discreet-btn { padding: 10px 15px; font-size: 11px; }
-    .footer-text { font-size: 10px; text-align: center; margin: 0; }
-    .secret-btn { font-size: 24px; padding: 5px; }
-    
-    .new-challenger-title { font-size: 40px; text-shadow: 2px 2px 0 #000, -1px -1px 0 #fff, 0 0 10px #ff4757; }
-    .new-challenger-name { font-size: 50px; -webkit-text-stroke: 2px #000; text-shadow: 3px 3px 0 #d4af37, 6px 6px 0 #000, 0 0 20px rgba(212,175,55,0.8); letter-spacing: 4px; }
+    .footer-text { position: static; text-align: center; margin-top: 10px; padding-bottom: 20px; }
+    .secret-btn { top: auto; bottom: 15px; left: 15px; font-size: 24px; }
   }
 </style>
 </head>
 <body>
   
   <div class="dashboard-container">
-    
     <div class="dashboard-main">
       <div class="left-col">
         <div class="suits">
@@ -317,21 +259,16 @@
         </div>
       </div>
     </div>
-
-    <div class="dashboard-footer">
-      <div class="footer-left">
-        <button class="secret-btn" onclick="showPasswordModal()">⚙</button>
-        <span class="footer-text">© 2026 KEYpro poker Server</span>
-      </div>
-      <div class="footer-center">
-        <a href="ranking.html" class="discreet-btn">HALL OF FAME</a>
-        <a href="rules.html" class="discreet-btn">HOW TO PLAY</a>
-      </div>
-      <div class="footer-right">
-      </div>
+    
+    <div class="nav-buttons">
+      <a href="ranking.html" class="discreet-btn">HALL OF FAME</a>
+      <a href="rules.html" class="discreet-btn">HOW TO PLAY</a>
     </div>
-
   </div>
+
+  <div class="footer-text">© 2026 KEYpro poker Server</div>
+  
+  <button class="secret-btn" onclick="showPasswordModal()">⚙</button>
 
   <div id="passModal" class="modal-overlay">
     <div class="modal-content">
@@ -365,19 +302,21 @@
     let pendingNames = [];
     let isFirstLoad = true;
     let latestData = []; 
-    let top3Players = {};
     
-    let globalHofData = [];
+    // ★ 歴代全プレイヤーのランキング情報を保持する変数
+    let top3Players = {};
+    let allTimeRanks = {};
+    let totalAllTimePlayers = 0;
 
-    function formatNumber(num) {
-      return Number(num).toLocaleString();
-    }
-
+    // ★ 歴代ランキング情報を取得
     fetch(GAS_URL, { redirect: 'follow' })
       .then(res => res.json())
       .then(players => {
         if (players && players.length > 0) {
-          globalHofData = players; 
+          totalAllTimePlayers = players.length;
+          players.forEach((p, index) => {
+            allTimeRanks[p.name] = index + 1; // 1位からの順位を保存
+          });
           if(players[0]) top3Players[players[0].name] = 1;
           if(players[1]) top3Players[players[1].name] = 2;
           if(players[2]) top3Players[players[2].name] = 3;
@@ -402,15 +341,13 @@
 
       const effectPatterns = [
         { type: 'chip', anim: 'fall' }, { type: 'card', anim: 'fall' }, { type: 'gold', anim: 'fall' }, 
-        { type: 'laser', anim: 'fall' }, { type: 'confetti', anim: 'fall' }, { type: 'firework', anim: 'rise' }, 
-        { type: 'slot', anim: 'fall' }, { type: 'hand', anim: 'zoom' }, { type: 'ring', anim: 'explode' }, { type: 'star', anim: 'explode' }
+        { type: 'laser', anim: 'fall' }, { type: 'confetti', anim: 'fall' }, { type: 'slot', anim: 'fall' }
       ];
       const effect = effectPatterns[Math.floor(Math.random() * effectPatterns.length)];
       const count = window.innerWidth < 600 ? 30 : 70; 
-      const colors = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6', '#ffffff'];
+      const colors = ['#e74c3c', '#00f0ff', '#f1c40f', '#2ecc71', '#9b59b6', '#ffffff'];
       const suits = ['♠', '♥', '♣', '♦'];
       const slots = ['7', 'BAR', '🍒', '🔔', '💎'];
-      const ranks = ['A', 'K', 'Q', 'J', '10'];
 
       for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
@@ -435,52 +372,13 @@
           } else { p.style.width = '50px'; p.style.height = '25px'; p.style.background = '#27ae60'; p.style.borderRadius = '2px'; p.innerText = '$'; p.style.color = '#fff'; }
         } else if (effect.type === 'confetti') { p.style.width = '15px'; p.style.height = '15px'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; dur = Math.random() * 4 + 3; 
         } else if (effect.type === 'slot') { p.innerText = slots[Math.floor(Math.random() * slots.length)]; p.style.fontSize = '45px';
-        } else if (effect.type === 'star') { p.innerText = '★'; p.style.color = colors[Math.floor(Math.random() * colors.length)]; p.style.fontSize = (Math.random() * 30 + 20) + 'px'; p.style.textShadow = '0 0 10px #fff';
-        } else if (effect.type === 'firework') { p.style.width = '10px'; p.style.height = '10px'; p.style.borderRadius = '50%'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; p.style.boxShadow = '0 0 20px ' + p.style.background; p.style.setProperty('--tx', ((Math.random() - 0.5) * 50) + 'vw');
-        } else if (effect.type === 'laser') { p.style.width = '4px'; p.style.height = '150px'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; p.style.boxShadow = '0 0 20px ' + p.style.background; dur = Math.random() * 1 + 0.5; 
-        } else if (effect.type === 'ring') { p.style.width = '50px'; p.style.height = '50px'; p.style.borderRadius = '50%'; p.style.border = '5px solid ' + colors[Math.floor(Math.random() * colors.length)]; p.style.boxShadow = '0 0 15px ' + p.style.borderColor; p.style.setProperty('--s', Math.random() * 4 + 2);
-        } else if (effect.type === 'hand') { let suit = suits[Math.floor(Math.random() * suits.length)]; let rank = ranks[Math.floor(Math.random() * ranks.length)]; p.innerText = rank + suit; p.style.fontSize = '30px'; p.style.color = (suit === '♥' || suit === '♦') ? '#e74c3c' : '#2c3e50'; p.style.background = '#fff'; p.style.padding = '5px 10px'; p.style.borderRadius = '5px'; p.style.border = '2px solid #d4af37'; p.style.left = '50vw'; p.style.top = '50vh'; p.style.setProperty('--s', Math.random() * 3 + 1.5); }
+        } else if (effect.type === 'laser') { p.style.width = '4px'; p.style.height = '150px'; p.style.background = colors[Math.floor(Math.random() * colors.length)]; p.style.boxShadow = '0 0 20px ' + p.style.background; dur = Math.random() * 1 + 0.5; }
+        
         p.style.animation = `${effect.anim} ${dur}s linear ${delay}s forwards`;
         container.appendChild(p);
       }
       setTimeout(() => { container.style.opacity = '0'; container.style.transition = 'opacity 1s ease'; setTimeout(() => container.remove(), 1000); }, 5000);
     }
-
-    function applyAutoScale() {
-      const rankContainer = document.getElementById('topLiveBoard');
-      if (rankContainer) {
-        const wrapper = rankContainer.querySelector('.scale-wrapper');
-        if (wrapper) {
-          wrapper.style.transform = 'scale(1)';
-          wrapper.style.width = '100%';
-          const availableHeight = rankContainer.clientHeight;
-          const contentHeight = wrapper.scrollHeight;
-          if (contentHeight > availableHeight && availableHeight > 0) {
-            const scale = (availableHeight / contentHeight) * 0.98; 
-            wrapper.style.transform = `scale(${scale})`;
-            wrapper.style.width = `${100 / scale}%`; 
-          }
-        }
-      }
-
-      const activeContainer = document.getElementById('activePlayersBoard');
-      if (activeContainer) {
-        const wrapper = activeContainer.querySelector('.scale-wrapper');
-        if (wrapper) {
-          wrapper.style.transform = 'scale(1)';
-          wrapper.style.width = '100%';
-          const availableHeight = activeContainer.clientHeight;
-          const contentHeight = wrapper.scrollHeight;
-          if (contentHeight > availableHeight && availableHeight > 0) {
-            const scale = (availableHeight / contentHeight) * 0.98;
-            wrapper.style.transform = `scale(${scale})`;
-            wrapper.style.width = `${100 / scale}%`; 
-          }
-        }
-      }
-    }
-
-    window.addEventListener('resize', applyAutoScale);
 
     function renderBoard(data) {
       const playersBoard = document.getElementById('activePlayersBoard');
@@ -498,8 +396,13 @@
         }
       });
 
-      let html = '';
-      if (reEntryPlayers.length > 0) {
+      if (reEntryPlayers.length === 0) {
+        const emptyHtml = '<div class="empty-text">現在リエントリー中のプレイヤーはいません<br><span>🕊 ALL PLAYERS SURVIVING</span></div>';
+        if (rankingBoard.dataset.state !== emptyHtml) {
+          rankingBoard.innerHTML = emptyHtml;
+          rankingBoard.dataset.state = emptyHtml;
+        }
+      } else {
         let groups = {};
         reEntryPlayers.forEach(p => {
           let key = p.reEntry; 
@@ -510,6 +413,7 @@
         let groupArray = Object.values(groups);
         groupArray.sort((a, b) => b.reEntry - a.reEntry);
 
+        let html = '';
         groupArray.forEach((group, index) => {
           let rankStr = String(index + 1).padStart(2, '0');
           let rankClass = "worst-other";
@@ -529,21 +433,24 @@
             </div>
           `;
         });
-      }
-      
-      let pureRankHtml = html || '<div class="empty-text">現在リエントリー中のプレイヤーはいません<br><span>🕊 ALL PLAYERS SURVIVING</span></div>';
-      let wrappedRankHtml = `<div class="scale-wrapper" style="width: 100%; display: flex; flex-direction: column; gap: 12px; transform-origin: top left; transition: transform 0.3s ease;">${pureRankHtml}</div>`;
-      
-      if (rankingBoard.dataset.state !== pureRankHtml) {
-        rankingBoard.innerHTML = wrappedRankHtml;
-        rankingBoard.dataset.state = pureRankHtml;
+        if (rankingBoard.dataset.state !== html) {
+          rankingBoard.innerHTML = html;
+          rankingBoard.dataset.state = html;
+        }
       }
 
-      let playersHtml = '';
-      if (activePlayers.length > 0) {
+      if (activePlayers.length === 0) {
+        const emptyHtml = '<div class="empty-text">現在プレイ中の参加者はいません</div>';
+        if (playersBoard.dataset.state !== emptyHtml) {
+          playersBoard.innerHTML = emptyHtml;
+          playersBoard.dataset.state = emptyHtml;
+        }
+      } else {
+        let playersHtml = '';
         activePlayers.forEach(p => {
           let crownSvg = '';
           let tagClass = 'player-tag';
+          
           if (top3Players[p.name] === 1) {
               crownSvg = `<svg class="crown-icon crown-gold" viewBox="0 0 512 512"><path d="M493.4 24.6l-104 192C385.6 224.2 376.5 229 366.1 226.7l-94.2-20.9L288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l16.1 173.8-94.2 20.9c-10.3 2.3-19.4-2.5-23.2-10.1l-104-192C15.4 10.3 4.2 13 1 24.6c-3.2 11.6 2 24 13.5 28.5L128 100.9l-11.2 266c-.6 13.5 10 25.1 23.5 25.1h231.4c13.5 0 24.1-11.6 23.5-25.1l-11.2-266 113.5-47.8c11.5-4.5 16.7-16.9 13.5-28.5c-3.2-11.6-14.4-14.3-18.1-10.1zM80 448c0-17.7 14.3-32 32-32h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H112c-17.7 0-32-14.3-32-32z"/></svg>`;
               tagClass += ' vip-tag-1';
@@ -555,53 +462,31 @@
               tagClass += ' vip-tag-3';
           }
 
-          let pData = globalHofData.find(h => h.name === p.name);
-          let rank = "-";
-          let games = 0;
-          let pay = 0;
-
-          if (pData) {
-            rank = globalHofData.indexOf(pData) + 1;
-            games = pData.games || 0;
-            pay = pData.pay || 0;
+          // ★ 何位中何位のテキストを生成
+          let rankTextHtml = '';
+          if (allTimeRanks[p.name]) {
+            rankTextHtml = `<div class="tag-rank">ALL-TIME RANK: ${allTimeRanks[p.name]} / ${totalAllTimePlayers}</div>`;
+          } else {
+            rankTextHtml = `<div class="tag-rank">ALL-TIME RANK: NEW PLAYER</div>`;
           }
 
-          let payStr = formatNumber(pay);
-          let payClass = "stat-val";
-          if(pay > 0) {
-            payClass = "stat-val plus";
-            payStr = "+" + payStr;
-          } else if (pay < 0) {
-            payClass = "stat-val minus";
-          }
-
+          // ★ サイバーHUD風の構造で出力
           playersHtml += `
-            <div class="${tagClass}" onclick="this.classList.toggle('open'); setTimeout(applyAutoScale, 50);">
+            <div class="${tagClass}">
               <div class="tag-header">
+                <span class="status-dot"></span>
                 <span class="tag-name">${p.name}</span>
                 ${crownSvg}
               </div>
-              <div class="player-stats">
-                <div class="stats-grid">
-                  <div class="stat-item"><span class="stat-label">RANK</span><span class="stat-val">${rank}位</span></div>
-                  <div class="stat-item"><span class="stat-label">GAMES</span><span class="stat-val">${games}</span></div>
-                  <div class="stat-item"><span class="stat-label">PAY</span><span class="${payClass}">${payStr}</span></div>
-                </div>
-              </div>
+              ${rankTextHtml}
             </div>
           `;
         });
+        if (playersBoard.dataset.state !== playersHtml) {
+          playersBoard.innerHTML = playersHtml;
+          playersBoard.dataset.state = playersHtml;
+        }
       }
-
-      let purePlayersHtml = playersHtml || '<div class="empty-text">現在プレイ中の参加者はいません</div>';
-      let wrappedPlayersHtml = `<div class="scale-wrapper" style="width: 100%; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; transform-origin: top center; transition: transform 0.3s ease;">${purePlayersHtml}</div>`;
-      
-      if (playersBoard.dataset.state !== purePlayersHtml) {
-        playersBoard.innerHTML = wrappedPlayersHtml;
-        playersBoard.dataset.state = purePlayersHtml;
-      }
-
-      setTimeout(applyAutoScale, 50);
     }
 
     let currentTimerState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
