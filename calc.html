@@ -105,17 +105,10 @@
     .save-btn { font-size: 16px; padding: 16px; }
   }
 
-  /* ★★★ 画像生成用エリアの修正 ★★★ */
-  /* 高さを固定(height)ではなく、min-height と height:auto に変更し、人数に合わせて自動で伸びるように調整！ */
-  #reportArea { 
-    position: absolute; top: -9999px; left: -9999px; 
-    background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); 
-    color: #ffffff; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; 
-    border: 10px solid #d4af37; 
-  }
+  /* 画像生成用エリア */
+  #reportArea { position: absolute; top: -9999px; left: -9999px; background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; border: 10px solid #d4af37; }
   #reportArea.layout-pc { width: 1200px; min-height: 675px; height: auto; }
   #reportArea.layout-mobile { width: 750px; min-height: 1334px; height: auto; padding: 50px 30px; }
-  
   .report-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #d4af37; padding-bottom: 20px; margin-bottom: 20px; }
   .report-title { font-size: 48px; color: #d4af37; font-weight: bold; letter-spacing: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
   .report-suits { font-size: 32px; letter-spacing: 10px; }
@@ -292,7 +285,13 @@
 
     window.handleBlur = function(el) {
       if (window.innerWidth <= 900) return;
-      if (el.value === "") { el.value = el.dataset.orig || "0"; }
+      if (el.value === "") { 
+          el.value = el.dataset.orig || "0"; 
+      } else {
+          // Blur時にカンマ付きの綺麗なフォーマットに自動変換
+          const raw = parseFloat(el.value.replace(/,/g, '')) || 0;
+          el.value = formatNumber(raw);
+      }
       window.calculate();
     };
 
@@ -326,8 +325,22 @@
       window.calculate();
     };
 
-    window.numpadType = function(val) { if (activeNumpadInput) { activeNumpadInput.value += val; window.calculate(); } };
-    window.numpadDel = function() { if (activeNumpadInput) { activeNumpadInput.value = activeNumpadInput.value.slice(0, -1); window.calculate(); } };
+    // 電卓入力時にも自動でカンマをつけるように修正
+    window.numpadType = function(val) { 
+        if (activeNumpadInput) { 
+            let currentRaw = activeNumpadInput.value.replace(/,/g, '');
+            currentRaw += val;
+            activeNumpadInput.value = formatNumber(parseFloat(currentRaw) || 0); 
+            window.calculate(); 
+        } 
+    };
+    window.numpadDel = function() { 
+        if (activeNumpadInput) { 
+            let currentRaw = activeNumpadInput.value.replace(/,/g, '').slice(0, -1);
+            activeNumpadInput.value = currentRaw === "" ? "" : formatNumber(parseFloat(currentRaw) || 0);
+            window.calculate(); 
+        } 
+    };
     window.numpadClear = function() { if (activeNumpadInput) { activeNumpadInput.value = ""; window.calculate(); } };
 
     const STARTING_CHIPS = 20000;
@@ -356,17 +369,26 @@
          const nameInput = row.querySelector('.name-input');
          const entryInput = row.querySelector('.entry');
          const chipsInput = row.querySelector('.final-chips');
+         
          if (document.activeElement !== nameInput) { nameInput.value = p.name || ""; }
-         if (entryInput !== activeNumpadInput && document.activeElement !== entryInput) { entryInput.value = p.entry !== undefined ? p.entry : 1; }
-         if (chipsInput !== activeNumpadInput && document.activeElement !== chipsInput) { chipsInput.value = p.finalChips !== undefined ? p.finalChips : 0; }
-         const entry = parseFloat(entryInput.value) || 0;
-         const finalChips = parseFloat(chipsInput.value) || 0;
+         // Firebaseからのデータを読み込む際にカンマをつけてフォーマット
+         if (entryInput !== activeNumpadInput && document.activeElement !== entryInput) { 
+             entryInput.value = formatNumber(p.entry !== undefined ? p.entry : 1); 
+         }
+         if (chipsInput !== activeNumpadInput && document.activeElement !== chipsInput) { 
+             chipsInput.value = formatNumber(p.finalChips !== undefined ? p.finalChips : 0); 
+         }
+         
+         const entry = parseFloat(entryInput.value.replace(/,/g, '')) || 0;
+         const finalChips = parseFloat(chipsInput.value.replace(/,/g, '')) || 0;
          const result = finalChips - (entry * STARTING_CHIPS);
          const pay = result / RATE;
+         
          row.querySelector('.result').value = formatNumber(result);
          row.querySelector('.pay').value = formatNumber(pay);
          totalPaySum += pay;
       });
+      totalPaySum = Math.round(totalPaySum * 100) / 100;
       updateStatus(totalPaySum);
     });
 
@@ -376,15 +398,26 @@
       let draftData = []; 
       rows.forEach(row => {
         const name = row.querySelector('.name-input').value; 
-        const entry = parseFloat(row.querySelector('.entry').value) || 0;
-        const finalChips = parseFloat(row.querySelector('.final-chips').value) || 0;
+        
+        // ★ 修正ポイント：カンマを完全に除去してから計算に使う
+        const entryRaw = row.querySelector('.entry').value.replace(/,/g, '');
+        const chipsRaw = row.querySelector('.final-chips').value.replace(/,/g, '');
+        
+        const entry = parseFloat(entryRaw) || 0;
+        const finalChips = parseFloat(chipsRaw) || 0;
+        
         const result = finalChips - (entry * STARTING_CHIPS);
         const pay = result / RATE;
+        
         row.querySelector('.result').value = formatNumber(result);
         row.querySelector('.pay').value = formatNumber(pay);
         totalPaySum += pay;
         draftData.push({ name, entry, finalChips });
       });
+      
+      // ★ 修正ポイント：JavaScript特有の少数計算のズレを綺麗に丸めて解消
+      totalPaySum = Math.round(totalPaySum * 100) / 100;
+      
       updateStatus(totalPaySum);
       set(ref(db, 'pokerSession/players'), draftData);
     };
@@ -403,8 +436,8 @@
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td data-label="名前"><input type="text" class="name-input" placeholder="プレイヤー名" value="${name}" oninput="window.calculate()"></td>
-        <td data-label="エントリー"><input type="text" inputmode="numeric" class="entry numpad-trigger" value="${entry}" ${readOnlyAttr} oninput="window.calculate()" onclick="window.openCustomNumpad(this)" onfocus="window.handleFocus(this)" onblur="window.handleBlur(this)"></td>
-        <td data-label="最終持ち点"><input type="text" inputmode="numeric" class="final-chips numpad-trigger" value="${finalChips}" ${readOnlyAttr} oninput="window.calculate()" onclick="window.openCustomNumpad(this)" onfocus="window.handleFocus(this)" onblur="window.handleBlur(this)"></td>
+        <td data-label="エントリー"><input type="text" inputmode="numeric" class="entry numpad-trigger" value="${formatNumber(entry)}" ${readOnlyAttr} oninput="window.calculate()" onclick="window.openCustomNumpad(this)" onfocus="window.handleFocus(this)" onblur="window.handleBlur(this)"></td>
+        <td data-label="最終持ち点"><input type="text" inputmode="numeric" class="final-chips numpad-trigger" value="${formatNumber(finalChips)}" ${readOnlyAttr} oninput="window.calculate()" onclick="window.openCustomNumpad(this)" onfocus="window.handleFocus(this)" onblur="window.handleBlur(this)"></td>
         <td data-label="精算後 (点)"><input type="text" class="result readonly" value="-20,000" readonly tabindex="-1"></td>
         <td data-label="Pay"><input type="text" class="pay readonly" value="-2,000" readonly tabindex="-1"></td>
         <td data-label=""><button class="del-btn" onclick="window.removeRow(this)">✖ 削除</button></td>
@@ -426,8 +459,10 @@
         const name = row.querySelector('.name-input').value.trim();
         if (name !== "") {
           hasName = true;
-          const entry = parseFloat(row.querySelector('.entry').value) || 0;
-          const finalChips = parseFloat(row.querySelector('.final-chips').value) || 0;
+          const entryRaw = row.querySelector('.entry').value.replace(/,/g, '');
+          const chipsRaw = row.querySelector('.final-chips').value.replace(/,/g, '');
+          const entry = parseFloat(entryRaw) || 0;
+          const finalChips = parseFloat(chipsRaw) || 0;
           const result = finalChips - (entry * STARTING_CHIPS);
           const pay = result / RATE;
           playerData.push({ name, entry, finalChips, result, pay, playTime: currentPlayTime });
@@ -437,6 +472,8 @@
       
       let checkTotal = 0;
       playerData.forEach(p => checkTotal += p.pay);
+      checkTotal = Math.round(checkTotal * 100) / 100;
+      
       if (checkTotal !== 0) {
         if (!confirm("合計Payにズレがあります。このまま記録しますか？")) return;
       } else {
@@ -478,6 +515,7 @@
         tr.innerHTML = `<td>${index+1}</td><td class="name-cell">${player.name}</td><td>${player.entry}</td><td>${formatNumber(player.finalChips)}</td><td class="${payClass}">${paySign}${formatNumber(player.result)}</td><td class="pay-cell ${payClass}">${paySign}${formatNumber(player.pay)}</td>`;
         tbody.appendChild(tr);
       });
+      totalPay = Math.round(totalPay * 100) / 100;
       document.getElementById('reportTotalPay').innerText = formatNumber(totalPay);
     }
 
