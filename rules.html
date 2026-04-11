@@ -1,3 +1,14 @@
+お約束通り、他のレイアウトやデザインには一切手を加えず、ご指示いただいた**「ルールの役（ハンド）説明のカードデザインの最適化」**のみを正確に実行いたしました！
+
+パッと見た瞬間に「どのカードが役を作っているのか」が直感的に伝わるように、以下の調整を行っています。
+
+1. **役に関係するカード（揃っている部分）**：少し浮き上がり、金色の枠線と強い光（グローエフェクト）で強調されるようにしました。
+2. **役に関係ないカード（キッカー）**：背景と文字色をグレーアウト（くすんだ色）にし、半透明にすることで視覚的なノイズを消しました。
+3. **カード自体のデザイン**：枠線を少し太くし、角の丸みを調整して、よりトランプらしさが伝わるように改善しました。
+
+以下のコードを全コピーして、GitHubの **`rules.html`** に上書きペーストしてください！
+
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -53,24 +64,42 @@
   .hand-name { color: #d4af37; font-size: clamp(16px, 1.8vw, 20px); font-weight: bold; margin-bottom: 5px; letter-spacing: 1px; }
   .hand-desc { color: #bdc3c7; font-size: clamp(13px, 1.2vw, 15px); line-height: 1.5; }
   
-  /* トランプカードのデザイン */
+  /* トランプカードのデザイン（修正箇所） */
   .hand-cards { display: flex; gap: 6px; }
   .card { 
     background: #ffffff; 
     width: clamp(35px, 4vw, 50px); 
     height: clamp(50px, 5.6vw, 70px); 
-    border-radius: 4px; 
+    border-radius: 6px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     font-size: clamp(16px, 2vw, 24px); 
     font-weight: bold; 
     font-family: 'Courier New', monospace; 
-    box-shadow: 0 3px 6px rgba(0,0,0,0.6); 
     user-select: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
   }
   .card.black { color: #2c3e50; }
   .card.red { color: #e74c3c; }
+
+  /* 役を構成する重要なカード（光らせて強調） */
+  .card.active {
+    border-color: #f1c40f;
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.8), inset 0 0 5px rgba(241, 196, 15, 0.3);
+    transform: translateY(-3px);
+    z-index: 2;
+  }
+
+  /* 役に関係ないカード（グレーアウト） */
+  .card.inactive {
+    background: #e0e0e0;
+    border-color: #b0b0b0;
+    color: #95a5a6 !important;
+    opacity: 0.6;
+    box-shadow: none;
+  }
 
   /* 左上のダッシュボードに戻るボタン */
   .discreet-next-btn {
@@ -186,7 +215,7 @@
               <div class="hand-desc">同じマークで「10, J, Q, K, A」が揃った最強にして幻の役。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">A♠</div><div class="card black">K♠</div><div class="card black">Q♠</div><div class="card black">J♠</div><div class="card black">10♠</div>
+              <div class="card black active">A♠</div><div class="card black active">K♠</div><div class="card black active">Q♠</div><div class="card black active">J♠</div><div class="card black active">10♠</div>
             </div>
           </div>
           
@@ -196,7 +225,7 @@
               <div class="hand-desc">同じマークで数字が5枚連続している役。</div>
             </div>
             <div class="hand-cards">
-              <div class="card red">9♥</div><div class="card red">8♥</div><div class="card red">7♥</div><div class="card red">6♥</div><div class="card red">5♥</div>
+              <div class="card red active">9♥</div><div class="card red active">8♥</div><div class="card red active">7♥</div><div class="card red active">6♥</div><div class="card red active">5♥</div>
             </div>
           </div>
 
@@ -206,7 +235,7 @@
               <div class="hand-desc">同じ数字が4枚揃った役。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">A♠</div><div class="card red">A♥</div><div class="card red">A♦</div><div class="card black">A♣</div><div class="card black">K♠</div>
+              <div class="card black active">A♠</div><div class="card red active">A♥</div><div class="card red active">A♦</div><div class="card black active">A♣</div><div class="card black inactive">K♠</div>
             </div>
           </div>
 
@@ -216,7 +245,7 @@
               <div class="hand-desc">スリーカード（3枚）とワンペア（2枚）が合体した役。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">K♠</div><div class="card red">K♥</div><div class="card red">K♦</div><div class="card black">Q♠</div><div class="card red">Q♥</div>
+              <div class="card black active">K♠</div><div class="card red active">K♥</div><div class="card red active">K♦</div><div class="card black active">Q♠</div><div class="card red active">Q♥</div>
             </div>
           </div>
 
@@ -226,7 +255,7 @@
               <div class="hand-desc">同じマークが5枚揃った役（数字はバラバラでOK）。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">K♣</div><div class="card black">J♣</div><div class="card black">7♣</div><div class="card black">5♣</div><div class="card black">2♣</div>
+              <div class="card black active">K♣</div><div class="card black active">J♣</div><div class="card black active">7♣</div><div class="card black active">5♣</div><div class="card black active">2♣</div>
             </div>
           </div>
 
@@ -236,7 +265,7 @@
               <div class="hand-desc">マークに関係なく、数字が5枚連続している役。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">9♠</div><div class="card black">8♣</div><div class="card red">7♦</div><div class="card red">6♥</div><div class="card black">5♠</div>
+              <div class="card black active">9♠</div><div class="card black active">8♣</div><div class="card red active">7♦</div><div class="card red active">6♥</div><div class="card black active">5♠</div>
             </div>
           </div>
 
@@ -246,7 +275,7 @@
               <div class="hand-desc">同じ数字が3枚揃った役。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">J♠</div><div class="card red">J♥</div><div class="card red">J♦</div><div class="card black">4♣</div><div class="card black">2♠</div>
+              <div class="card black active">J♠</div><div class="card red active">J♥</div><div class="card red active">J♦</div><div class="card black inactive">4♣</div><div class="card black inactive">2♠</div>
             </div>
           </div>
 
@@ -256,7 +285,7 @@
               <div class="hand-desc">同じ数字のペアが2組できた役。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">10♠</div><div class="card red">10♥</div><div class="card red">8♦</div><div class="card black">8♣</div><div class="card black">A♠</div>
+              <div class="card black active">10♠</div><div class="card red active">10♥</div><div class="card red active">8♦</div><div class="card black active">8♣</div><div class="card black inactive">A♠</div>
             </div>
           </div>
 
@@ -266,7 +295,7 @@
               <div class="hand-desc">同じ数字のペアが1組できた役。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">Q♠</div><div class="card red">Q♥</div><div class="card red">9♦</div><div class="card black">5♣</div><div class="card black">3♠</div>
+              <div class="card black active">Q♠</div><div class="card red active">Q♥</div><div class="card red inactive">9♦</div><div class="card black inactive">5♣</div><div class="card black inactive">3♠</div>
             </div>
           </div>
 
@@ -276,7 +305,7 @@
               <div class="hand-desc">上記の役が何も揃わなかった状態。一番強い数字を持っている人が勝ちます。</div>
             </div>
             <div class="hand-cards">
-              <div class="card black">A♠</div><div class="card red">J♥</div><div class="card red">8♦</div><div class="card black">6♣</div><div class="card black">2♠</div>
+              <div class="card black active">A♠</div><div class="card red inactive">J♥</div><div class="card red inactive">8♦</div><div class="card black inactive">6♣</div><div class="card black inactive">2♠</div>
             </div>
           </div>
 
@@ -288,3 +317,4 @@
 
 </body>
 </html>
+```
