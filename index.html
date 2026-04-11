@@ -84,77 +84,91 @@
   .active-players-grid { display: flex; width: 100%; max-height: 250px; overflow: hidden; flex-shrink: 0; align-items: flex-start; justify-content: center; }
 
   /* =====================================================================
-     ★ 刷新：アクティブプレイヤーをさらにスタイリッシュな近未来グラス調HUDに
+     ★ 刷新：アクティブプレイヤーをハイエンドなメカニカルHUDデザインに
      ===================================================================== */
   .player-tag { 
-    background: rgba(10, 15, 20, 0.85); 
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.08); 
-    border-left: 4px solid #7f8fa6;
+    background: linear-gradient(135deg, rgba(25, 30, 35, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%);
+    background-image: 
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(25, 30, 35, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%);
+    background-size: 4px 4px, 4px 4px, 100% 100%;
+    border: 1px solid rgba(100, 120, 140, 0.3);
+    border-left: 5px solid #7f8fa6;
     padding: 15px 25px; 
-    border-radius: 8px; 
+    border-radius: 4px; 
     font-size: clamp(20px, 2.5vw, 36px); 
     color: #f1f2f6; 
     display: flex; 
     flex-direction: column;
     align-items: flex-start; 
     gap: 0; 
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5); 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1); 
     font-weight: bold; 
     letter-spacing: 2px; 
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
     position: relative; 
     cursor: pointer;
     min-width: clamp(220px, 22vw, 320px);
-    overflow: hidden;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
   }
   
-  /* キラッと光る反射エフェクト */
   .player-tag::after {
     content: '';
     position: absolute;
-    top: 0; left: -100%;
-    width: 50%; height: 100%;
+    top: 0; left: -150%;
+    width: 100%; height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
     transform: skewX(-20deg);
-    transition: all 0.5s ease;
+    transition: all 0.6s ease;
   }
   
   .player-tag:hover { 
-    transform: translateY(-4px); 
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 20px rgba(127, 140, 141, 0.3); 
+    transform: translateY(-3px); 
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 15px rgba(127, 140, 141, 0.4); 
   }
   .player-tag:hover::after {
-    left: 200%;
+    left: 150%;
   }
 
-  .tag-header { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+  .tag-header { display: flex; align-items: center; justify-content: space-between; width: 100%; position: relative; z-index: 2; }
 
-  /* VIPタグのスタイリッシュ発光化 */
+  /* VIPタグのサイバー発光化 */
   .vip-tag-1 { 
-    border-left: 4px solid #f1c40f !important;
-    background: linear-gradient(135deg, rgba(241, 196, 15, 0.1) 0%, rgba(10, 15, 20, 0.9) 100%) !important; 
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 15px rgba(241, 196, 15, 0.2) !important;
+    border-left: 5px solid #f1c40f !important;
+    background-image: 
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(40, 35, 10, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%) !important;
+    border-color: rgba(241, 196, 15, 0.4) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(241, 196, 15, 0.3), inset 0 1px 1px rgba(255,255,255,0.1) !important;
   }
-  .vip-tag-1:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 25px rgba(241, 196, 15, 0.5) !important; }
+  .vip-tag-1:hover { border-color: rgba(241, 196, 15, 0.8) !important; box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(241, 196, 15, 0.6) !important; }
   .vip-tag-1 .tag-name { color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
 
   .vip-tag-2 { 
-    border-left: 4px solid #bdc3c7 !important;
-    background: linear-gradient(135deg, rgba(189, 195, 199, 0.1) 0%, rgba(10, 15, 20, 0.9) 100%) !important; 
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 15px rgba(189, 195, 199, 0.2) !important;
+    border-left: 5px solid #bdc3c7 !important;
+    background-image: 
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(30, 35, 40, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%) !important;
+    border-color: rgba(189, 195, 199, 0.4) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(189, 195, 199, 0.2), inset 0 1px 1px rgba(255,255,255,0.1) !important;
   }
-  .vip-tag-2:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 25px rgba(189, 195, 199, 0.5) !important; }
+  .vip-tag-2:hover { border-color: rgba(189, 195, 199, 0.8) !important; box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(189, 195, 199, 0.5) !important; }
   .vip-tag-2 .tag-name { color: #bdc3c7; text-shadow: 0 0 10px rgba(189, 195, 199, 0.5); }
 
   .vip-tag-3 { 
-    border-left: 4px solid #cd7f32 !important;
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.1) 0%, rgba(10, 15, 20, 0.9) 100%) !important; 
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 15px rgba(205, 127, 50, 0.2) !important;
+    border-left: 5px solid #cd7f32 !important;
+    background-image: 
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(40, 25, 15, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%) !important;
+    border-color: rgba(205, 127, 50, 0.4) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(205, 127, 50, 0.2), inset 0 1px 1px rgba(255,255,255,0.1) !important;
   }
-  .vip-tag-3:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 25px rgba(205, 127, 50, 0.5) !important; }
+  .vip-tag-3:hover { border-color: rgba(205, 127, 50, 0.8) !important; box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(205, 127, 50, 0.5) !important; }
   .vip-tag-3 .tag-name { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
 
   /* タップで展開される戦績エリア (HUD風グリッド) */
@@ -170,13 +184,16 @@
     text-align: left;
     letter-spacing: 1px;
     font-weight: normal;
+    position: relative;
+    z-index: 2;
   }
-  .player-tag.open .player-stats { display: block; animation: expandStats 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  @keyframes expandStats { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  .player-tag.open .player-stats { display: block; animation: expandStats 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  @keyframes expandStats { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
+  /* ★ TIMEを消し、3項目が綺麗に並ぶように3列グリッドに変更 */
   .stats-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 8px 15px;
   }
   .stat-item { display: flex; flex-direction: column; }
@@ -542,13 +559,11 @@
           let rank = "-";
           let games = 0;
           let pay = 0;
-          let playTime = "N/A";
 
           if (pData) {
             rank = globalHofData.indexOf(pData) + 1;
             games = pData.games || 0;
             pay = pData.pay || 0;
-            playTime = pData.playTime || "N/A"; 
           }
 
           let payStr = formatNumber(pay);
@@ -571,7 +586,6 @@
                   <div class="stat-item"><span class="stat-label">RANK</span><span class="stat-val">${rank}位</span></div>
                   <div class="stat-item"><span class="stat-label">GAMES</span><span class="stat-val">${games}</span></div>
                   <div class="stat-item"><span class="stat-label">PAY</span><span class="${payClass}">${payStr}</span></div>
-                  <div class="stat-item"><span class="stat-label">TIME</span><span class="stat-val">${playTime}</span></div>
                 </div>
               </div>
             </div>
