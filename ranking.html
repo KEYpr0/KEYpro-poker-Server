@@ -14,7 +14,6 @@
 
   body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; text-align: center; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: 'KEYpro', sans-serif; }
   
-  /* ★ PCフルスクリーン対応 */
   .container { display: flex; flex-direction: column; width: 96vw; max-width: 1400px; height: 94vh; min-height: 600px; background-color: rgba(0, 0, 0, 0.8); border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 15px 50px rgba(0,0,0,0.9); overflow: hidden; padding: 40px; position: relative; }
 
   h1 { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: clamp(40px, 4vw, 64px); margin: 0 0 5px 0; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); letter-spacing: -3px; font-weight: 900; }
@@ -49,29 +48,42 @@
 
   .empty-text { color: #d4af37; font-size: 18px; width: 100%; text-align: center; margin-top: 40px; letter-spacing: 2px; line-height: 2; font-weight: bold; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
 
-  /* ★ 新デザイン：小さくてカッコいい「DASHBOARDボタン」を左上に配置 */
+  /* ★ 新デザイン：ミニマルな戻るボタン */
   .discreet-next-btn {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.5);
+    top: 25px;
+    left: 30px;
+    background: transparent;
     color: #7f8fa6;
-    border: 1px solid rgba(127, 140, 141, 0.5);
-    padding: 10px 24px;
+    border: none;
+    padding: 5px 10px;
     font-size: 12px;
-    border-radius: 50px;
     text-decoration: none;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
+    letter-spacing: 3px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-weight: bold;
-    z-index: 50;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.7;
   }
-  .discreet-next-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
+  .discreet-next-btn::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid currentColor;
+    border-left: 2px solid currentColor;
+    transform: rotate(-45deg);
+    margin-top: 1px;
+  }
+  .discreet-next-btn:hover { color: #d4af37; opacity: 1; transform: translateX(-5px); }
 
   /* 📱 スマホ用 */
   @media screen and (max-width: 900px) {
     body { padding: 10px; display: block; overflow-x: hidden; }
-    .container { padding: 50px 15px 25px 15px; width: 100%; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; display: block; }
+    .container { padding: 50px 15px 25px 15px; width: 100%; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; display: block; position: relative; padding-top: 50px;}
     
     h1 { font-size: 36px; letter-spacing: -2px; }
     h1 span { font-size: 12px; }
@@ -90,14 +102,12 @@
     
     .score-col { font-size: 24px; }
     
-    /* スマホ時はボタンを上に配置しつつ少し小さめに */
-    .discreet-next-btn { top: 15px; left: 15px; padding: 8px 16px; font-size: 10px; }
+    /* スマホ時の戻るボタン */
+    .discreet-next-btn { position: absolute; top: 15px; left: 15px; font-size: 10px; padding: 5px; margin: 0; }
   }
 
   /* ★★★ キラキラとさりげない効果 ★★★ */
   @keyframes shimmer { 0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; } 30% { opacity: 0.6; } 50% { opacity: 0; } 100% { transform: translateX(150%) skewX(-20deg); opacity: 0; } }
-  
-  /* パルス効果をゆっくり滑らかに */
   @keyframes pulsing-glow-1 { 0% { box-shadow: 0 0 15px rgba(241, 196, 15, 0.15), inset 0 0 5px rgba(241, 196, 15, 0.05); } 50% { box-shadow: 0 0 25px rgba(241, 196, 15, 0.4), inset 0 0 10px rgba(241, 196, 15, 0.2); } 100% { box-shadow: 0 0 15px rgba(241, 196, 15, 0.15), inset 0 0 5px rgba(241, 196, 15, 0.05); } }
   @keyframes pulsing-glow-2 { 0% { box-shadow: 0 0 10px rgba(189, 195, 199, 0.1); } 50% { box-shadow: 0 0 20px rgba(189, 195, 199, 0.3); } 100% { box-shadow: 0 0 10px rgba(189, 195, 199, 0.1); } }
   @keyframes pulsing-glow-3 { 0% { box-shadow: 0 0 8px rgba(205, 127, 50, 0.08); } 50% { box-shadow: 0 0 15px rgba(205, 127, 50, 0.2); } 100% { box-shadow: 0 0 8px rgba(205, 127, 50, 0.08); } }
@@ -117,9 +127,6 @@
   .rank-card.rank-3::before { background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.01) 20%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.01) 80%, rgba(255, 255, 255, 0) 100%); animation: shimmer 8s linear infinite; animation-delay: 3s; }
   .rank-3 .rank-badge-text { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
 
-  /* ==========================================================================
-     ★★★ 最下位（ドベ）の地獄デザイン ★★★
-     ========================================================================== */
   .rank-card.rank-worst {
     border-left-color: transparent; border-left-image: linear-gradient(180deg, #ff4500, #ff0000, #ff4500); border-left-image-slice: 1;
     background: linear-gradient(90deg, rgba(128, 0, 0, 0.35) 0%, rgba(0,0,0,0.9) 100%); border-color: rgba(179, 0, 0, 0.4);
@@ -130,8 +137,6 @@
   .card-skull-bg { display: none; }
   
   .rank-worst .rank-badge-text { font-family: 'Nosifer', sans-serif; color: transparent; -webkit-text-stroke: 1.5px #800000; letter-spacing: 2px; filter: drop-shadow(0 0 10px #ff4500); animation: flameRank 4s ease-in-out infinite alternate; }
-  
-  /* ★ 修正ポイント：名前にも黒いフチドリと控えめな炎のシャドウを追加 */
   .rank-worst .player-name { color: #ffffff; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 10px #ff4500; animation: flameName 3s ease-in-out infinite alternate; }
   .rank-worst .games-played { color: #e74c3c; }
   .rank-worst .score-col { color: #ff4500 !important; text-shadow: 0 0 20px rgba(255, 69, 0, 0.8) !important; }
@@ -145,7 +150,7 @@
 <body>
 
   <div class="container">
-    <a href="index.html" class="discreet-next-btn">◀ DASHBOARD</a>
+    <a href="index.html" class="discreet-next-btn">DASHBOARD</a>
     
     <h1>KEYpro<span>poker</span></h1>
     <p class="subtitle">HALL OF FAME</p>
@@ -160,9 +165,7 @@
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxijPOgmKGDL-UL5eAqOBKrxKVfPl4v6hsdLcWbiuwMrCWSPI5fqxu3qOmXIFTrMYCi5A/exec";
 
-    function formatNumber(num) {
-      return num.toLocaleString();
-    }
+    function formatNumber(num) { return num.toLocaleString(); }
 
     function loadRanking() {
       const board = document.getElementById('rankingBoard');
@@ -190,7 +193,6 @@
 
             let scoreClass = player.pay > 0 ? "score-plus" : (player.pay < 0 ? "score-minus" : "");
             let scoreSign = player.pay > 0 ? "+" : "";
-            
             if (rankClass === "rank-worst") { scoreClass = ""; }
 
             let skullSvg = rankClass === 'rank-worst' ? `<svg class="card-skull-bg" viewBox="0 0 448 512"><path d="M439.2 236.1l-20.1-11.9c-6.4-3.8-14.6-1.6-18.4 5.1-18.9 34.6-56.3 58.7-99.1 58.7-42.8 0-80.1-24.1-99.1-58.7-3.8-6.7-12-8.9-18.4-5.1l-20.1 11.9c-6.7 4-8.9 12.6-5 19.3C181.8 290.4 200.7 320 224 320s42.2-29.6 66.8-64.7c3.9-6.7 1.7-15.3-5-19.3zm-111.2-120c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zm64 0c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zM224 0C100.3 0 0 100.3 0 224v192c0 53 43 96 96 96h256c53 0 96-43 96-96V224C448 100.3 347.7 0 224 0zm96 416c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm-128 0c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm160-224C352 110.3 294.5 48 224 48s-128 62.3-128 144v14.1c0 23.6 15.1 44.8 36.9 52.8l10.8 4c16.3 6 30.1 16.6 39.4 30.2 11.2-16.1 27.6-29 46.9-36l10.8-4c21.8-8 36.9-29.2 36.9-52.8V192zm-32 96c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"/></svg>` : '';
@@ -214,8 +216,7 @@
           board.innerHTML = html;
         })
         .catch(error => {
-          console.error("エラー:", error);
-          board.innerHTML = '<div class="empty-text" style="color:#e74c3c; font-size:14px; line-height:1.5;">データの読み込みに失敗しました。<br>通信状況を確認してください。</div>';
+          board.innerHTML = '<div class="empty-text" style="color:#e74c3c;">データの読み込みに失敗しました。</div>';
         });
     }
 
