@@ -36,7 +36,6 @@
   
   .readonly { background-color: transparent; border: none; font-weight: bold; color: #bdc3c7; text-align: right; padding-right: 0; font-size: 18px; }
   
-  /* ★ 退出ボタンのスタイル */
   .checkout-btn { background: rgba(255,255,255,0.1); border: 1px solid #7f8fa6; color: #7f8fa6; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; white-space: nowrap; transition: all 0.3s; width: 100%; letter-spacing: 1px; }
   .checkout-btn:hover { background: rgba(255,255,255,0.2); }
   .checkout-btn.checked { background: rgba(46, 204, 113, 0.2); border-color: #2ecc71; color: #2ecc71; box-shadow: 0 0 10px rgba(46, 204, 113, 0.3); }
@@ -62,8 +61,9 @@
   .sheet-btn { background: rgba(46, 204, 113, 0.05); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4); padding: 15px; font-size: 16px; }
   .sheet-btn:hover { background: #2ecc71; color: #000; border-color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.4); }
 
-  .discreet-next-btn { position: absolute; top: 20px; right: 20px; background: transparent; color: #7f8fa6; border: 1px solid rgba(127, 140, 141, 0.5); padding: 8px 20px; font-size: 12px; border-radius: 50px; text-decoration: none; letter-spacing: 2px; transition: all 0.3s; font-weight: bold; z-index: 100; }
-  .discreet-next-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; }
+  .discreet-next-btn { position: absolute; top: 20px; right: 20px; background: transparent; color: #7f8fa6; border: none; padding: 5px 10px; font-size: 11px; text-decoration: none; letter-spacing: 3px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); font-weight: bold; z-index: 100; display: flex; align-items: center; gap: 8px; opacity: 0.7; }
+  .discreet-next-btn::before { content: ''; display: inline-block; width: 6px; height: 6px; border-top: 2px solid currentColor; border-left: 2px solid currentColor; transform: rotate(-45deg); margin-top: 1px; }
+  .discreet-next-btn:hover { color: #d4af37; opacity: 1; transform: translateX(-5px); }
 
   /* カスタム電卓 */
   .numpad-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: transparent; z-index: 9998; display: none; }
@@ -87,19 +87,25 @@
   .save-image-close { background: linear-gradient(145deg, #e74c3c, #c0392b); color: #fff; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5); width: 100%; max-width: 300px; flex-shrink: 0; }
   .save-image-cancel { background: transparent; color: #fff; border: 1px solid #7f8fa6; padding: 12px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 14px; letter-spacing: 1px; margin-top: 15px; width: 100%; max-width: 300px; flex-shrink: 0; }
 
+  /* 📱 スマホ向け（リサイズ調整のみ） */
   @media screen and (max-width: 900px) {
-    body { padding: 10px 5px; height: auto; display: block; }
-    .container { padding: 20px 15px; border-radius: 12px; width: 100%; height: auto; min-height: auto; display: block; }
-    h2 { font-size: 20px; letter-spacing: 2px; margin-bottom: 15px; padding-top: 20px; }
-    .discreet-next-btn { position: relative; top: auto; right: auto; margin: 0 auto 20px auto; display: block; max-width: 200px; text-align: center; }
-    .table-wrapper { overflow: hidden; box-shadow: none; background: transparent; margin-bottom: 10px; flex-grow: 0; }
+    body { padding: 10px; display: block; height: auto; overflow-x: hidden; }
+    .container { padding: 15px; border-radius: 12px; width: 100%; max-width: 100%; height: auto; min-height: auto; display: block; position: relative; padding-top: 45px; box-sizing: border-box; }
+    h2 { font-size: 20px; letter-spacing: 2px; margin-bottom: 15px; padding-top: 10px; }
+    
+    .discreet-next-btn { position: absolute; top: 15px; left: 15px; font-size: 10px; padding: 5px 10px; margin: 0; }
+    
+    .timer-display-small { font-size: 36px; }
+    .timer-btns { flex-wrap: wrap; gap: 8px; }
+    .t-btn { font-size: 12px; padding: 10px 0; }
+    
+    .table-wrapper { overflow-x: hidden; box-shadow: none; background: transparent; margin-bottom: 10px; flex-grow: 0; }
     table { min-width: 0 !important; width: 100%; border: none; }
     table, thead, tbody, tr, td { display: block; }
     thead { display: none; }
     tr { background: linear-gradient(145deg, rgba(20, 25, 30, 0.9), rgba(0, 0, 0, 0.9)); margin-bottom: 20px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.4); padding: 15px 15px 55px 15px; position: relative; box-shadow: 0 6px 15px rgba(0,0,0,0.5); }
-    td { padding: 8px 0; border: none; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); }
+    td { padding: 8px 0; border: none; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); width: 100%; box-sizing: border-box; }
     
-    /* ★ 退出ボタン用の列設定 */
     td:nth-last-child(2) { border-bottom: none; justify-content: flex-end; padding-top: 15px; }
     .checkout-btn { width: auto; padding: 10px 25px; }
 
@@ -110,8 +116,12 @@
     td:not([data-label="名前"]) input { width: 60%; flex-grow: 1; padding: 10px; text-align: right; min-width: 0; }
     input.numpad-trigger { cursor: pointer; caret-color: transparent; font-size: 20px; }
     td:last-child { position: absolute; bottom: 12px; left: 15px; padding: 0; display: block; width: auto; border: none; }
-    .btn-group { flex-direction: column; gap: 10px; }
-    .save-btn { font-size: 16px; padding: 16px; }
+    
+    .summary { flex-direction: column; align-items: flex-start; gap: 12px; font-size: 16px; padding: 15px; width: 100%; box-sizing: border-box; }
+    #totalPay { font-size: 26px !important; }
+    
+    .btn-group { flex-direction: column; gap: 10px; width: 100%; }
+    .save-btn, .add-btn, .sheet-btn { font-size: 16px; padding: 16px; width: 100%; }
   }
 
   /* 画像生成用エリア */
@@ -138,7 +148,7 @@
 <body>
 
   <div class="container">
-    <a href="index.html" class="discreet-next-btn">◀ DASHBOARD</a>
+    <a href="index.html" class="discreet-next-btn">DASHBOARD</a>
     
     <h2>チップ精算</h2>
 
@@ -343,7 +353,6 @@
 
     function formatNumber(num) { return num.toLocaleString(); }
 
-    // ★ 退出ボタンが押された時の処理
     window.toggleCheckout = function(btn) {
       if (btn.classList.contains('checked')) {
         btn.classList.remove('checked');
@@ -355,7 +364,7 @@
         btn.dataset.time = currentTime;
         btn.innerText = `済 ${currentTime}`;
       }
-      window.calculate(); // データ保存トリガー
+      window.calculate();
     };
 
     onValue(ref(db, 'pokerSession/players'), (snapshot) => {
@@ -384,7 +393,6 @@
          if (entryInput !== activeNumpadInput && document.activeElement !== entryInput) { entryInput.value = formatNumber(p.entry !== undefined ? p.entry : 1); }
          if (chipsInput !== activeNumpadInput && document.activeElement !== chipsInput) { chipsInput.value = formatNumber(p.finalChips !== undefined ? p.finalChips : 0); }
          
-         // Firebaseから退出時間を復元
          if (p.checkoutTime) {
            checkoutBtn.classList.add('checked');
            checkoutBtn.dataset.time = p.checkoutTime;
@@ -441,7 +449,6 @@
       else { status.innerHTML = `<span class="status-badge">⚠️ エラー: ${totalPaySum > 0 ? '+' : ''}${formatNumber(totalPaySum)} のズレ</span>`; msg.className = "summary error"; }
     }
 
-    // ★ 行生成時に退出ボタンを追加
     window.createRow = function(name = "", entry = 1, finalChips = 0, checkoutTime = "") {
       const isMobile = window.innerWidth <= 900;
       const readOnlyAttr = isMobile ? 'readonly tabindex="-1"' : '';
@@ -480,12 +487,11 @@
           const chipsRaw = row.querySelector('.final-chips').value.replace(/,/g, '');
           const entry = parseFloat(entryRaw) || 0;
           const finalChips = parseFloat(chipsRaw) || 0;
-          const checkoutTime = row.querySelector('.checkout-btn').dataset.time || ""; // 退出時間を取得
+          const checkoutTime = row.querySelector('.checkout-btn').dataset.time || ""; 
 
           const result = finalChips - (entry * STARTING_CHIPS);
           const pay = result / RATE;
           
-          // 個別のプレイ時間を設定（退出していればその時間、していなければ全体の時間）
           const finalPlayTime = checkoutTime ? checkoutTime : currentPlayTime;
           
           playerData.push({ name, entry, finalChips, result, pay, playTime: finalPlayTime });
@@ -537,7 +543,6 @@
         const tr = document.createElement('tr');
         const payClass = player.pay > 0 ? 'report-plus' : (player.pay < 0 ? 'report-minus' : '');
         const paySign = player.pay > 0 ? '+' : '';
-        // レポート表に Time(プレイ時間) の列を追加して描写
         tr.innerHTML = `<td>${index+1}</td><td class="name-cell">${player.name}</td><td>${player.playTime}</td><td>${player.entry}</td><td>${formatNumber(player.finalChips)}</td><td class="${payClass}">${paySign}${formatNumber(player.result)}</td><td class="pay-cell ${payClass}">${paySign}${formatNumber(player.pay)}</td>`;
         tbody.appendChild(tr);
       });
