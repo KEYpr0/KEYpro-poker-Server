@@ -8,11 +8,43 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   html, body { max-width: 100vw; overflow-x: hidden; scroll-behavior: smooth; }
-  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; padding: 15px; margin: 0; min-height: 100vh; transition: padding-bottom 0.3s; font-family: 'KEYpro', sans-serif; display: flex; align-items: center; justify-content: center; }
+  body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; padding: 15px; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: 'KEYpro', sans-serif; }
   
   .container { width: 96vw; max-width: 1800px; height: 96vh; min-height: 600px; display: flex; flex-direction: column; background-color: rgba(0, 0, 0, 0.7); padding: 30px; border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 10px 40px rgba(0,0,0,0.7); overflow: hidden; position: relative; }
   
   h2 { color: #d4af37; margin-top: 0; margin-bottom: 20px; font-size: 24px; border-bottom: 2px solid #d4af37; padding-bottom: 15px; text-shadow: 0px 4px 10px rgba(0,0,0,0.8); letter-spacing: 3px; text-align: center; font-weight: bold; flex-shrink: 0; }
+
+  /* スタイリッシュな戻るボタン（全ページ統一） */
+  .discreet-next-btn {
+    position: absolute;
+    top: 25px;
+    left: 30px;
+    background: transparent;
+    color: #7f8fa6;
+    border: none;
+    padding: 5px 10px;
+    font-size: 11px;
+    text-decoration: none;
+    letter-spacing: 3px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-weight: bold;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.7;
+  }
+  .discreet-next-btn::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid currentColor;
+    border-left: 2px solid currentColor;
+    transform: rotate(-45deg);
+    margin-top: 1px;
+  }
+  .discreet-next-btn:hover { color: #d4af37; opacity: 1; transform: translateX(-5px); }
 
   .timer-control { background: rgba(0, 0, 0, 0.4); border: 1px solid #7f8c8d; border-radius: 12px; padding: 15px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); flex-shrink: 0; }
   .timer-control-title { color: #bdc3c7; font-size: 14px; margin-bottom: 8px; letter-spacing: 1px; }
@@ -57,13 +89,8 @@
   .save-btn { background: linear-gradient(145deg, #bf953f, #b38728); color: #fff; border: 1px solid #fcf6ba; font-size: 18px; padding: 18px; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(184, 134, 11, 0.4); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
   .save-btn:disabled { background: #95a5a6; border-color: #7f8c8d; cursor: not-allowed; }
 
-  /* ★ スプレッドシートボタンのスタイル */
   .sheet-btn { background: rgba(46, 204, 113, 0.05); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4); padding: 15px; font-size: 16px; }
   .sheet-btn:hover { background: #2ecc71; color: #000; border-color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.4); }
-
-  .discreet-next-btn { position: absolute; top: 25px; left: 30px; background: transparent; color: #7f8fa6; border: none; padding: 5px 10px; font-size: 11px; text-decoration: none; letter-spacing: 3px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); font-weight: bold; z-index: 100; display: flex; align-items: center; gap: 8px; opacity: 0.7; }
-  .discreet-next-btn::before { content: ''; display: inline-block; width: 6px; height: 6px; border-top: 2px solid currentColor; border-left: 2px solid currentColor; transform: rotate(-45deg); margin-top: 1px; }
-  .discreet-next-btn:hover { color: #d4af37; opacity: 1; transform: translateX(-5px); }
 
   /* カスタム電卓 */
   .numpad-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: transparent; z-index: 9998; display: none; }
@@ -88,8 +115,8 @@
   .save-image-cancel { background: transparent; color: #fff; border: 1px solid #7f8fa6; padding: 12px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 14px; letter-spacing: 1px; margin-top: 15px; width: 100%; max-width: 300px; flex-shrink: 0; }
 
   @media screen and (max-width: 900px) {
-    body { padding: 10px; display: block; height: auto; overflow-x: hidden; }
-    .container { padding: 15px; border-radius: 12px; width: 100%; max-width: 100%; height: auto; min-height: auto; display: block; position: relative; padding-top: 45px; box-sizing: border-box; }
+    body { padding: 10px 5px; height: auto; display: block; overflow-x: hidden; }
+    .container { padding: 15px; border-radius: 12px; width: 100%; max-width: 100%; height: auto; min-height: auto; display: block; position: relative; padding-top: 55px; box-sizing: border-box; }
     h2 { font-size: 20px; letter-spacing: 2px; margin-bottom: 15px; padding-top: 10px; }
     .discreet-next-btn { position: absolute; top: 15px; left: 15px; font-size: 10px; padding: 5px 10px; margin: 0; }
     .timer-display-small { font-size: 36px; }
@@ -116,25 +143,40 @@
     .save-btn, .add-btn, .sheet-btn { font-size: 16px; padding: 16px; width: 100%; box-sizing: border-box; }
   }
 
-  /* 画像生成用エリア */
-  #reportArea { position: absolute; top: -9999px; left: -9999px; background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; border: 10px solid #d4af37; }
-  #reportArea.layout-pc { width: 1200px; min-height: 675px; height: auto; }
-  #reportArea.layout-mobile { width: 800px; min-height: 1334px; height: auto; padding: 50px 30px; }
-  .report-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #d4af37; padding-bottom: 20px; margin-bottom: 20px; }
-  .report-title { font-size: 48px; color: #d4af37; font-weight: bold; letter-spacing: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-  .report-suits { font-size: 32px; letter-spacing: 10px; }
+  /* =====================================================================
+     ★ 修正：画像生成用エリア（高さ可変にして全員分入るようにする）
+     ===================================================================== */
+  #reportArea {
+    position: absolute;
+    top: -99999px;
+    left: 0;
+    background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%);
+    color: #ffffff;
+    padding: 60px 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border: 15px solid #d4af37;
+    width: 1200px;
+    height: auto !important; /* 高さを内容に合わせる */
+    min-height: 800px;
+  }
+  .report-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #d4af37; padding-bottom: 30px; margin-bottom: 30px; }
+  .report-title { font-size: 64px; color: #d4af37; font-weight: bold; letter-spacing: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+  .report-suits { font-size: 42px; letter-spacing: 15px; }
   .report-red { color: #e74c3c; }
-  .report-meta { font-size: 20px; color: #bdc3c7; text-align: right; line-height: 1.6; }
-  .report-table { width: 100%; border-collapse: collapse; flex-grow: 1; margin-bottom: 20px; }
-  .report-table th, .report-table td { border: 1px solid rgba(255,255,255,0.1); padding: 10px; text-align: center; font-size: 16px; }
-  .layout-mobile .report-table th, .layout-mobile .report-table td { font-size: 22px; padding: 12px 6px; }
-  .report-table th { background-color: #1a252f; color: #d4af37; font-weight: bold; }
+  .report-meta { font-size: 24px; color: #bdc3c7; text-align: right; line-height: 1.6; }
+  
+  .report-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+  .report-table th, .report-table td { border: 1px solid rgba(255,255,255,0.2); padding: 18px 12px; text-align: center; font-size: 20px; }
+  .report-table th { background-color: #1a252f; color: #d4af37; font-weight: bold; font-size: 22px; }
   .report-table td.name-cell { text-align: left; font-weight: bold; }
-  .report-table td.pay-cell { font-weight: bold; font-size: 20px; }
-  .layout-mobile .report-table td.pay-cell { font-size: 26px; }
+  .report-table td.pay-cell { font-weight: bold; font-size: 28px; }
+  
   .report-plus { color: #2ecc71; }
   .report-minus { color: #e74c3c; }
-  .report-footer { display: flex; justify-content: space-between; align-items: center; font-size: 18px; color: #7f8c8d; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; margin-top: 20px; }
+  .report-footer { display: flex; justify-content: space-between; align-items: center; font-size: 24px; color: #bdc3c7; border-top: 2px solid rgba(255,255,255,0.3); padding-top: 30px; margin-top: auto; }
+  .report-total-pay-box { background: rgba(0,0,0,0.4); padding: 15px 30px; border-radius: 8px; border: 2px solid #d4af37; color: #fff; font-size: 32px; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -216,7 +258,7 @@
 
   <div id="reportArea">
     <div class="report-header">
-      <div style="display:flex; align-items:center; gap:20px;">
+      <div style="display:flex; align-items:center; gap:30px;">
         <div class="report-suits"><span>♠</span><span class="report-red">♥</span><span>♣</span><span class="report-red">♦</span></div>
         <div class="report-title">SESSION REPORT</div>
       </div>
@@ -231,9 +273,9 @@
     </table>
     <div class="report-footer">
       <div class="report-total-pay-box">Total Pay: <span id="reportTotalPay">0</span> (Confirmed)</div>
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div class="report-suits" style="font-size:16px;"><span>♠</span><span class="report-red">♥</span><span>♣</span><span class="report-red">♦</span></div>
-        <div>KEYpro poker Server</div>
+      <div style="display:flex; align-items:center; gap:15px;">
+        <div class="report-suits" style="font-size:20px;"><span>♠</span><span class="report-red">♥</span><span>♣</span><span class="report-red">♦</span></div>
+        <div style="font-weight:bold;">KEYpro poker Server</div>
       </div>
     </div>
   </div>
@@ -465,6 +507,9 @@
     window.closeSaveImageOverlay = function() { document.getElementById('saveImageOverlay').classList.remove('show'); };
     window.closeAndReset = function() { if(confirm("データをすべてリセットして次のゲームの準備をしますか？\n（※画像の保存忘れにご注意ください）")) { set(ref(db, 'pokerSession/players'), []); update(ref(db, 'pokerSession/timer'), { running: false, elapsedSeconds: 0, lastUpdate: Date.now() }); document.getElementById('saveImageOverlay').classList.remove('show'); setTimeout(() => location.reload(), 300); } };
 
+    /* =====================================================================
+       ★ 修正：全員分しっかり入った画像を生成するロジック
+       ===================================================================== */
     window.confirmAndSave = function() {
       const rows = document.querySelectorAll('#tableBody tr');
       let playerData = [];
@@ -483,9 +528,7 @@
 
           const result = finalChips - (entry * STARTING_CHIPS);
           const pay = result / RATE;
-          
           const finalPlayTime = checkoutTime ? checkoutTime : currentPlayTime;
-          
           playerData.push({ name, entry, finalChips, result, pay, playTime: finalPlayTime });
         }
       });
@@ -494,30 +537,30 @@
       let checkTotal = 0;
       playerData.forEach(p => checkTotal += p.pay);
       checkTotal = Math.round(checkTotal * 100) / 100;
-      
-      if (checkTotal !== 0) {
-        if (!confirm("合計Payにズレがあります。このまま記録しますか？")) return;
-      } else {
-        if (!confirm("本日の成績を確定し、長押し保存用の画像を生成しますか？")) return;
-      }
+      if (checkTotal !== 0) { if (!confirm("合計Payにズレがあります。このまま記録しますか？")) return; } 
+      else { if (!confirm("成績を確定し、全員分が入った画像を生成しますか？")) return; }
 
       const btn = document.getElementById('saveBtn');
-      btn.innerText = "⏳ 画像生成中..."; btn.disabled = true;
+      btn.innerText = "⏳ 全員分を画像にレンダリング中..."; btn.disabled = true;
       
       const reportArea = document.getElementById('reportArea');
-      const isMobile = window.innerWidth <= 600;
-      reportArea.className = isMobile ? 'layout-mobile' : 'layout-pc';
-      
       prepareReportArea(playerData, currentPlayTime);
       
+      // レンダリングを待ってからキャプチャ
       setTimeout(() => {
-        html2canvas(reportArea, { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
+        html2canvas(reportArea, { 
+          scale: 2, 
+          useCORS: true, 
+          backgroundColor: null,
+          height: reportArea.scrollHeight, // 全体のスクロール高さを取得
+          windowHeight: reportArea.scrollHeight
+        }).then(canvas => {
           document.getElementById('generatedImage').src = canvas.toDataURL('image/jpeg', 0.9);
           document.getElementById('saveImageOverlay').classList.add('show');
           btn.innerText = "💾 画像を表示しました";
           sendToGAS(playerData, btn);
         });
-      }, 500);
+      }, 800);
     };
 
     function prepareReportArea(data, globalTime) {
