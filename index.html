@@ -83,120 +83,84 @@
 
   .active-players-grid { display: flex; width: 100%; max-height: 250px; overflow: hidden; flex-shrink: 0; align-items: flex-start; justify-content: center; }
 
-  /* =====================================================================
-     ★ ゴージャス感MAX：重厚なハイエンド3Dメタルデザイン（サイズ等変更なし）
-     ===================================================================== */
   .player-tag { 
-    background: linear-gradient(145deg, #3a3f44, #1a1c20);
-    border: 1px solid #5a646e;
-    padding: 16px 28px; 
-    border-radius: 12px; 
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.95) 0%, rgba(5, 5, 5, 0.95) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-left: 6px solid #d4af37;
+    padding: 15px 25px; 
+    border-radius: 8px; 
     font-size: clamp(20px, 2.5vw, 36px); 
-    color: #ecf0f1; 
+    color: #fcf6ba; 
     display: flex; 
     flex-direction: column;
     align-items: flex-start; 
     gap: 0; 
-    box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 2px 3px rgba(255,255,255,0.2), inset 0 -2px 5px rgba(0,0,0,0.5); 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8), inset 0 2px 5px rgba(212, 175, 55, 0.15); 
     font-weight: bold; 
     letter-spacing: 2px; 
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
     position: relative; 
     cursor: pointer;
     min-width: clamp(220px, 22vw, 320px);
+    overflow: hidden;
   }
   
-  /* 立体的なカーボングリッドの内枠 */
-  .player-tag::before {
-    content: '';
-    position: absolute;
-    top: 4px; left: 4px; right: 4px; bottom: 4px;
-    border-radius: 8px;
-    background: 
-      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(15,18,20,0.95) 0%, rgba(5,6,8,0.98) 100%);
-    background-size: 4px 4px, 100% 100%;
-    z-index: 0;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-    pointer-events: none;
-  }
-  
-  /* ホバー時のキラッと光る反射エフェクト */
   .player-tag::after {
     content: '';
     position: absolute;
     top: 0; left: -100%;
     width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(252, 246, 186, 0.2), transparent);
     transform: skewX(-20deg);
     transition: all 0.6s ease;
-    z-index: 1;
-    pointer-events: none;
   }
   
   .player-tag:hover { 
-    transform: translateY(-5px) scale(1.02); 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 20px rgba(127, 140, 141, 0.4); 
-    border-color: #ecf0f1;
+    transform: translateY(-3px); 
+    border-color: rgba(212, 175, 55, 0.8);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.9), 0 0 20px rgba(212, 175, 55, 0.4); 
   }
-  .player-tag:hover::after { left: 200%; }
+  .player-tag:hover::after {
+    left: 200%;
+  }
 
   .tag-header { display: flex; align-items: center; justify-content: space-between; width: 100%; position: relative; z-index: 2; }
-  .tag-name { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
 
-  /* VIPタグの極上ゴージャス発光化 */
   .vip-tag-1 { 
-    background: linear-gradient(145deg, #ffeaa7, #fdcb6e) !important;
-    border: 1px solid #ffeaa7 !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(241, 196, 15, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.8), inset 0 -2px 5px rgba(0,0,0,0.3) !important;
+    border-left: 6px solid #f1c40f !important;
+    background: linear-gradient(145deg, rgba(50, 40, 10, 0.95) 0%, rgba(10, 8, 5, 0.95) 100%) !important;
+    border-color: rgba(241, 196, 15, 0.6) !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 15px rgba(241, 196, 15, 0.2), inset 0 2px 5px rgba(241, 196, 15, 0.2) !important;
   }
-  .vip-tag-1::before {
-    background: 
-      radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.05) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(30, 25, 5, 0.95) 0%, rgba(10, 8, 2, 0.98) 100%) !important;
-    background-size: 4px 4px, 100% 100% !important;
-  }
-  .vip-tag-1:hover { border-color: #ffffff !important; box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 35px rgba(241, 196, 15, 0.6) !important; }
-  .vip-tag-1 .tag-name { color: #f1c40f; text-shadow: 0 2px 5px #000, 0 0 15px rgba(241,196,15,0.5); }
+  .vip-tag-1:hover { border-color: rgba(241, 196, 15, 1) !important; box-shadow: 0 12px 30px rgba(0,0,0,0.9), 0 0 25px rgba(241, 196, 15, 0.5) !important; }
+  .vip-tag-1 .tag-name { color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
 
   .vip-tag-2 { 
-    background: linear-gradient(145deg, #ffffff, #bdc3c7) !important;
-    border: 1px solid #ffffff !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(189, 195, 199, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.8), inset 0 -2px 5px rgba(0,0,0,0.3) !important;
+    border-left: 6px solid #bdc3c7 !important;
+    background: linear-gradient(145deg, rgba(40, 45, 50, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%) !important;
+    border-color: rgba(189, 195, 199, 0.6) !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 15px rgba(189, 195, 199, 0.2), inset 0 2px 5px rgba(189, 195, 199, 0.2) !important;
   }
-  .vip-tag-2::before {
-    background: 
-      radial-gradient(circle at 50% 50%, rgba(189, 195, 199, 0.05) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(20, 22, 25, 0.95) 0%, rgba(8, 10, 12, 0.98) 100%) !important;
-    background-size: 4px 4px, 100% 100% !important;
-  }
-  .vip-tag-2:hover { border-color: #ffffff !important; box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 35px rgba(189, 195, 199, 0.5) !important; }
-  .vip-tag-2 .tag-name { color: #bdc3c7; text-shadow: 0 2px 5px #000, 0 0 15px rgba(189,195,199,0.5); }
+  .vip-tag-2:hover { border-color: rgba(189, 195, 199, 1) !important; box-shadow: 0 12px 30px rgba(0,0,0,0.9), 0 0 25px rgba(189, 195, 199, 0.5) !important; }
+  .vip-tag-2 .tag-name { color: #bdc3c7; text-shadow: 0 0 10px rgba(189, 195, 199, 0.5); }
 
   .vip-tag-3 { 
-    background: linear-gradient(145deg, #ffc0a0, #e17055) !important;
-    border: 1px solid #ffc0a0 !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(205, 127, 50, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.6), inset 0 -2px 5px rgba(0,0,0,0.3) !important;
+    border-left: 6px solid #cd7f32 !important;
+    background: linear-gradient(145deg, rgba(50, 30, 20, 0.95) 0%, rgba(15, 10, 5, 0.95) 100%) !important;
+    border-color: rgba(205, 127, 50, 0.6) !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 15px rgba(205, 127, 50, 0.2), inset 0 2px 5px rgba(205, 127, 50, 0.2) !important;
   }
-  .vip-tag-3::before {
-    background: 
-      radial-gradient(circle at 50% 50%, rgba(205, 127, 50, 0.05) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(30, 15, 10, 0.95) 0%, rgba(10, 5, 2, 0.98) 100%) !important;
-    background-size: 4px 4px, 100% 100% !important;
-  }
-  .vip-tag-3:hover { border-color: #ffffff !important; box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 35px rgba(205, 127, 50, 0.6) !important; }
-  .vip-tag-3 .tag-name { color: #cd7f32; text-shadow: 0 2px 5px #000, 0 0 15px rgba(205,127,50,0.5); }
+  .vip-tag-3:hover { border-color: rgba(205, 127, 50, 1) !important; box-shadow: 0 12px 30px rgba(0,0,0,0.9), 0 0 25px rgba(205, 127, 50, 0.5) !important; }
+  .vip-tag-3 .tag-name { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
 
-  /* タップで展開される戦績エリア */
   .player-stats {
     display: none;
     width: 100%;
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
     font-family: 'Courier New', monospace;
     font-size: clamp(13px, 1.4vw, 18px);
-    color: #a4b0be;
     text-align: left;
     letter-spacing: 1px;
     font-weight: normal;
@@ -204,7 +168,7 @@
     z-index: 2;
   }
   .player-tag.open .player-stats { display: block; animation: expandStats 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-  @keyframes expandStats { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes expandStats { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
   .stats-grid {
     display: grid;
@@ -212,7 +176,7 @@
     gap: 8px 15px;
   }
   .stat-item { display: flex; flex-direction: column; }
-  .stat-label { color: #7f8fa6; font-size: 0.8em; letter-spacing: 2px; margin-bottom: 2px; }
+  .stat-label { color: #b39a59; font-size: 0.8em; letter-spacing: 2px; margin-bottom: 2px; }
   .stat-val { color: #ffffff; font-weight: bold; font-size: 1.1em; }
   .stat-val.plus { color: #2ed573; text-shadow: 0 0 8px rgba(46, 213, 115, 0.4); }
   .stat-val.minus { color: #ff4757; text-shadow: 0 0 8px rgba(255, 71, 87, 0.4); }
@@ -222,14 +186,11 @@
   .empty-text { color: #57606f; font-size: clamp(18px, 2vw, 26px); width: 100%; text-align: center; margin-top: 20px; letter-spacing: 2px; line-height: 1.8; font-weight: bold; }
   .empty-text span { color: #d4af37; font-weight: bold; font-size: clamp(16px, 1.8vw, 22px); }
   
-  /* =====================================================================
-     ★ PC時は非表示にする設定
-     ===================================================================== */
   .nav-buttons {
     position: absolute;
     bottom: 25px; 
     right: 25px; 
-    display: none; /* PC時は非表示 */
+    display: none; 
     gap: 15px;
     z-index: 50;
   }
@@ -257,8 +218,9 @@
 
   /* 📱 スマホ用 */
   @media screen and (max-width: 900px) {
-    body { padding: 10px; display: block; overflow-x: hidden; }
-    .dashboard-container { flex-direction: column; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; width: 100%; max-width: 100%; padding-bottom: 60px; /* 絶対配置用余白 */ }
+    /* ★ 文字被りを完全に防ぐため、bodyを相対位置にし、下部に余白を設ける */
+    body { padding: 10px; display: block; overflow-x: hidden; position: relative; padding-bottom: 50px; }
+    .dashboard-container { flex-direction: column; height: auto; min-height: auto; border-radius: 8px; border-width: 1px; width: 100%; max-width: 100%; margin-bottom: 10px; }
     .dashboard-main { flex-direction: column; }
     .left-col { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 15px; }
     .right-col { padding: 25px 15px; gap: 20px; }
@@ -286,32 +248,14 @@
     .title-active { margin-top: 10px; }
     .active-players-grid { justify-content: center; max-height: none; overflow: hidden; }
     
-    /* スマホ時はHof/Rulesボタンを表示 */
-    .nav-buttons { display: flex; position: static; justify-content: center; margin-top: 15px; margin-bottom: 10px; gap: 10px; width: 100%; }
+    .nav-buttons { display: flex; position: static; justify-content: center; margin-top: 15px; margin-bottom: 15px; gap: 10px; width: 100%; }
     .discreet-btn { padding: 10px 15px; font-size: 11px; }
     
-    /* ★ 新設：スマホ画面用の小さくシンプルなギアボタン */
-    .secret-btn {
-      position: absolute;
-      bottom: 15px;
-      right: 15px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #7f8fa6;
-      font-size: 16px;
-      padding: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-      z-index: 100;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
+    /* ★ ご指示通り：小さくシンプルな丸いギアボタンを右上に配置 */
+    .secret-btn { position: absolute; top: 15px; right: 15px; left: auto; font-size: 18px; padding: 0; margin: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 100; }
     
-    .footer-text { position: absolute; bottom: 25px; left: 0; text-align: center; width: 100%; margin: 0; }
+    /* ★ 文字被りの完全解消：画面の一番下（ダッシュボードの外側）に絶対配置 */
+    .footer-text { position: absolute; bottom: 15px; left: 0; width: 100%; text-align: center; margin: 0; padding: 0; display: block; font-size: 10px; z-index: 10; }
     
     .new-challenger-title { font-size: 40px; text-shadow: 2px 2px 0 #000, -1px -1px 0 #fff, 0 0 10px #ff4757; }
     .new-challenger-name { font-size: 50px; -webkit-text-stroke: 2px #000; text-shadow: 3px 3px 0 #d4af37, 6px 6px 0 #000, 0 0 20px rgba(212,175,55,0.8); letter-spacing: 4px; }
@@ -326,7 +270,6 @@
   .modal-close-btn { background: transparent; color: #7f8fa6; border: 1px solid #555; padding: 12px 35px; border-radius: 50px; cursor: pointer; font-size: 14px; transition: all 0.3s; letter-spacing: 2px; text-transform: uppercase; }
   .modal-close-btn:hover { background: #ffffff; color: #000; border-color: #ffffff; }
 
-  /* ★ バグ修正：乱入演出中に画面が触れなくなるバグを pointer-events: none で解消 */
   .new-challenger-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: flashBg 1s ease-out forwards; overflow: hidden; pointer-events: none; }
   @keyframes flashBg { 0% { background: rgba(0, 0, 0, 0); } 100% { background: rgba(0, 0, 0, 0.95); } }
 </style>
