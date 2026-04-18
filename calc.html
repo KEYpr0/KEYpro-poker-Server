@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>チップ精算 - KEYpro poker Server</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nosifer&family=Work+Sans:wght@900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   html, body { max-width: 100vw; overflow-x: hidden; scroll-behavior: smooth; }
   body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; padding: 15px; margin: 0; min-height: 100vh; transition: padding-bottom 0.3s; font-family: 'KEYpro', sans-serif; display: flex; align-items: center; justify-content: center; }
   
-  /* 操作画面 UI（既存のダークトーン仕様） */
   .container { width: 96vw; max-width: 1800px; height: 96vh; min-height: 600px; display: flex; flex-direction: column; background-color: rgba(0, 0, 0, 0.7); padding: 30px; border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 10px 40px rgba(0,0,0,0.7); overflow: hidden; position: relative; }
+  
   h2 { color: #d4af37; margin-top: 0; margin-bottom: 20px; font-size: 24px; border-bottom: 2px solid #d4af37; padding-bottom: 15px; text-shadow: 0px 4px 10px rgba(0,0,0,0.8); letter-spacing: 3px; text-align: center; font-weight: bold; flex-shrink: 0; }
+
   .timer-control { background: rgba(0, 0, 0, 0.4); border: 1px solid #7f8c8d; border-radius: 12px; padding: 15px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); flex-shrink: 0; }
   .timer-control-title { color: #bdc3c7; font-size: 14px; margin-bottom: 8px; letter-spacing: 1px; }
   .timer-display-small { font-family: 'Courier New', monospace; font-size: 42px; font-weight: bold; color: #2ecc71; margin-bottom: 15px; text-shadow: 0 0 15px rgba(46,204,113,0.5); }
@@ -22,11 +22,12 @@
   .btn-start { background: linear-gradient(145deg, #27ae60, #2ecc71); box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
   .btn-stop { background: linear-gradient(145deg, #d35400, #e67e22); box-shadow: 0 4px 10px rgba(211, 84, 0, 0.3); }
   .btn-reset { background: linear-gradient(145deg, #7f8c8d, #95a5a6); box-shadow: 0 4px 10px rgba(127, 140, 141, 0.3); }
-  
+  .t-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(0,0,0,0.5); }
+
   .table-wrapper { width: 100%; flex-grow: 1; overflow-y: auto; overflow-x: auto; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-  table { width: 100%; border-collapse: collapse; background-color: rgba(255, 255, 255, 0.03); min-width: 800px; }
+  table { width: 100%; border-collapse: collapse; background-color: rgba(255, 255, 255, 0.03); min-width: 900px; }
   th, td { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 15px 10px; text-align: center; }
-  th { position: sticky; top: 0; background-color: #1a252f; color: #d4af37; font-size: 16px; white-space: nowrap; font-weight: bold; letter-spacing: 1px; z-index: 10; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+  th { position: sticky; top: 0; background-color: #1a252f; color: #d4af37; font-size: 15px; white-space: nowrap; font-weight: bold; letter-spacing: 1px; z-index: 10; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
   
   input, button, p, div { font-family: 'KEYpro', sans-serif; }
   input { width: 100%; padding: 14px; text-align: right; font-size: 18px; border: 1px solid #555; border-radius: 8px; background-color: rgba(0, 0, 0, 0.6); color: #fff; transition: all 0.2s; outline: none; }
@@ -34,6 +35,11 @@
   input[type="text"].name-input { text-align: left; }
   
   .readonly { background-color: transparent; border: none; font-weight: bold; color: #bdc3c7; text-align: right; padding-right: 0; font-size: 18px; }
+  
+  .checkout-btn { background: rgba(255,255,255,0.1); border: 1px solid #7f8fa6; color: #7f8fa6; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; white-space: nowrap; transition: all 0.3s; width: 100%; letter-spacing: 1px; }
+  .checkout-btn:hover { background: rgba(255,255,255,0.2); }
+  .checkout-btn.checked { background: rgba(46, 204, 113, 0.2); border-color: #2ecc71; color: #2ecc71; box-shadow: 0 0 10px rgba(46, 204, 113, 0.3); }
+
   .del-btn { background-color: transparent; color: #e74c3c; border: 1px solid #e74c3c; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; white-space: nowrap; transition: all 0.3s; }
   .del-btn:hover { background-color: #e74c3c; color: #fff; }
   
@@ -41,29 +47,39 @@
   .total-label { color: #d4af37; font-size: 18px; margin-right: 10px; }
   .status-badge { font-size: 16px; padding: 6px 20px; border-radius: 20px; font-weight: normal; }
   .match .status-badge { background-color: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid #2ecc71; }
-  .error .status-badge { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid #e74c3c; }
+  .error .status-badge { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid #e74c3c; animation: pulse 2s infinite; }
+
   .draft-notice { font-size: 14px; color: #f1c40f; margin-top: 10px; margin-bottom: 10px; text-align: center; letter-spacing: 1px; font-weight: bold; flex-shrink: 0; }
-  
-  .btn-group { display: flex; flex-direction: row; gap: 20px; flex-shrink: 0; }
+
+  .btn-group { display: flex; flex-direction: row; gap: 15px; flex-shrink: 0; }
   .btn { flex: 1; border-radius: 50px; cursor: pointer; transition: all 0.3s; font-weight: bold; text-align: center; text-decoration: none; outline: none; display: flex; align-items: center; justify-content: center; }
   .add-btn { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #7f8c8d; padding: 15px; font-size: 16px; }
-  .save-btn { background: linear-gradient(145deg, #bf953f, #b38728); color: #fff; border: 1px solid #fcf6ba; font-size: 18px; padding: 18px; box-shadow: 0 5px 15px rgba(184, 134, 11, 0.4); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+  .save-btn { background: linear-gradient(145deg, #bf953f, #b38728); color: #fff; border: 1px solid #fcf6ba; font-size: 18px; padding: 18px; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(184, 134, 11, 0.4); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
   .save-btn:disabled { background: #95a5a6; border-color: #7f8c8d; cursor: not-allowed; }
-  .discreet-next-btn { position: absolute; top: 20px; right: 20px; background: transparent; color: #7f8fa6; border: 1px solid rgba(127,140,141,0.5); padding: 8px 20px; font-size: 12px; border-radius: 50px; text-decoration: none; letter-spacing: 2px; transition: all 0.3s; font-weight: bold; z-index: 100; }
-  .discreet-next-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; }
 
-  /* カスタム電卓＆オーバーレイ */
+  /* ★ スプレッドシートボタンのスタイル */
+  .sheet-btn { background: rgba(46, 204, 113, 0.05); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4); padding: 15px; font-size: 16px; }
+  .sheet-btn:hover { background: #2ecc71; color: #000; border-color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.4); }
+
+  .discreet-next-btn { position: absolute; top: 25px; left: 30px; background: transparent; color: #7f8fa6; border: none; padding: 5px 10px; font-size: 11px; text-decoration: none; letter-spacing: 3px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); font-weight: bold; z-index: 100; display: flex; align-items: center; gap: 8px; opacity: 0.7; }
+  .discreet-next-btn::before { content: ''; display: inline-block; width: 6px; height: 6px; border-top: 2px solid currentColor; border-left: 2px solid currentColor; transform: rotate(-45deg); margin-top: 1px; }
+  .discreet-next-btn:hover { color: #d4af37; opacity: 1; transform: translateX(-5px); }
+
+  /* カスタム電卓 */
   .numpad-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: transparent; z-index: 9998; display: none; }
   .numpad-overlay.show { display: block; }
   .custom-numpad { position: fixed; bottom: -100%; left: 0; width: 100vw; background: #111; z-index: 9999; transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); border-top: 2px solid #d4af37; box-shadow: 0 -10px 40px rgba(0,0,0,0.9); padding-bottom: env(safe-area-inset-bottom); }
   .custom-numpad.show { bottom: 0; }
   .numpad-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #333; }
-  .numpad-btn { background: #000; color: #fff; border: none; font-size: 26px; padding: 22px 0; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; outline: none; }
+  .numpad-btn { background: #000; color: #fff; border: none; font-size: 26px; padding: 22px 0; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; outline: none; transition: background 0.1s; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
   .numpad-btn:active { background: #333; }
   .numpad-btn.action { background: #1a252f; color: #e74c3c; font-size: 24px; }
   .numpad-btn.done { background: linear-gradient(145deg, #bf953f, #b38728); color: #fff; font-family: 'KEYpro', sans-serif; font-size: 20px; letter-spacing: 2px; grid-row: span 2; }
+  .numpad-btn.done:active { filter: brightness(0.8); }
+
   input.numpad-active { background-color: rgba(212, 175, 55, 0.25) !important; border-color: #d4af37 !important; box-shadow: 0 0 15px rgba(212, 175, 55, 0.8) !important; color: #d4af37 !important; position: relative; z-index: 9999; }
-  
+
+  /* 画像保存用ポップアップ */
   .save-image-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(5px); padding: 20px; overflow-y: auto; }
   .save-image-overlay.show { display: flex; }
   .save-image-overlay img { max-width: 100%; max-height: 60vh; border: 3px solid #d4af37; box-shadow: 0 10px 30px rgba(0,0,0,1); margin-bottom: 20px; object-fit: contain; }
@@ -72,117 +88,61 @@
   .save-image-cancel { background: transparent; color: #fff; border: 1px solid #7f8fa6; padding: 12px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 14px; letter-spacing: 1px; margin-top: 15px; width: 100%; max-width: 300px; flex-shrink: 0; }
 
   @media screen and (max-width: 900px) {
-    body { padding: 10px 5px; height: auto; display: block; }
-    .container { padding: 20px 15px; border-radius: 12px; width: 100%; height: auto; min-height: auto; display: block; }
-    h2 { font-size: 20px; letter-spacing: 2px; margin-bottom: 15px; padding-top: 20px; }
-    .discreet-next-btn { position: relative; top: auto; right: auto; margin: 0 auto 20px auto; display: block; max-width: 200px; text-align: center; }
-    .table-wrapper { overflow: hidden; box-shadow: none; background: transparent; margin-bottom: 10px; flex-grow: 0; }
+    body { padding: 10px; display: block; height: auto; overflow-x: hidden; }
+    .container { padding: 15px; border-radius: 12px; width: 100%; max-width: 100%; height: auto; min-height: auto; display: block; position: relative; padding-top: 45px; box-sizing: border-box; }
+    h2 { font-size: 20px; letter-spacing: 2px; margin-bottom: 15px; padding-top: 10px; }
+    .discreet-next-btn { position: absolute; top: 15px; left: 15px; font-size: 10px; padding: 5px 10px; margin: 0; }
+    .timer-display-small { font-size: 36px; }
+    .timer-btns { flex-wrap: wrap; gap: 8px; }
+    .t-btn { font-size: 12px; padding: 10px 0; }
+    .table-wrapper { overflow-x: hidden; box-shadow: none; background: transparent; margin-bottom: 10px; flex-grow: 0; }
     table { min-width: 0 !important; width: 100%; border: none; }
     table, thead, tbody, tr, td { display: block; }
     thead { display: none; }
     tr { background: linear-gradient(145deg, rgba(20, 25, 30, 0.9), rgba(0, 0, 0, 0.9)); margin-bottom: 20px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.4); padding: 15px 15px 55px 15px; position: relative; box-shadow: 0 6px 15px rgba(0,0,0,0.5); }
-    td { padding: 8px 0; border: none; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); }
-    td:nth-last-child(2) { border-bottom: none; }
+    td { padding: 8px 0; border: none; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); width: 100%; box-sizing: border-box; }
+    td:nth-last-child(2) { border-bottom: none; justify-content: flex-end; padding-top: 15px; }
+    .checkout-btn { width: auto; padding: 10px 25px; }
     td[data-label="名前"] { flex-direction: column; align-items: flex-start; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 15px; margin-bottom: 10px; }
     td[data-label="名前"]::before { width: 100%; color: #d4af37; margin-bottom: 8px; font-size: 14px; letter-spacing: 1px; }
     td[data-label="名前"] input { width: 100%; font-size: 18px; padding: 12px; background: rgba(255,255,255,0.05); }
     td:not([data-label="名前"])::before { content: attr(data-label); color: #bdc3c7; font-size: 13px; width: 40%; flex-shrink: 0; font-weight: bold; text-align: left; }
     td:not([data-label="名前"]) input { width: 60%; flex-grow: 1; padding: 10px; text-align: right; min-width: 0; }
-    td:not([data-label="名前"]) .readonly { width: 60%; text-align: right; font-size: 16px; color: #fff; padding: 8px 5px; font-weight: bold; }
     input.numpad-trigger { cursor: pointer; caret-color: transparent; font-size: 20px; }
-    td:last-child { position: absolute; bottom: 12px; right: 15px; padding: 0; display: block; width: auto; border: none; }
-    td:last-child::before { display: none; }
-    .del-btn { padding: 8px 25px; font-size: 13px; border-radius: 50px; background: rgba(231, 76, 60, 0.1); }
-    .timer-display-small { font-size: 42px; }
-    .timer-btns .t-btn { padding: 12px 5px; font-size: 12px; }
-    .summary { flex-direction: column; align-items: flex-start; gap: 12px; font-size: 16px; padding: 15px; }
+    td:last-child { position: absolute; bottom: 12px; left: 15px; padding: 0; display: block; width: auto; border: none; }
+    .summary { flex-direction: column; align-items: flex-start; gap: 12px; font-size: 16px; padding: 15px; width: 100%; box-sizing: border-box; }
     #totalPay { font-size: 26px !important; }
-    .btn-group { flex-direction: column; gap: 10px; }
-    .save-btn { font-size: 16px; padding: 16px; }
+    .btn-group { flex-direction: column; gap: 10px; width: 100%; }
+    .save-btn, .add-btn, .sheet-btn { font-size: 16px; padding: 16px; width: 100%; box-sizing: border-box; }
   }
 
-  /* ==========================================================================
-     ★★★ レポート画像生成用エリア（ハイエンド・カジノデザイン）★★★
-     ========================================================================== */
-  #reportArea { 
-    position: absolute; top: -9999px; left: -9999px; 
-    width: 1600px; height: 900px; /* フルHD 16:9 の横長固定サイズ */
-    background-color: #05070a;
-    background-image: 
-      radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 70%),
-      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 100vw 100vh, 50px 50px, 50px 50px;
-    color: #ffffff; padding: 40px 50px; box-sizing: border-box; 
-    display: flex; flex-direction: column; font-family: 'KEYpro', sans-serif;
-    border: 10px solid #d4af37;
-    box-shadow: inset 0 0 50px rgba(0,0,0,1);
-  }
-
-  .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-  .report-header-box { border: 2px solid #d4af37; background: rgba(0,0,0,0.6); padding: 15px 30px; border-radius: 8px; font-size: 24px; font-family: 'Courier New', monospace; font-weight: bold; color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
-  .report-header-center { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-  .report-logo { font-family: 'Work Sans', sans-serif; color: #d4af37; font-size: 60px; font-weight: 900; letter-spacing: -2px; text-shadow: 0 0 20px rgba(212, 175, 55, 0.6); margin: 0; line-height: 1; }
-  .report-logo span { font-family: 'KEYpro', sans-serif; font-size: 20px; font-weight: normal; letter-spacing: 4px; margin-left: 10px; }
-  .report-title { font-size: 38px; color: #d4af37; font-weight: bold; letter-spacing: 8px; }
-  .report-suits { display: inline-block; letter-spacing: 15px; margin: 0 15px; }
-
-  /* 2カラムレイアウト（左：メインテーブル、右：地獄ランキング） */
-  .report-main { display: flex; gap: 30px; flex-grow: 1; min-height: 0; }
-  
-  /* 左：メイン成績テーブル */
-  .report-left { flex: 2.2; display: flex; flex-direction: column; border: 3px solid #d4af37; border-radius: 8px; background: rgba(0,0,0,0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow: hidden; }
-  .report-table { width: 100%; border-collapse: collapse; }
-  .report-table th { background: linear-gradient(180deg, #2c2c2c, #1a1a1a); border-bottom: 2px solid #d4af37; padding: 15px; font-size: 20px; color: #d4af37; letter-spacing: 2px; }
-  .report-table td { padding: 15px; text-align: center; font-size: 28px; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Courier New', monospace; font-weight: bold; }
-  .report-table tr:last-child td { border-bottom: none; }
-  .report-table td.name-cell { font-family: 'KEYpro', sans-serif; text-align: left; padding-left: 20px; font-size: 28px; }
-  
-  /* 王冠・ハイライト装飾 */
-  .report-tr-1 { background: linear-gradient(90deg, rgba(241, 196, 15, 0.15), transparent); }
-  .report-tr-2 { background: linear-gradient(90deg, rgba(189, 195, 199, 0.1), transparent); }
-  .report-tr-3 { background: linear-gradient(90deg, rgba(205, 127, 50, 0.1), transparent); }
-  .report-crown { width: 30px; height: 30px; vertical-align: middle; margin-right: 10px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
-  .report-rank-1 { color: #f1c40f; text-shadow: 0 0 10px rgba(241,196,15,0.5); }
-  .report-rank-2 { color: #bdc3c7; }
-  .report-rank-3 { color: #cd7f32; }
-
-  /* スコアの色分け */
-  .report-pay-plus { color: #ffbc00; text-shadow: 0 0 15px rgba(255,188,0,0.5); font-size: 32px !important; }
-  .report-pay-minus { color: #ff4757; }
-
-  /* 右：地獄（ワースト）ランキング */
-  .report-right { flex: 1; display: flex; flex-direction: column; border: 3px solid #d4af37; border-radius: 8px; background: rgba(0,0,0,0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow: hidden; padding: 20px; }
-  .report-pit-title { font-size: 20px; color: #d4af37; text-align: center; letter-spacing: 2px; font-weight: bold; margin-bottom: 20px; }
-  .report-pit-title span { color: #ff4757; display: block; margin-top: 5px; font-size: 18px; }
-  
-  .pit-cards { display: flex; flex-direction: column; gap: 15px; flex-grow: 1; }
-  .pit-card { flex: 1; border: 2px solid #d4af37; border-radius: 8px; background: linear-gradient(0deg, rgba(255,0,0,0.2), rgba(0,0,0,0.8)); position: relative; display: flex; align-items: center; padding: 0 20px; overflow: hidden; }
-  /* 画像生成用に、CSSで炎っぽい背景をグラデーションで固定描写 */
-  .pit-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(0deg, rgba(255,69,0,0.5), transparent); z-index: 0; }
-  
-  .pit-rank { font-size: 48px; color: #ff4757; font-weight: bold; font-family: 'Nosifer', sans-serif; -webkit-text-stroke: 2px #800000; z-index: 1; width: 80px; }
-  .pit-info { flex-grow: 1; text-align: center; z-index: 1; }
-  .pit-name { font-size: 36px; font-weight: bold; letter-spacing: 3px; color: #fff; text-shadow: 2px 2px 0 #000, 0 0 10px #ff0000; margin-bottom: 5px; }
-  .pit-reentry { font-size: 22px; color: #fff; font-weight: bold; letter-spacing: 2px; }
-  .pit-reentry span { font-size: 32px; color: #ff4500; font-family: 'Courier New', monospace; text-shadow: 0 0 10px #000; }
-  .pit-skull { width: 50px; height: 50px; fill: rgba(255,255,255,0.8); filter: drop-shadow(0 0 5px #000); z-index: 1; }
-
-  /* フッター統計情報 */
-  .report-footer { margin-top: 20px; display: flex; justify-content: space-between; border: 2px solid #d4af37; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 15px 30px; }
-  .stat-item { font-size: 22px; color: #dcdde1; font-weight: bold; letter-spacing: 1px; }
-  .stat-val { color: #d4af37; font-family: 'Courier New', monospace; margin-left: 5px; }
-  
-  /* 最下部クレジット */
-  .report-credits { display: flex; justify-content: space-between; margin-top: 15px; font-size: 16px; color: #7f8fa6; letter-spacing: 2px; }
+  /* 画像生成用エリア */
+  #reportArea { position: absolute; top: -9999px; left: -9999px; background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); color: #ffffff; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; border: 10px solid #d4af37; }
+  #reportArea.layout-pc { width: 1200px; min-height: 675px; height: auto; }
+  #reportArea.layout-mobile { width: 800px; min-height: 1334px; height: auto; padding: 50px 30px; }
+  .report-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #d4af37; padding-bottom: 20px; margin-bottom: 20px; }
+  .report-title { font-size: 48px; color: #d4af37; font-weight: bold; letter-spacing: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+  .report-suits { font-size: 32px; letter-spacing: 10px; }
+  .report-red { color: #e74c3c; }
+  .report-meta { font-size: 20px; color: #bdc3c7; text-align: right; line-height: 1.6; }
+  .report-table { width: 100%; border-collapse: collapse; flex-grow: 1; margin-bottom: 20px; }
+  .report-table th, .report-table td { border: 1px solid rgba(255,255,255,0.1); padding: 10px; text-align: center; font-size: 16px; }
+  .layout-mobile .report-table th, .layout-mobile .report-table td { font-size: 22px; padding: 12px 6px; }
+  .report-table th { background-color: #1a252f; color: #d4af37; font-weight: bold; }
+  .report-table td.name-cell { text-align: left; font-weight: bold; }
+  .report-table td.pay-cell { font-weight: bold; font-size: 20px; }
+  .layout-mobile .report-table td.pay-cell { font-size: 26px; }
+  .report-plus { color: #2ecc71; }
+  .report-minus { color: #e74c3c; }
+  .report-footer { display: flex; justify-content: space-between; align-items: center; font-size: 18px; color: #7f8c8d; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; margin-top: 20px; }
 </style>
 </head>
 <body>
 
   <div class="container">
-    <a href="index.html" class="discreet-next-btn">◀ DASHBOARD</a>
+    <a href="index.html" class="discreet-next-btn">DASHBOARD</a>
     
-    <h2>チップ清算</h2>
+    <h2>チップ精算</h2>
 
     <div class="timer-control">
       <div class="timer-control-title">⏱️ プレイ時間タイマー (全画面連動)</div>
@@ -203,6 +163,7 @@
             <th>最終持ち点</th>
             <th>精算後 (点)</th>
             <th>Pay</th>
+            <th>途中退出</th>
             <th></th>
           </tr>
         </thead>
@@ -220,6 +181,7 @@
 
     <div class="btn-group">
       <button class="btn add-btn" onclick="window.addRow()">+ プレイヤー行を追加</button>
+      <a href="https://docs.google.com/spreadsheets/d/1dGDNvdrfvb8RufXz6pksBCV52uQSDwPVc446graHYWI/edit?gid=0#gid=0" target="_blank" class="btn sheet-btn">📊 記録シートを表示</a>
       <button class="btn save-btn" id="saveBtn" onclick="window.confirmAndSave()">💾 成績を確定して画像を保存</button>
     </div>
   </div>
@@ -246,63 +208,34 @@
   </div>
 
   <div id="saveImageOverlay" class="save-image-overlay">
-    <div class="save-image-text">✨ ゴージャスなレポート画像が生成されました！<br>下の画像を【長押し】して<br>【"写真"に保存】を選んでください。</div>
+    <div class="save-image-text">✨ レポート画像が生成されました！<br>下の画像を【長押し】して<br>【"写真"に保存】を選んでください。</div>
     <img id="generatedImage" src="" alt="Session Report">
     <button class="save-image-close" onclick="window.closeAndReset()">保存完了！リセットして次へ</button>
     <button class="save-image-cancel" onclick="window.closeSaveImageOverlay()">そのまま閉じる</button>
   </div>
 
   <div id="reportArea">
-    
     <div class="report-header">
-      <div class="report-header-box">DATE: <span id="reportDate">0000/00/00</span></div>
-      <div class="report-header-center">
-        <div class="report-logo">KEYpro<span>poker</span></div>
-        <div class="report-title"><span class="report-suits" style="color:#fff;">♠<span style="color:#ff4757">♥</span></span>SESSION REPORT<span class="report-suits" style="color:#fff;">♣<span style="color:#ff4757">♦</span></span></div>
+      <div style="display:flex; align-items:center; gap:20px;">
+        <div class="report-suits"><span>♠</span><span class="report-red">♥</span><span>♣</span><span class="report-red">♦</span></div>
+        <div class="report-title">SESSION REPORT</div>
       </div>
-      <div class="report-header-box">TOTAL TIME: <span id="reportTime">00:00:00</span></div>
-    </div>
-
-    <div class="report-main">
-      
-      <div class="report-left">
-        <table class="report-table">
-          <thead>
-            <tr>
-              <th>RANK</th>
-              <th>PLAYER</th>
-              <th>ALL-TIME RANK</th>
-              <th>RE-ENTRY</th>
-              <th>CHIPS</th>
-              <th>RESULTS (±)</th>
-            </tr>
-          </thead>
-          <tbody id="reportTableBody">
-            </tbody>
-        </table>
-      </div>
-
-      <div class="report-right">
-        <div class="report-pit-title">RE-ENTRY RANKING - THE PIT<br><span>🔥地獄のリエントリーワースト3☠️</span></div>
-        <div class="pit-cards" id="reportPitCards">
-          </div>
+      <div class="report-meta">
+        <div id="reportDate">0000年00月00日</div>
+        <div>Global Time: <span id="reportTime">00:00:00</span></div>
       </div>
     </div>
-
+    <table class="report-table">
+      <thead><tr><th>Rank</th><th>Player</th><th>Time</th><th>Entry</th><th>Final Chips</th><th>Score (点)</th><th>Pay</th></tr></thead>
+      <tbody id="reportTableBody"></tbody>
+    </table>
     <div class="report-footer">
-      <div class="stat-item">TOTAL ENTRIES: <span class="stat-val" id="statEntries">0</span></div>
-      <div class="stat-item">TOTAL RE-ENTRIES: <span class="stat-val" id="statReentries">0</span></div>
-      <div class="stat-item">AVERAGE CHIPS: <span class="stat-val" id="statAvgChips">0</span></div>
-      <div class="stat-item">HIGHEST CHIPS: <span class="stat-val" id="statHighChips">0</span></div>
-      <div class="stat-item">HIGHEST RESULTS: <span class="stat-val" id="statHighResult">0</span></div>
+      <div class="report-total-pay-box">Total Pay: <span id="reportTotalPay">0</span> (Confirmed)</div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="report-suits" style="font-size:16px;"><span>♠</span><span class="report-red">♥</span><span>♣</span><span class="report-red">♦</span></div>
+        <div>KEYpro poker Server</div>
+      </div>
     </div>
-
-    <div class="report-credits">
-      <div>© 2026 KEYpro poker Server</div>
-      <div style="color: #d4af37;">質感：重厚、高級、サイバー</div>
-      <div>GENERATED: <span id="reportGeneratedTime"></span></div>
-    </div>
-
   </div>
 
   <script type="module">
@@ -321,23 +254,6 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxijPOgmKGDL-UL5eAqOBKrxKVfPl4v6hsdLcWbiuwMrCWSPI5fqxu3qOmXIFTrMYCi5A/exec";
-
-    // ★ 歴代ランキングデータの保持用
-    let allTimeRanks = {};
-    let totalAllTimePlayers = 0;
-
-    // ページロード時に歴代データを取得
-    fetch(GAS_URL, { redirect: 'follow' })
-      .then(res => res.json())
-      .then(players => {
-        if (players && players.length > 0) {
-          totalAllTimePlayers = players.length;
-          players.forEach((p, index) => {
-            allTimeRanks[p.name] = index + 1; 
-          });
-        }
-      }).catch(e => console.error("HOF Load Error", e));
 
     let currentTimerState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
     onValue(ref(db, 'pokerSession/timer'), (snapshot) => {
@@ -384,6 +300,7 @@
     window.handleBlur = function(el) {
       if (window.innerWidth <= 900) return;
       if (el.value === "") { el.value = el.dataset.orig || "0"; }
+      else { const raw = parseFloat(el.value.replace(/,/g, '')) || 0; el.value = formatNumber(raw); }
       window.calculate();
     };
 
@@ -417,18 +334,9 @@
       window.calculate();
     };
 
-    window.numpadType = function(val) { if (activeNumpadInput) { activeNumpadInput.value += val; window.calculate(); } };
-    window.numpadDel = function() { if (activeNumpadInput) { activeNumpadInput.value = activeNumpadInput.value.slice(0, -1); window.calculate(); } };
+    window.numpadType = function(val) { if (activeNumpadInput) { let currentRaw = activeNumpadInput.value.replace(/,/g, ''); currentRaw += val; activeNumpadInput.value = formatNumber(parseFloat(currentRaw) || 0); window.calculate(); } };
+    window.numpadDel = function() { if (activeNumpadInput) { let currentRaw = activeNumpadInput.value.replace(/,/g, '').slice(0, -1); activeNumpadInput.value = currentRaw === "" ? "" : formatNumber(parseFloat(currentRaw) || 0); window.calculate(); } };
     window.numpadClear = function() { if (activeNumpadInput) { activeNumpadInput.value = ""; window.calculate(); } };
-
-    window.addEventListener('resize', () => {
-      const isMobile = window.innerWidth <= 900;
-      document.querySelectorAll('.numpad-trigger').forEach(el => {
-        if (isMobile) { el.setAttribute('readonly', 'readonly'); el.setAttribute('tabindex', '-1'); } 
-        else { el.removeAttribute('readonly'); el.removeAttribute('tabindex'); }
-      });
-      if (!isMobile && activeNumpadInput) { window.closeCustomNumpad(); }
-    });
 
     const STARTING_CHIPS = 20000;
     const RATE = 10;
@@ -437,37 +345,58 @@
 
     function formatNumber(num) { return num.toLocaleString(); }
 
+    window.toggleCheckout = function(btn) {
+      if (btn.classList.contains('checked')) {
+        btn.classList.remove('checked');
+        btn.dataset.time = "";
+        btn.innerText = "退出";
+      } else {
+        const currentTime = getFormattedTime();
+        btn.classList.add('checked');
+        btn.dataset.time = currentTime;
+        btn.innerText = `済 ${currentTime}`;
+      }
+      window.calculate();
+    };
+
     onValue(ref(db, 'pokerSession/players'), (snapshot) => {
       const draftData = snapshot.val();
       const tableBody = document.getElementById('tableBody');
-      
       if (!draftData && isFirstLoad) {
         tableBody.innerHTML = '';
         for (let i = 0; i < INITIAL_ROWS; i++) { tableBody.appendChild(window.createRow()); }
         isFirstLoad = false;
-        window.dispatchEvent(new Event('resize'));
-        window.calculate(); 
-        return;
+        window.calculate(); return;
       }
       isFirstLoad = false;
       const data = draftData || [];
-
-      while(tableBody.children.length < data.length) { tableBody.appendChild(window.createRow()); window.dispatchEvent(new Event('resize')); }
+      while(tableBody.children.length < data.length) { tableBody.appendChild(window.createRow()); }
       while(tableBody.children.length > data.length) { tableBody.lastChild.remove(); }
-
+      
       let totalPaySum = 0;
       data.forEach((p, index) => {
          const row = tableBody.children[index];
          const nameInput = row.querySelector('.name-input');
          const entryInput = row.querySelector('.entry');
          const chipsInput = row.querySelector('.final-chips');
+         const checkoutBtn = row.querySelector('.checkout-btn');
          
          if (document.activeElement !== nameInput) { nameInput.value = p.name || ""; }
-         if (entryInput !== activeNumpadInput && document.activeElement !== entryInput) { entryInput.value = p.entry !== undefined ? p.entry : 1; }
-         if (chipsInput !== activeNumpadInput && document.activeElement !== chipsInput) { chipsInput.value = p.finalChips !== undefined ? p.finalChips : 0; }
+         if (entryInput !== activeNumpadInput && document.activeElement !== entryInput) { entryInput.value = formatNumber(p.entry !== undefined ? p.entry : 1); }
+         if (chipsInput !== activeNumpadInput && document.activeElement !== chipsInput) { chipsInput.value = formatNumber(p.finalChips !== undefined ? p.finalChips : 0); }
          
-         const entry = parseFloat(entryInput.value) || 0;
-         const finalChips = parseFloat(chipsInput.value) || 0;
+         if (p.checkoutTime) {
+           checkoutBtn.classList.add('checked');
+           checkoutBtn.dataset.time = p.checkoutTime;
+           checkoutBtn.innerText = `済 ${p.checkoutTime}`;
+         } else {
+           checkoutBtn.classList.remove('checked');
+           checkoutBtn.dataset.time = "";
+           checkoutBtn.innerText = "退出";
+         }
+
+         const entry = parseFloat(entryInput.value.replace(/,/g, '')) || 0;
+         const finalChips = parseFloat(chipsInput.value.replace(/,/g, '')) || 0;
          const result = finalChips - (entry * STARTING_CHIPS);
          const pay = result / RATE;
          
@@ -475,11 +404,8 @@
          row.querySelector('.pay').value = formatNumber(pay);
          totalPaySum += pay;
       });
-      document.getElementById('totalPay').innerText = formatNumber(totalPaySum);
-      const msg = document.getElementById('checkResult');
-      const status = document.getElementById('statusMessage');
-      if (totalPaySum === 0) { status.innerHTML = '<span class="status-badge">✨ 確認済 (誤差なし)</span>'; msg.className = "summary match"; }
-      else { status.innerHTML = `<span class="status-badge">⚠️ エラー: ${totalPaySum > 0 ? '+' : ''}${formatNumber(totalPaySum)} のズレ</span>`; msg.className = "summary error"; }
+      totalPaySum = Math.round(totalPaySum * 100) / 100;
+      updateStatus(totalPaySum);
     });
 
     window.calculate = function() {
@@ -488,91 +414,105 @@
       let draftData = []; 
       rows.forEach(row => {
         const name = row.querySelector('.name-input').value; 
-        const entry = parseFloat(row.querySelector('.entry').value) || 0;
-        const finalChips = parseFloat(row.querySelector('.final-chips').value) || 0;
+        const entryRaw = row.querySelector('.entry').value.replace(/,/g, '');
+        const chipsRaw = row.querySelector('.final-chips').value.replace(/,/g, '');
+        const entry = parseFloat(entryRaw) || 0;
+        const finalChips = parseFloat(chipsRaw) || 0;
+        const checkoutTime = row.querySelector('.checkout-btn').dataset.time || "";
+
         const result = finalChips - (entry * STARTING_CHIPS);
         const pay = result / RATE;
+        
         row.querySelector('.result').value = formatNumber(result);
         row.querySelector('.pay').value = formatNumber(pay);
         totalPaySum += pay;
-        draftData.push({ name, entry, finalChips });
+        draftData.push({ name, entry, finalChips, checkoutTime });
       });
+      totalPaySum = Math.round(totalPaySum * 100) / 100;
+      updateStatus(totalPaySum);
+      set(ref(db, 'pokerSession/players'), draftData);
+    };
+
+    function updateStatus(totalPaySum) {
       document.getElementById('totalPay').innerText = formatNumber(totalPaySum);
       const msg = document.getElementById('checkResult');
       const status = document.getElementById('statusMessage');
       if (totalPaySum === 0) { status.innerHTML = '<span class="status-badge">✨ 確認済 (誤差なし)</span>'; msg.className = "summary match"; }
       else { status.innerHTML = `<span class="status-badge">⚠️ エラー: ${totalPaySum > 0 ? '+' : ''}${formatNumber(totalPaySum)} のズレ</span>`; msg.className = "summary error"; }
-      set(ref(db, 'pokerSession/players'), draftData);
-    };
+    }
 
-    window.createRow = function(name = "", entry = 1, finalChips = 0) {
+    window.createRow = function(name = "", entry = 1, finalChips = 0, checkoutTime = "") {
       const isMobile = window.innerWidth <= 900;
       const readOnlyAttr = isMobile ? 'readonly tabindex="-1"' : '';
+      const checkoutClass = checkoutTime ? "checkout-btn checked" : "checkout-btn";
+      const checkoutText = checkoutTime ? `済 ${checkoutTime}` : "退出";
+
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td data-label="名前"><input type="text" class="name-input" placeholder="プレイヤー名" value="${name}" oninput="window.calculate()"></td>
-        <td data-label="エントリー"><input type="text" inputmode="numeric" class="entry numpad-trigger" value="${entry}" ${readOnlyAttr} oninput="window.calculate()" onclick="window.openCustomNumpad(this)" onfocus="window.handleFocus(this)" onblur="window.handleBlur(this)"></td>
-        <td data-label="最終持ち点"><input type="text" inputmode="numeric" class="final-chips numpad-trigger" value="${finalChips}" ${readOnlyAttr} oninput="window.calculate()" onclick="window.openCustomNumpad(this)" onfocus="window.handleFocus(this)" onblur="window.handleBlur(this)"></td>
+        <td data-label="エントリー"><input type="text" inputmode="numeric" class="entry numpad-trigger" value="${formatNumber(entry)}" ${readOnlyAttr} oninput="window.calculate()" onclick="window.openCustomNumpad(this)" onfocus="window.handleFocus(this)" onblur="window.handleBlur(this)"></td>
+        <td data-label="最終持ち点"><input type="text" inputmode="numeric" class="final-chips numpad-trigger" value="${formatNumber(finalChips)}" ${readOnlyAttr} oninput="window.calculate()" onclick="window.openCustomNumpad(this)" onfocus="window.handleFocus(this)" onblur="window.handleBlur(this)"></td>
         <td data-label="精算後 (点)"><input type="text" class="result readonly" value="-20,000" readonly tabindex="-1"></td>
         <td data-label="Pay"><input type="text" class="pay readonly" value="-2,000" readonly tabindex="-1"></td>
+        <td data-label=""><button class="${checkoutClass}" data-time="${checkoutTime}" onclick="window.toggleCheckout(this)">${checkoutText}</button></td>
         <td data-label=""><button class="del-btn" onclick="window.removeRow(this)">✖ 削除</button></td>
       `;
       return tr;
     };
 
-    window.addRow = function() { document.getElementById('tableBody').appendChild(window.createRow()); window.dispatchEvent(new Event('resize')); window.calculate(); };
+    window.addRow = function() { document.getElementById('tableBody').appendChild(window.createRow()); window.calculate(); };
     window.removeRow = function(btn) { btn.closest('tr').remove(); window.calculate(); };
-
     window.closeSaveImageOverlay = function() { document.getElementById('saveImageOverlay').classList.remove('show'); };
+    window.closeAndReset = function() { if(confirm("データをすべてリセットして次のゲームの準備をしますか？\n（※画像の保存忘れにご注意ください）")) { set(ref(db, 'pokerSession/players'), []); update(ref(db, 'pokerSession/timer'), { running: false, elapsedSeconds: 0, lastUpdate: Date.now() }); document.getElementById('saveImageOverlay').classList.remove('show'); setTimeout(() => location.reload(), 300); } };
 
-    window.closeAndReset = function() {
-      if(confirm("入力データとタイマーをすべてリセットして次のゲームの準備をしますか？\n（※画像の保存忘れにご注意ください）")) {
-        set(ref(db, 'pokerSession/players'), []); 
-        update(ref(db, 'pokerSession/timer'), { running: false, elapsedSeconds: 0, lastUpdate: Date.now() });
-        document.getElementById('saveImageOverlay').classList.remove('show');
-        setTimeout(() => location.reload(), 300);
-      }
-    };
-
-    // ★★★ 生成処理のメインロジック ★★★
     window.confirmAndSave = function() {
       const rows = document.querySelectorAll('#tableBody tr');
       let playerData = [];
       let hasName = false;
       const currentPlayTime = getFormattedTime();
-
+      
       rows.forEach(row => {
         const name = row.querySelector('.name-input').value.trim();
         if (name !== "") {
           hasName = true;
-          const entry = parseFloat(row.querySelector('.entry').value) || 0;
-          const finalChips = parseFloat(row.querySelector('.final-chips').value) || 0;
+          const entryRaw = row.querySelector('.entry').value.replace(/,/g, '');
+          const chipsRaw = row.querySelector('.final-chips').value.replace(/,/g, '');
+          const entry = parseFloat(entryRaw) || 0;
+          const finalChips = parseFloat(chipsRaw) || 0;
+          const checkoutTime = row.querySelector('.checkout-btn').dataset.time || ""; 
+
           const result = finalChips - (entry * STARTING_CHIPS);
           const pay = result / RATE;
-          playerData.push({ name, entry, finalChips, result, pay, playTime: currentPlayTime });
+          
+          const finalPlayTime = checkoutTime ? checkoutTime : currentPlayTime;
+          
+          playerData.push({ name, entry, finalChips, result, pay, playTime: finalPlayTime });
         }
       });
-
       if (!hasName) { alert("プレイヤー名が入力されていません。"); return; }
-
+      
       let checkTotal = 0;
       playerData.forEach(p => checkTotal += p.pay);
-      if (checkTotal !== 0) { if (!confirm("合計Payにズレがあります。このまま記録しますか？")) return; } 
-      else { if (!confirm("本日の成績を確定し、長押し保存用の画像を生成しますか？")) return; }
+      checkTotal = Math.round(checkTotal * 100) / 100;
+      
+      if (checkTotal !== 0) {
+        if (!confirm("合計Payにズレがあります。このまま記録しますか？")) return;
+      } else {
+        if (!confirm("本日の成績を確定し、長押し保存用の画像を生成しますか？")) return;
+      }
 
       const btn = document.getElementById('saveBtn');
       btn.innerText = "⏳ 画像生成中..."; btn.disabled = true;
-
-      // 画像生成用のDOMを構築
+      
+      const reportArea = document.getElementById('reportArea');
+      const isMobile = window.innerWidth <= 600;
+      reportArea.className = isMobile ? 'layout-mobile' : 'layout-pc';
+      
       prepareReportArea(playerData, currentPlayTime);
       
       setTimeout(() => {
-        const reportArea = document.getElementById('reportArea');
-        // スマホでもPCでも同じ「横長の巨大画像」を生成する
-        html2canvas(reportArea, { scale: 1.5, useCORS: true, backgroundColor: "#05070a" }).then(canvas => {
-          const jpegUrl = canvas.toDataURL('image/jpeg', 0.9); 
-          const imgEl = document.getElementById('generatedImage');
-          imgEl.src = jpegUrl;
+        html2canvas(reportArea, { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
+          document.getElementById('generatedImage').src = canvas.toDataURL('image/jpeg', 0.9);
           document.getElementById('saveImageOverlay').classList.add('show');
           btn.innerText = "💾 画像を表示しました";
           sendToGAS(playerData, btn);
@@ -580,120 +520,33 @@
       }, 500);
     };
 
-    // ★★★ ゴージャス画像へのデータ流し込み ★★★
-    function prepareReportArea(data, playTime) {
+    function prepareReportArea(data, globalTime) {
       const now = new Date();
-      document.getElementById('reportDate').innerText = now.getFullYear() + "/" + String(now.getMonth() + 1).padStart(2, '0') + "/" + String(now.getDate()).padStart(2, '0');
-      document.getElementById('reportTime').innerText = playTime;
+      document.getElementById('reportDate').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
+      document.getElementById('reportTime').innerText = globalTime;
       
-      const genH = String(now.getHours()).padStart(2, '0');
-      const genM = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById('reportGeneratedTime').innerText = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${genH}:${genM}`;
-
-      // 1. 成績テーブルの生成
       const sortedData = [...data].sort((a, b) => b.pay - a.pay);
       const tbody = document.getElementById('reportTableBody');
       tbody.innerHTML = '';
+      let totalPay = 0;
       
-      let totalEntries = 0;
-      let totalReEntries = 0;
-      let totalChips = 0;
-      let highestChips = 0;
-      let highestChipsName = "";
-      let highestResult = -999999;
-      let highestResultName = "";
-
-      // 王冠のSVGアイコン
-      const crownGold = `<svg class="report-crown" viewBox="0 0 512 512" style="fill:#f1c40f;"><path d="M493.4 24.6l-104 192C385.6 224.2 376.5 229 366.1 226.7l-94.2-20.9L288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l16.1 173.8-94.2 20.9c-10.3 2.3-19.4-2.5-23.2-10.1l-104-192C15.4 10.3 4.2 13 1 24.6c-3.2 11.6 2 24 13.5 28.5L128 100.9l-11.2 266c-.6 13.5 10 25.1 23.5 25.1h231.4c13.5 0 24.1-11.6 23.5-25.1l-11.2-266 113.5-47.8c11.5-4.5 16.7-16.9 13.5-28.5c-3.2-11.6-14.4-14.3-18.1-10.1zM80 448c0-17.7 14.3-32 32-32h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H112c-17.7 0-32-14.3-32-32z"/></svg>`;
-      const crownSilver = `<svg class="report-crown" viewBox="0 0 512 512" style="fill:#bdc3c7;"><path d="M493.4 24.6l-104 192C385.6 224.2 376.5 229 366.1 226.7l-94.2-20.9L288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l16.1 173.8-94.2 20.9c-10.3 2.3-19.4-2.5-23.2-10.1l-104-192C15.4 10.3 4.2 13 1 24.6c-3.2 11.6 2 24 13.5 28.5L128 100.9l-11.2 266c-.6 13.5 10 25.1 23.5 25.1h231.4c13.5 0 24.1-11.6 23.5-25.1l-11.2-266 113.5-47.8c11.5-4.5 16.7-16.9 13.5-28.5c-3.2-11.6-14.4-14.3-18.1-10.1zM80 448c0-17.7 14.3-32 32-32h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H112c-17.7 0-32-14.3-32-32z"/></svg>`;
-      const crownBronze = `<svg class="report-crown" viewBox="0 0 512 512" style="fill:#cd7f32;"><path d="M493.4 24.6l-104 192C385.6 224.2 376.5 229 366.1 226.7l-94.2-20.9L288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l16.1 173.8-94.2 20.9c-10.3 2.3-19.4-2.5-23.2-10.1l-104-192C15.4 10.3 4.2 13 1 24.6c-3.2 11.6 2 24 13.5 28.5L128 100.9l-11.2 266c-.6 13.5 10 25.1 23.5 25.1h231.4c13.5 0 24.1-11.6 23.5-25.1l-11.2-266 113.5-47.8c11.5-4.5 16.7-16.9 13.5-28.5c-3.2-11.6-14.4-14.3-18.1-10.1zM80 448c0-17.7 14.3-32 32-32h288c17.7 0 32 14.3 32 32s-14.3 32-32 32H112c-17.7 0-32-14.3-32-32z"/></svg>`;
-
       sortedData.forEach((player, index) => {
-        totalEntries += player.entry;
-        if(player.entry > 1) totalReEntries += (player.entry - 1);
-        totalChips += player.finalChips;
-        if(player.finalChips > highestChips) { highestChips = player.finalChips; highestChipsName = player.name; }
-        if(player.result > highestResult) { highestResult = player.result; highestResultName = player.name; }
-
+        totalPay += player.pay;
         const tr = document.createElement('tr');
-        
-        // 順位・王冠の装飾
-        let rankHtml = `${index + 1}`;
-        let nameHtml = player.name;
-        if (index === 0) { tr.className = 'report-tr-1'; rankHtml = `<span class="report-rank-1">${crownGold} 1st</span>`; nameHtml = `${crownGold} ${player.name} ${crownGold}`; }
-        else if (index === 1) { tr.className = 'report-tr-2'; rankHtml = `<span class="report-rank-2">${crownSilver} 2nd</span>`; }
-        else if (index === 2) { tr.className = 'report-tr-3'; rankHtml = `<span class="report-rank-3">${crownBronze} 3rd</span>`; }
-
-        // 歴代順位の取得
-        let allTimeHtml = allTimeRanks[player.name] ? `${allTimeRanks[player.name]} / ${totalAllTimePlayers}` : "NEW";
-
-        // スコアの色と炎アイコン（プラスのみ）
-        const payClass = player.result > 0 ? 'report-pay-plus' : (player.result < 0 ? 'report-pay-minus' : '');
-        const paySign = player.result > 0 ? '+' : '';
-        const fireIcon = player.result > 0 ? ' 🔥' : '';
-
-        // ドベ（リエントリー地獄）の場合はフォント変更
-        let entryHtml = player.entry;
-        if(player.entry > 1) {
-             entryHtml = `<span style="font-family:'Nosifer', sans-serif; color:#ff4757; -webkit-text-stroke: 1px #800000; font-size:24px;">${player.entry}</span>`;
-        }
-
-        tr.innerHTML = `
-          <td>${rankHtml}</td>
-          <td class="name-cell">${nameHtml}</td>
-          <td style="color:#bdc3c7;">${allTimeHtml}</td>
-          <td>${entryHtml}</td>
-          <td>${formatNumber(player.finalChips)}</td>
-          <td class="${payClass}">${paySign}${formatNumber(player.result)}${fireIcon}</td>
-        `;
+        const payClass = player.pay > 0 ? 'report-plus' : (player.pay < 0 ? 'report-minus' : '');
+        const paySign = player.pay > 0 ? '+' : '';
+        tr.innerHTML = `<td>${index+1}</td><td class="name-cell">${player.name}</td><td>${player.playTime}</td><td>${player.entry}</td><td>${formatNumber(player.finalChips)}</td><td class="${payClass}">${paySign}${formatNumber(player.result)}</td><td class="pay-cell ${payClass}">${paySign}${formatNumber(player.pay)}</td>`;
         tbody.appendChild(tr);
       });
-
-      // 2. 地獄ランキング（THE PIT）の生成
-      const pitData = [...data].filter(p => p.entry > 1).sort((a, b) => b.entry - a.entry).slice(0, 3);
-      const pitContainer = document.getElementById('reportPitCards');
-      pitContainer.innerHTML = '';
-      
-      const skullSvg = `<svg class="pit-skull" viewBox="0 0 448 512"><path d="M439.2 236.1l-20.1-11.9c-6.4-3.8-14.6-1.6-18.4 5.1-18.9 34.6-56.3 58.7-99.1 58.7-42.8 0-80.1-24.1-99.1-58.7-3.8-6.7-12-8.9-18.4-5.1l-20.1 11.9c-6.7 4-8.9 12.6-5 19.3C181.8 290.4 200.7 320 224 320s42.2-29.6 66.8-64.7c3.9-6.7 1.7-15.3-5-19.3zm-111.2-120c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zm64 0c0-13.3-10.7-24-24-24s-24 10.7-24 24 10.7 24 24 24 24-10.7 24-24zM224 0C100.3 0 0 100.3 0 224v192c0 53 43 96 96 96h256c53 0 96-43 96-96V224C448 100.3 347.7 0 224 0zm96 416c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm-128 0c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm160-224C352 110.3 294.5 48 224 48s-128 62.3-128 144v14.1c0 23.6 15.1 44.8 36.9 52.8l10.8 4c16.3 6 30.1 16.6 39.4 30.2 11.2-16.1 27.6-29 46.9-36l10.8-4c21.8-8 36.9-29.2 36.9-52.8V192zm-32 96c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"/></svg>`;
-
-      if(pitData.length === 0) {
-        pitContainer.innerHTML = '<div style="color:#7f8fa6; text-align:center; padding:50px; font-size:24px;">NO PLAYERS IN THE PIT</div>';
-      } else {
-        pitData.forEach((p, i) => {
-           pitContainer.innerHTML += `
-             <div class="pit-card">
-               <div class="pit-rank">W${i+1}</div>
-               <div class="pit-info">
-                 <div class="pit-name">${p.name}</div>
-                 <div class="pit-reentry">RE-ENTRY: <span>${p.entry - 1}</span></div>
-               </div>
-               ${skullSvg}
-             </div>
-           `;
-        });
-      }
-
-      // 3. フッター統計の更新
-      const avgChips = data.length > 0 ? Math.round(totalChips / data.length) : 0;
-      document.getElementById('statEntries').innerText = totalEntries;
-      document.getElementById('statReentries').innerText = totalReEntries;
-      document.getElementById('statAvgChips').innerText = formatNumber(avgChips);
-      document.getElementById('statHighChips').innerText = `${formatNumber(highestChips)} (${highestChipsName})`;
-      document.getElementById('statHighResult').innerText = `+${formatNumber(highestResult)} (${highestResultName})`;
+      totalPay = Math.round(totalPay * 100) / 100;
+      document.getElementById('reportTotalPay').innerText = formatNumber(totalPay);
     }
 
     function sendToGAS(playerData, btn) {
+      const GAS_URL = "https://script.google.com/macros/s/AKfycbxijPOgmKGDL-UL5eAqOBKrxKVfPl4v6hsdLcWbiuwMrCWSPI5fqxu3qOmXIFTrMYCi5A/exec";
       fetch(GAS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(playerData) })
-      .then(() => {
-        console.log("GAS記録完了");
-        btn.innerText = "💾 画像を再表示"; btn.disabled = false;
-      }).catch(error => {
-        console.error("GASエラー", error);
-        btn.innerText = "成績を確定（エラー）"; btn.disabled = false;
-      });
+      .then(() => { btn.innerText = "💾 画像を再表示"; btn.disabled = false; });
     }
-    
-    window.addEventListener('DOMContentLoaded', () => { window.dispatchEvent(new Event('resize')); });
   </script>
 </body>
 </html>
