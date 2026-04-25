@@ -114,7 +114,7 @@
   .save-image-close { background: linear-gradient(145deg, #e74c3c, #c0392b); color: #fff; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5); width: 100%; max-width: 300px; flex-shrink: 0; }
   .save-image-cancel { background: transparent; color: #fff; border: 1px solid #7f8fa6; padding: 12px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 14px; letter-spacing: 1px; margin-top: 15px; width: 100%; max-width: 300px; flex-shrink: 0; }
 
-  /* 📱 スマホ用 */
+  /* 📱 スマホ向け */
   @media screen and (max-width: 900px) {
     /* ★修正: min-heightを100dvhに設定、パディングを減らし、下部マージンを無くす */
     body { padding: 10px 5px; height: auto; min-height: 100dvh; display: block; overflow-x: hidden; padding-bottom: 15px; }
@@ -141,7 +141,7 @@
     td:last-child { position: absolute; bottom: 12px; left: 15px; padding: 0; display: block; width: auto; border: none; }
     .summary { flex-direction: column; align-items: flex-start; gap: 12px; font-size: 16px; padding: 15px; width: 100%; box-sizing: border-box; }
     #totalPay { font-size: 26px !important; }
-    .btn-group { flex-direction: column; gap: 10px; width: 100%; margin-bottom: 0; } /* ★修正: margin-bottom: 0 */
+    .btn-group { flex-direction: column; gap: 10px; width: 100%; margin-bottom: 0; }
     .save-btn, .add-btn, .sheet-btn { font-size: 16px; padding: 16px; width: 100%; box-sizing: border-box; }
   }
 
@@ -311,7 +311,8 @@
         if(!confirm("タイマーを0にリセットしますか？")) return;
         newState.running = false; newState.elapsedSeconds = 0; newState.lastUpdate = Date.now();
       }
-      update(ref(db, 'pokerSession/timer'), newState);
+      currentTimerState = newState;
+      set(ref(db, 'pokerSession/timer'), newState);
     };
 
     let activeNumpadInput = null;
