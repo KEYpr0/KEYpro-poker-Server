@@ -7,9 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
-  /* ★修正: 背景色をダークグリーンで塗りつぶし、白余白を消す */
   html, body { max-width: 100vw; overflow-x: hidden; scroll-behavior: smooth; background-color: #0a2e1c; }
-  /* ★修正: min-heightを100dvhにし、背景をfixedに */
   body { background: radial-gradient(circle at center, #1a5c38 0%, #0a2e1c 100%); background-attachment: fixed; color: #ffffff; padding: 15px; margin: 0; min-height: 100dvh; display: flex; align-items: center; justify-content: center; font-family: 'KEYpro', sans-serif; }
   
   .container { width: 96vw; max-width: 1800px; height: 96vh; min-height: 600px; display: flex; flex-direction: column; background-color: rgba(0, 0, 0, 0.7); padding: 30px; border-radius: 16px; border: 2px solid #d4af37; box-shadow: 0 10px 40px rgba(0,0,0,0.7); overflow: hidden; position: relative; }
@@ -114,9 +112,7 @@
   .save-image-close { background: linear-gradient(145deg, #e74c3c, #c0392b); color: #fff; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5); width: 100%; max-width: 300px; flex-shrink: 0; }
   .save-image-cancel { background: transparent; color: #fff; border: 1px solid #7f8fa6; padding: 12px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 14px; letter-spacing: 1px; margin-top: 15px; width: 100%; max-width: 300px; flex-shrink: 0; }
 
-  /* 📱 スマホ向け */
   @media screen and (max-width: 900px) {
-    /* ★修正: min-heightを100dvhに設定、パディングを減らし、下部マージンを無くす */
     body { padding: 10px 5px; height: auto; min-height: 100dvh; display: block; overflow-x: hidden; padding-bottom: 15px; }
     .container { padding: 15px; border-radius: 12px; width: 100%; max-width: 100%; height: auto; min-height: auto; display: block; position: relative; padding-top: 45px; box-sizing: border-box; margin-bottom: 0; padding-bottom: 15px; }
     h2 { font-size: 20px; letter-spacing: 2px; margin-bottom: 15px; padding-top: 10px; }
@@ -141,7 +137,7 @@
     td:last-child { position: absolute; bottom: 12px; left: 15px; padding: 0; display: block; width: auto; border: none; }
     .summary { flex-direction: column; align-items: flex-start; gap: 12px; font-size: 16px; padding: 15px; width: 100%; box-sizing: border-box; }
     #totalPay { font-size: 26px !important; }
-    .btn-group { flex-direction: column; gap: 10px; width: 100%; margin-bottom: 0; }
+    .btn-group { flex-direction: column; gap: 10px; width: 100%; margin-bottom: 0; } 
     .save-btn, .add-btn, .sheet-btn { font-size: 16px; padding: 16px; width: 100%; box-sizing: border-box; }
   }
 
@@ -282,6 +278,8 @@
     const db = getDatabase(app);
 
     let currentTimerState = { running: false, elapsedSeconds: 0, lastUpdate: Date.now() };
+    
+    // ★修正：タイマー初期化ロジックの安定化
     onValue(ref(db, 'pokerSession/timer'), (snapshot) => {
       const data = snapshot.val();
       if (data) currentTimerState = data;
@@ -299,7 +297,11 @@
       return (h > 0 ? String(h).padStart(2, '0') + ':' : '') + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
     }
 
-    setInterval(() => { document.getElementById('controlTimer').innerText = getFormattedTime(); }, 1000);
+    // ★修正：setIntervalが要素の有無を確認して確実に実行するよう強化
+    setInterval(() => { 
+        const timerEl = document.getElementById('controlTimer');
+        if(timerEl) { timerEl.innerText = getFormattedTime(); }
+    }, 1000);
 
     window.timerAction = function(action) {
       let newState = { ...currentTimerState };
@@ -313,6 +315,8 @@
       }
       currentTimerState = newState;
       set(ref(db, 'pokerSession/timer'), newState);
+      // ★修正：ボタンを押した瞬間に画面の表示を即時アップデート
+      document.getElementById('controlTimer').innerText = getFormattedTime();
     };
 
     let activeNumpadInput = null;
@@ -389,14 +393,17 @@
     onValue(ref(db, 'pokerSession/players'), (snapshot) => {
       const draftData = snapshot.val();
       const tableBody = document.getElementById('tableBody');
-      if (!draftData && isFirstLoad) {
-        tableBody.innerHTML = '';
-        for (let i = 0; i < INITIAL_ROWS; i++) { tableBody.appendChild(window.createRow()); }
-        isFirstLoad = false;
-        window.calculate(); return;
+      
+      // ★修正：リロード時にDBを消し去るバグを防止。空の場合は見た目だけ5行作る。
+      let data = draftData || [];
+      if (data.length === 0) {
+        for (let i = 0; i < INITIAL_ROWS; i++) {
+          data.push({ name: "", entry: 1, finalChips: 0, checkoutTime: "" });
+        }
       }
+      
       isFirstLoad = false;
-      const data = draftData || [];
+      
       while(tableBody.children.length < data.length) { tableBody.appendChild(window.createRow()); }
       while(tableBody.children.length > data.length) { tableBody.lastChild.remove(); }
       
